@@ -149,7 +149,7 @@
 
 ### Deleting Tags
 * As a logged in user, I want to be able to remove tags from my Recipes
-    * Weh I'm on the `/recipes/:id` page:
+    * When I'm on the `/recipes/:id` page:
         * I can remove tags from my Recipe
             * So that when I realize I tagged the Recipe with the wrong tag, I can easily remove it
 
@@ -181,3 +181,27 @@
     * When on the `recipes/:id` page:
         * I can remove images on my posted Recipes
             * So that if my visual aides are causing more confusion than helping, I can easily remove them
+
+## Followers (Bonus Feature: CRD)
+
+### Viewing Users I am Following
+* As a logged in User, I want to be able to find a list of users that I am following
+    * When I'm on the `/following` page:
+        * I want to be able to see a list of users that I am currently following
+
+### Viewing Followers
+* As a logged in User, I want to be see how many followers a user has
+    * When I'm on the `/recipes`, `/recipes/:id`, or `/users/:id/recipes` pages:
+        * I want to be able to see how many people are following a user
+
+### Follow another User
+* As a logged in user, I want to be able to follow another User
+    * When I'm on the `/recipes/:id` or `/users/:id/recipes` pages:
+        * I want to be able to follow the author of the Recipe(s)
+            * So that I can easily find other recipes they have shared
+
+### Unfollowing another User
+* As a logged in user, I want to be able to unfollow a user that I have previously followed
+    * When I'm on the `/recipes/:id`, `/following` or `/users/:id/recipes` pages:
+        * I want to be able to unfollow another user
+            * So if the other user doesn't have Recipes that interest me or for some other reason, I can easily unfollow them
