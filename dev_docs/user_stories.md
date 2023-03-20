@@ -59,6 +59,11 @@
         * I can view the content of the Recipe, as well as the associated Reviews and Rating.
             * So that I can read and interact with the opinions of others in the community, and add my own thoughts and critiques in the Reviews.
 
+* As a logged in or logged out user, I want to be able to view all of a users recipes
+    * When I'm on the `/users/:id/recipes` page:
+        * I want to see a list of Recipes that user has posted
+            * So if I enjoy their Recipes, I can easily find their other Recipes that they have decided to share
+
 ### Updating Recipes
 
 * As a logged in user, I want to be able to edit my Recipes by clicking an Edit button associated with the Recipe anywhere that Recipe appears.
