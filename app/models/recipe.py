@@ -13,3 +13,5 @@ class Recipe(db.Model):
     description = db.Column(db.String(500), nullable=False)
     created_at = db.Column(db.Date, nullable=False, default=datetime(timezone.utc))
     updated_at = db.Column(db.Date, nullable=False, default=datetime(timezone.utc))
+
+    reviews = db.relationship("Review", back_populates="recipe")
