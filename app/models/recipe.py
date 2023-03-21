@@ -15,3 +15,4 @@ class Recipe(db.Model):
     updated_at = db.Column(db.Date, nullable=False, default=datetime(timezone.utc))
 
     reviews = db.relationship("Review", back_populates="recipe")
+    author = db.relationship("User", back_populates="recipes")
