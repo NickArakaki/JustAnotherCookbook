@@ -11,3 +11,5 @@ class Ingredient(db.Model):
     ingredient = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     units = db.Column(db.String, nullable=False)
+
+    recipe = db.relationship("Recipe", back_populates="ingredients")

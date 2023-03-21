@@ -16,3 +16,4 @@ class Recipe(db.Model):
 
     reviews = db.relationship("Review", back_populates="recipe")
     author = db.relationship("User", back_populates="recipes")
+    ingredients = db.relationship("Ingredient", back_populates="recipe")
