@@ -63,7 +63,22 @@ def seed_ingredients():
         units = "cup"
     )
 
+    i11 = Ingredient(
+        recipe_id = 2,
+        ingredient = "cereal",
+        amount = 1,
+        units = "cup"
+    )
+
+    i12 = Ingredient(
+        recipe_id = 2,
+        ingredient = "Milk",
+        amount = 0.5,
+        units = "cup"
+    )
+
     db.session.add_all([i1,i2,i3,i4,i5,i6,i7,i8,i9,i10])
+    db.session.add_all([i11,i12])
     db.session.commit()
 
 
