@@ -62,14 +62,12 @@ def seed_ingredients():
         amount = 0.5,
         units = "cup"
     )
-
     i11 = Ingredient(
         recipe_id = 2,
         ingredient = "cereal",
         amount = 1,
         units = "cup"
     )
-
     i12 = Ingredient(
         recipe_id = 2,
         ingredient = "Milk",
