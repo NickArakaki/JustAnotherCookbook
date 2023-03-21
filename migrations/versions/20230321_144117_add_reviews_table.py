@@ -1,8 +1,8 @@
 """add reviews table
 
-Revision ID: 273900d2a7c3
-Revises: f0afe9ffb4dd
-Create Date: 2023-03-21 12:45:57.771545
+Revision ID: 86ba6d8d6fa3
+Revises: 94af2b305ad9
+Create Date: 2023-03-21 14:41:17.953918
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '273900d2a7c3'
-down_revision = 'f0afe9ffb4dd'
+revision = '86ba6d8d6fa3'
+down_revision = '94af2b305ad9'
 branch_labels = None
 depends_on = None
 
@@ -24,8 +24,8 @@ def upgrade():
     sa.Column('recipe_id', sa.Integer(), nullable=False),
     sa.Column('rating', sa.Integer(), nullable=False),
     sa.Column('review', sa.Text(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(now())'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(now())'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.ForeignKeyConstraint(['recipe_id'], ['recipes.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

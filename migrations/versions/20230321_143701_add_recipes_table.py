@@ -1,8 +1,8 @@
 """add recipes table
 
-Revision ID: 580b1391c7b6
-Revises: eeebf876626e
-Create Date: 2023-03-21 12:41:12.099968
+Revision ID: a46cc8199e7c
+Revises: 9357c5748eba
+Create Date: 2023-03-21 14:37:01.940270
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '580b1391c7b6'
-down_revision = 'eeebf876626e'
+revision = 'a46cc8199e7c'
+down_revision = '9357c5748eba'
 branch_labels = None
 depends_on = None
 
@@ -24,8 +24,8 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('total_time', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(now())'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(now())'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

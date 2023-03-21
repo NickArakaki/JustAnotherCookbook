@@ -1,6 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime, timezone
-from sqlalchemy.sql import text
+from sqlalchemy.sql import func
 
 class Recipe(db.Model):
     __tablename__ = "recipes"
@@ -13,8 +13,8 @@ class Recipe(db.Model):
     title = db.Column(db.String, nullable=False)
     total_time = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, server_default=text("now()"))
-    updated_at = db.Column(db.DateTime, nullable=False, server_default=text("now()"))
+    created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
 
     reviews = db.relationship("Review", back_populates="recipe")
     author = db.relationship("User", back_populates="recipes")
