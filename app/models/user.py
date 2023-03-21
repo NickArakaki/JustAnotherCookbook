@@ -15,9 +15,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    liked_recipes_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")))
 
-    liked_recipes = db.relationship("Recipe", back_populates="users")
+    # liked_recipes = db.relationship("Recipes", )
 
     @property
     def password(self):
