@@ -48,7 +48,14 @@ def seed_methods():
         details = "Bake at 400 °F for 15 minutes, then reduce the temperature to 350°F for 12 minutes. The tarts are ready when you can stand a toothpick up in the middle. Let cool to room temperature before enjoying"
     )
 
+    m10 = Method(
+        recipe_id = 2,
+        step_number = 1,
+        details = "Add cereal to bowl and pour milk over it. Done. Simple and easy"
+    )
+
     db.session.add_all([m1,m2,m3,m4,m5,m6,m7,m8,m9])
+    db.session.add(m10)
     db.session.commit()
 
 
