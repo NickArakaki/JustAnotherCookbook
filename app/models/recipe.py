@@ -10,6 +10,7 @@ class Recipe(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
+    title = db.Column(db.String, nullable=False)
     total_time = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=text("now()"))

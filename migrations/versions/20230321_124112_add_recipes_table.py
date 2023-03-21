@@ -21,6 +21,7 @@ def upgrade():
     op.create_table('recipes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('author_id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(), nullable=False),
     sa.Column('total_time', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(now())'), nullable=False),
