@@ -19,4 +19,4 @@ def get_recipe_details(id):
     Query for single recipe and return single recipe details
     """
     recipe = Recipe.query.get(id)
-    pass
+    return recipe.to_dict_detailed()

@@ -41,5 +41,5 @@ class Recipe(db.Model):
             "description": self.description,
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
             "methods": [method.to_dict() for method in self.methods],
-            "reviews": [review.to_dict_summary() for review in reviews]
+            "reviews": [review.to_dict_summary() for review in self.reviews]
         }
