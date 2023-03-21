@@ -1,0 +1,16 @@
+.signup_form_container{
+    width: 50%;
+}
+
+.signup_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup_form label {
+    margin-bottom: 50px;
+}
+
+.signup_form_botton {
+    width: 100px;
+}
