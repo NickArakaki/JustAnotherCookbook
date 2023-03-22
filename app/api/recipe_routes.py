@@ -147,6 +147,10 @@ def add_methods_to_recipe(id):
 @recipe_routes.route('/<int:id>', methods=["DELETE"])
 @login_required
 def delete_recipe(id):
+    """
+    Delete existing recipe and all it's methods, ingredients, and reviews
+    User must be logged in and authorized
+    """
     recipe = Recipe.query.get(id)
 
     if not recipe:

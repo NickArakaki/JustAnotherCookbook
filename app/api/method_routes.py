@@ -31,3 +31,21 @@ def update_method(id):
         return method.recipe.to_dict_detailed()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@method_routes.route('/<int:id>', methods=["DELETE"])
+@login_required
+def delete_method(id):
+    """
+    Deletes an existing Method, user must be logged in and authorized to delete Method
+    """
+    method = Method.query.get(id)
+
+    if not method:
+        return { "errors": ["Method could not be found"] }, 404
+    elif method.recipe.author_id != current_user.id:
+        return { "errors": ["User not authorized to delete this method"] }, 401
+    else:
+        db.session.delete(method)
+        db.session.commit()
+        return { "message": "Successfully Removed" }
