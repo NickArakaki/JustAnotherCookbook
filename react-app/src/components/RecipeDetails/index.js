@@ -11,6 +11,11 @@ function RecipeDetails() {
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
 
+    // calculate average rating
+    const averageRating = recipe.reviews.reduce((accumulator, currentReview) => {
+        return accumulator + Number(currentReview.rating)
+    }, 0) / recipe.reviews.length
+
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
             .then(() => setIsLoaded(true))
@@ -28,7 +33,7 @@ function RecipeDetails() {
                             <div className="recipe_details_author">Posted by: {recipe.author.username} on {recipe.created_at}</div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
-                            <div className="recipe_avg_rating">4.8 Stars</div>
+                            <div className="recipe_avg_rating">{averageRating.toFixed(1)}</div>
                             <div className="recipe_num_reviews">{recipe.reviews.length} Reviews</div>
                         </div>
                     </div>
