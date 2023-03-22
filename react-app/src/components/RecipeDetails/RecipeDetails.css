@@ -1,0 +1,15 @@
+.recipe_details_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe_details_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.recipe_details_title_author_div,
+.recipe_details_reviews_summary_div {
+    display: flex;
+    flex-direction: column;
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
+import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -11,37 +12,37 @@ function RecipeDetails() {
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
 
-    // calculate average rating
-    const averageRating = recipe.reviews.reduce((accumulator, currentReview) => {
-        return accumulator + Number(currentReview.rating)
-    }, 0) / recipe.reviews.length
-
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
-            .then(() => setIsLoaded(true))
+        .then(() => setIsLoaded(true))
     }, [dispatch])
 
+    // calculate average rating
+    const averageRating = isLoaded ? recipe.reviews.reduce((accumulator, currentReview) => {
+        return accumulator + Number(currentReview.rating)
+    }, 0) / recipe.reviews.length : null
+
     return (
-        <div className="recipe_details_div">
+        <>
             {isLoaded ? (
-                <>
+                <div className="recipe_details_div">
                     <div className="recipe_title">{recipe.title}</div>
                     <div className="recipe_preview_image"></div>
-                    <div className="recipe_details">
+                    <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
                             <div className="recipe_details_title">{recipe.title}</div>
-                            <div className="recipe_details_author">Posted by: {recipe.author.username} on {recipe.created_at}</div>
+                            <div className="recipe_details_author">Posted by: {recipe.author.username} on {formatDateMonthDateYear(new Date(recipe.created_at))}</div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
                             <div className="recipe_avg_rating">{averageRating.toFixed(1)}</div>
                             <div className="recipe_num_reviews">{recipe.reviews.length} Reviews</div>
                         </div>
                     </div>
-                </>
+                </div>
             ) : (
                 <h2>Loading...</h2>
             )}
-        </div>
+        </>
     )
 }
 
