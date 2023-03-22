@@ -25,7 +25,7 @@ class Recipe(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "author_id": self.author_id,
+            "author": self.author.to_dict_author(),
             "title": self.title,
             "total_time": self.total_time,
             "description": self.description
