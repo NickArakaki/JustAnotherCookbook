@@ -6,6 +6,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
+import RecipeDetails from "./components/RecipeDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <LandingPage />
+          </Route>
+          <Route path={`/recipes/:recipeId`}>
+            <RecipeDetails />
           </Route>
           <Route path="/login" >
             <LoginFormPage />

@@ -39,6 +39,8 @@ class Recipe(db.Model):
             "title": self.title,
             "total_time": self.total_time,
             "description": self.description,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
             "methods": [method.to_dict() for method in self.methods],
             "reviews": [review.to_dict_summary() for review in self.reviews]
