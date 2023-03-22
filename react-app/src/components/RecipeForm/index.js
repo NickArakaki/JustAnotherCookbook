@@ -9,9 +9,9 @@ function RecipeForm() {
     const [description, setDescription] = useState("")
     const [estimatedTime, setEstimatedTime] = useState(0)
     // const [previewImageURL, setPreviewImageURL] = useState("")
-    const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:"tsp"}])
+    const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState([{description:"", imageURL:""}])
-    const units = ["tsp", "tbsp", "cup", ""]
+    const units = ["","tsp", "tbsp", "cup"]
 
     const handleIngredientInputChange = (e, idx) => {
         const { name, value } = e.target
@@ -22,7 +22,7 @@ function RecipeForm() {
     }
 
     const handleAddIngredient = () => {
-        setIngredientsList([...ingredientsList, {ingredient:"", amount:"", units:"tsp"}])
+        setIngredientsList([...ingredientsList, {ingredient:"", amount:"", units:""}])
     }
 
     const handleRemoveIngredient = (idx) => {
