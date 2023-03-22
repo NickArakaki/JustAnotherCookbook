@@ -102,7 +102,7 @@ def add_methods_to_recipe(id):
 
     if form.validate_on_submit():
         new_method = Method(
-            step_number = 1,
+            step_number = data["step_number"],
             details = data["details"]
         )
 
