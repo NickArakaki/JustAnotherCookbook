@@ -41,6 +41,7 @@ class Recipe(db.Model):
             "title": self.title,
             "total_time": self.total_time,
             "description": self.description,
+            "preview_image_url": self.preview_image_url,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
