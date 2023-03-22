@@ -22,3 +22,7 @@
 .ingredient_input {
     margin: 0 15px;
 }
+
+.required_input {
+    color: red;
+}

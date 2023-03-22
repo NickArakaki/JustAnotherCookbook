@@ -1,24 +1,28 @@
-import {useState} from "react"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { postARecipeThunk } from "../../store/recipes"
 import "./RecipeForm.css"
 
 function RecipeForm() {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [estimatedTime, setEstimatedTime] = useState(0)
-    const [previewImageURL, setPreviewImageURL] = useState("")
-    const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
+    // const [previewImageURL, setPreviewImageURL] = useState("")
+    const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:"tsp"}])
     const [methodsList, setMethodsList] = useState([{description:"", imageURL:""}])
-    const units = ["tsp", "tbsp", "cup"]
+    const units = ["tsp", "tbsp", "cup", ""]
 
     const handleIngredientInputChange = (e, idx) => {
         const { name, value } = e.target
         const updatedIngredientsList = [...ingredientsList]
         updatedIngredientsList[idx][name] = value
         setIngredientsList(updatedIngredientsList)
+        console.log(ingredientsList)
     }
 
     const handleAddIngredient = () => {
-        setIngredientsList([...ingredientsList, {ingredient:"", amount:"", units:""}])
+        setIngredientsList([...ingredientsList, {ingredient:"", amount:"", units:"tsp"}])
     }
 
     const handleRemoveIngredient = (idx) => {
@@ -52,20 +56,31 @@ function RecipeForm() {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newRecipe = {
-            "title": title,
-            "description": description,
-
+            title,
+            description,
+            "total_time": estimatedTime,
+            "ingredients": ingredientsList,
+            "methods": methodsList
         }
+        // validate
+        // if pass validations dispatch thunk
+        const data = await dispatch(postARecipeThunk(newRecipe))
+        if (data) {
+            alert("didn't work chief")
+        } else {
+            alert('success')
+        }
+
     }
 
     return (
         <form onSubmit={handleSubmit} className="recipe_form">
             <div className="recipe_form_title">Submit a Recipe</div>
             <div className="recipe_form_title_input">
-                <label>Recipe Title</label>
+                <label>Recipe Title<span className="required_input">*</span></label>
                 <input
                     type="text"
                     value={title}
@@ -73,23 +88,23 @@ function RecipeForm() {
                 />
             </div>
             <div className="recipe_form_description_input">
-                <label>Recipe Description</label>
+                <label>Recipe Description<span className="required_input">*</span></label>
                 <textarea
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
                 <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div>
             </div>
-            <div className="recipe_form_preview_image">
-                <label>Recipe Preview Image</label>
+            {/* <div className="recipe_form_preview_image">
+                <label>Recipe Preview Image<span className="required_input">*</label>
                 <input
                     type="text"
                     value={previewImageURL}
                     onChange={e => setPreviewImageURL(e.target.value)}
                 />
-            </div>
+            </div> */}
             <div className="recipe_form_time_to_make">
-                <label>Estimated Time to Make (min)</label>
+                <label>Estimated Time to Make (min)<span className="required_input">*</span></label>
                 <input
                     type="number"
                     value={estimatedTime}
@@ -97,7 +112,7 @@ function RecipeForm() {
                 />
             </div>
             <div className="recipe_form_ingredients_div">
-                <label className="ingredients_input_label">Ingredients</label>
+                <label className="ingredients_input_label">Ingredients<span className="required_input">*</span></label>
                 {ingredientsList.map((ingredient, idx) => {
                     return (
                         <div key={idx} className="ingredients_inputs">
@@ -113,6 +128,7 @@ function RecipeForm() {
                                 className="ingredient_input"
                                 name="amount"
                                 type="number"
+                                step="0.001"
                                 placeholder="Enter Amount"
                                 value={ingredient.amount}
                                 onChange={e => handleIngredientInputChange(e, idx)}
@@ -150,7 +166,7 @@ function RecipeForm() {
                 {methodsList.map((method, idx) => {
                     return (
                         <div key={idx} className="method_div">
-                            <label>Description</label>
+                            <label>Description<span className="required_input">*</span></label>
                             <textarea
                                 name="description"
                                 value={method.description}
