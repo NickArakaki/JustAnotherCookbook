@@ -8,9 +8,9 @@ function RecipeForm() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [estimatedTime, setEstimatedTime] = useState(0)
-    // const [previewImageURL, setPreviewImageURL] = useState("")
+    const [previewImageURL, setPreviewImageURL] = useState("")
     const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
-    const [methodsList, setMethodsList] = useState([{description:"", imageURL:""}])
+    const [methodsList, setMethodsList] = useState([{details:"", imageURL:""}])
     const units = ["","tsp", "tbsp", "cup"]
 
     const handleIngredientInputChange = (e, idx) => {
@@ -61,6 +61,7 @@ function RecipeForm() {
         const newRecipe = {
             title,
             description,
+            "preview_image_url": previewImageURL,
             "total_time": estimatedTime,
             "ingredients": ingredientsList,
             "methods": methodsList
@@ -95,14 +96,14 @@ function RecipeForm() {
                 />
                 <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div>
             </div>
-            {/* <div className="recipe_form_preview_image">
-                <label>Recipe Preview Image<span className="required_input">*</label>
+            <div className="recipe_form_preview_image">
+                <label>Recipe Preview Image<span className="required_input">*</span></label>
                 <input
                     type="text"
                     value={previewImageURL}
                     onChange={e => setPreviewImageURL(e.target.value)}
                 />
-            </div> */}
+            </div>
             <div className="recipe_form_time_to_make">
                 <label>Estimated Time to Make (min)<span className="required_input">*</span></label>
                 <input
@@ -168,8 +169,8 @@ function RecipeForm() {
                         <div key={idx} className="method_div">
                             <label>Description<span className="required_input">*</span></label>
                             <textarea
-                                name="description"
-                                value={method.description}
+                                name="details"
+                                value={method.details}
                                 onChange={e => handleMethodInputChange(e, idx)}
                             />
                             <label>Optional Image</label>

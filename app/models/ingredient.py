@@ -10,7 +10,7 @@ class Ingredient(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), nullable=False)
     ingredient = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    units = db.Column(db.String, nullable=False)
+    units = db.Column(db.String, nullable=True)
 
     recipe = db.relationship("Recipe", back_populates="ingredients")
 

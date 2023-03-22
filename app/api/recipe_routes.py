@@ -6,6 +6,19 @@ from app.forms import RecipeForm, MethodForm, IngredientForm
 
 recipe_routes = Blueprint('recipes', __name__)
 
+def validIngredient(ingredient):
+    isValid = False
+    if ingredient["ingredient"] and ingredient["amount"]:
+        print("ingredient passed =====================================")
+        isValid = True
+    return isValid
+
+def validMethod(method):
+    isValid = False
+    if method["details"]:
+        print("method passed ======================================")
+        isValid = True
+    return isValid
 
 @recipe_routes.route('/')
 def get_all_recipes():
@@ -52,10 +65,37 @@ def post_a_recipe():
             author_id = current_user.id,
             title = data["title"],
             total_time = data["total_time"],
-            description = data["description"]
+            description = data["description"],
+            preview_image_url = data["preview_image_url"]
         )
-
         db.session.add(new_recipe)
+        # validate ingredients
+        db.session.commit()
+        for idx, ingredient in enumerate(ingredientsList):
+            print(ingredient["ingredient"])
+            if not validIngredient(ingredient):
+                return { "errors": ["Invalid Ingredient"] }
+            else:
+                new_ingredient = Ingredient(
+                    recipe_id = new_recipe.id,
+                    ingredient = ingredient["ingredient"],
+                    amount = ingredient["amount"],
+                    units = ingredient["units"]
+                )
+                db.session.add(new_ingredient)
+        # validate methods
+        for idx, method in enumerate(methodsList):
+            if not validMethod(method):
+                return { "errors": ["Invalid Instructions"]}
+            else:
+                new_method = Method(
+                    recipe_id = new_recipe.id,
+                    step_number = (idx + 1),
+                    details = method["details"],
+                    image_url = method["imageURL"]
+                )
+                db.session.add(new_method)
+
         db.session.commit()
         return new_recipe.to_dict_detailed()
     else:
