@@ -16,10 +16,10 @@ class Recipe(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
     updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
 
-    reviews = db.relationship("Review", back_populates="recipe")
+    reviews = db.relationship("Review", back_populates="recipe", cascade="all, delete-orphan")
     author = db.relationship("User", back_populates="recipes")
-    ingredients = db.relationship("Ingredient", back_populates="recipe")
-    methods = db.relationship("Method", back_populates="recipe")
+    ingredients = db.relationship("Ingredient", back_populates="recipe", cascade="all, delete-orphan")
+    methods = db.relationship("Method", back_populates="recipe", cascade="all, delete-orphan")
 
 
     def to_dict(self):

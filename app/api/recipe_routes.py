@@ -142,3 +142,18 @@ def add_methods_to_recipe(id):
         return recipe.to_dict_detailed()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@recipe_routes.route('/<int:id>', methods=["DELETE"])
+@login_required
+def delete_recipe(id):
+    recipe = Recipe.query.get(id)
+
+    if not recipe:
+        return { "errors": ["Recipe could not be found"] }
+    elif recipe.author.id != current_user.id:
+        return { "errors": ["User is unauthorized to delete this recipe"] }, 401
+    else:
+        db.session.delete(recipe)
+        db.session.commit()
+        return { "message": "Successfully Removed" }
