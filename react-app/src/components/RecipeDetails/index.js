@@ -34,19 +34,37 @@ function RecipeDetails() {
                             <div className="recipe_details_author">Posted by: {recipe.author.username} on {formatDateMonthDateYear(new Date(recipe.created_at))}</div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
-                            <div className="recipe_avg_rating">{averageRating.toFixed(1)}</div>
+                            <div className="recipe_avg_rating">{averageRating.toFixed(1)} <i className="fa-sharp fa-solid fa-star" /></div>
                             <div className="recipe_num_reviews">{recipe.reviews.length} Reviews</div>
                         </div>
                     </div>
                     <div className="single_recipe_description">{recipe.description}</div>
                     <div className="recipe_ingredients_div">
                         <div className="recipe_ingredients_title">Ingredients</div>
-                        { console.log(recipe.ingredients)}
-                        {/* {recipe.ingredinets.map((ingredient, idx) => {
+                        <ul>
+                            {isLoaded && recipe.ingredients.map((ingredient, idx) => {
+                                return (
+                                    <li key={idx} className="recipe_ingredient">{ingredient.ingredient} {ingredient.amount} {ingredient.units}</li>
+                                    )
+                                })}
+                        </ul>
+                    </div>
+                    <div className="recipe_instructions_div">
+                        <div className="recipe_instruction_title">Instructions</div>
+                        {isLoaded && recipe.methods.map((method, idx) => {
                             return (
-                                <div key={idx} className="recipe_ingredient">{ingredient.ingredient} {ingredient.amount} {ingredient.units}</div>
+                                <div key={idx} className="recipe_method_div">
+                                    <div className="recipe_method_step_number">Step {method.step_number}</div>
+                                    <div className="recipe_method_image_and_details_div">
+                                        <div className="recipe_method_image"></div>
+                                        <div className="recipe_method_details">{method.details}</div>
+                                    </div>
+                                </div>
                             )
-                        })} */}
+                        })}
+                    </div>
+                    <div className="recipe_reviews_div">
+                        <p>This is where the reviews component will go</p>
                     </div>
                 </div>
             ) : (
