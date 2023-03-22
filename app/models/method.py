@@ -10,6 +10,7 @@ class Method(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), nullable=False)
     step_number = db.Column(db.Integer, nullable=False)
     details = db.Column(db.String, nullable=False)
+    image_url = db.Column(db.String, nullable=True)
 
     recipe = db.relationship("Recipe", back_populates="methods")
 

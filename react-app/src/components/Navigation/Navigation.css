@@ -1,9 +1,10 @@
-
-
-.profile-dropdown {
-  position: absolute;
+.navbar_div {
+  display: flex;
+  justify-content: space-between;
 }
 
-.hidden {
-  display: none;
+.navbar_user_container {
+  display: flex;
+  justify-content: space-between;
+  width: 10%;
 }

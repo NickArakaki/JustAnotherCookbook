@@ -27,7 +27,9 @@ function RecipeDetails() {
             {isLoaded ? (
                 <div className="recipe_container">
                     <div className="single_recipe_title">{recipe.title}</div>
-                    <div className="single_recipe_preview_image"></div>
+                    <div className="single_recipe_preview_image">
+                        <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title} final product`} />
+                    </div>
                     <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
                             <div className="recipe_details_title">{recipe.title}</div>

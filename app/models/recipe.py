@@ -13,6 +13,7 @@ class Recipe(db.Model):
     title = db.Column(db.String, nullable=False)
     total_time = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=False)
+    preview_image_url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
     updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
 
@@ -28,7 +29,8 @@ class Recipe(db.Model):
             "author": self.author.to_dict_author(),
             "title": self.title,
             "total_time": self.total_time,
-            "description": self.description
+            "description": self.description,
+            "preview_image_url": self.preview_image_url
         }
 
 
@@ -39,6 +41,7 @@ class Recipe(db.Model):
             "title": self.title,
             "total_time": self.total_time,
             "description": self.description,
+            "preview_image_url": self.preview_image_url,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],

@@ -26,6 +26,7 @@ def upgrade():
     sa.Column('recipe_id', sa.Integer(), nullable=False),
     sa.Column('step_number', sa.Integer(), nullable=False),
     sa.Column('details', sa.String(), nullable=False),
+    sa.Column('image_url', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['recipe_id'], ['recipes.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
