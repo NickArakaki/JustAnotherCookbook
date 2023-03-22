@@ -61,6 +61,37 @@ def post_a_recipe():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
+@recipe_routes.route('/<int:id>', methods=["PUT"])
+@login_required
+def update_a_recipe(id):
+    """
+    Update and return a new Recipe using Recipe id
+    """
+    data = request.get_json()
+    form = RecipeForm()
+    recipe = Recipe.query.get(id)
+    # Get the csrf_token from the request cookie and put it into the
+    # form manually to validate_on_submit can be used
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    # Authorization
+    if not recipe:
+        return { "errors": ["Recipe could not be found" ] }, 404
+    elif recipe.author.id != current_user.id:
+        return { "errors": ["User is not authorized to edit this Recipe"] }, 401
+
+    # Form validations
+    if form.validate_on_submit():
+        recipe.title = data["title"]
+        recipe.total_time = data["total_time"]
+        recipe.description = data["description"]
+
+        db.session.commit()
+        return recipe.to_dict_detailed()
+    else:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
 @recipe_routes.route('/<int:id>/ingredients', methods=["POST"])
 @login_required
 def add_ingredients_to_recipe(id):
@@ -102,7 +133,7 @@ def add_methods_to_recipe(id):
 
     if form.validate_on_submit():
         new_method = Method(
-            step_number = 1,
+            step_number = data["step_number"],
             details = data["details"]
         )
 
@@ -111,3 +142,22 @@ def add_methods_to_recipe(id):
         return recipe.to_dict_detailed()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@recipe_routes.route('/<int:id>', methods=["DELETE"])
+@login_required
+def delete_recipe(id):
+    """
+    Delete existing recipe and all it's methods, ingredients, and reviews
+    User must be logged in and authorized
+    """
+    recipe = Recipe.query.get(id)
+
+    if not recipe:
+        return { "errors": ["Recipe could not be found"] }
+    elif recipe.author.id != current_user.id:
+        return { "errors": ["User is unauthorized to delete this recipe"] }, 401
+    else:
+        db.session.delete(recipe)
+        db.session.commit()
+        return { "message": "Successfully Removed" }
