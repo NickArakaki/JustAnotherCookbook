@@ -5,6 +5,7 @@ function RecipeForm() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [estimatedTime, setEstimatedTime] = useState(0)
+    const [previewImageURL, setPreviewImageURL] = useState("")
     const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState([{description:"", imageURL:""}])
     const units = ["tsp", "tbsp", "cup"]
@@ -53,7 +54,11 @@ function RecipeForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("handle submit")
+        const newRecipe = {
+            "title": title,
+            "description": description,
+
+        }
     }
 
     return (
@@ -77,7 +82,11 @@ function RecipeForm() {
             </div>
             <div className="recipe_form_preview_image">
                 <label>Recipe Preview Image</label>
-                <input type="text" />
+                <input
+                    type="text"
+                    value={previewImageURL}
+                    onChange={e => setPreviewImageURL(e.target.value)}
+                />
             </div>
             <div className="recipe_form_time_to_make">
                 <label>Estimated Time to Make (min)</label>
@@ -91,7 +100,7 @@ function RecipeForm() {
                 <label className="ingredients_input_label">Ingredients</label>
                 {ingredientsList.map((ingredient, idx) => {
                     return (
-                        <div className="ingredients_inputs">
+                        <div key={idx} className="ingredients_inputs">
                             <input
                                 className="ingredient_input"
                                 name="ingredient"
@@ -124,7 +133,7 @@ function RecipeForm() {
                                 className="remove_ingredient_button"
                                 onClick={() => handleRemoveIngredient(idx)}
                             >
-                                Remove Ingredient
+                                <i className="fa-solid fa-trash" />
                             </button>
                         </div>
                     )
@@ -158,7 +167,7 @@ function RecipeForm() {
                                 type="button"
                                 className="remove_method_button"
                                 onClick={() => handleRemoveMethod(idx)}>
-                                    Remove Method
+                                    <i className="fa-solid fa-trash" />
                             </button>
                         </div>
                     )
