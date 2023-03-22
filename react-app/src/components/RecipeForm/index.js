@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
+import { Redirect } from "react-router-dom"
 import { postARecipeThunk } from "../../store/recipes"
 import "./RecipeForm.css"
 
 function RecipeForm() {
     const dispatch = useDispatch();
+    const [errors, setErrors] = useState([]);
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [estimatedTime, setEstimatedTime] = useState(0)
@@ -70,9 +72,10 @@ function RecipeForm() {
         // if pass validations dispatch thunk
         const data = await dispatch(postARecipeThunk(newRecipe))
         if (data) {
-            alert("didn't work chief")
+            setErrors(data)
         } else {
-            alert('success')
+            // redirect to details page for recipes
+            return <Redirect to={`/recipes/`} />
         }
 
     }
