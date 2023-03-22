@@ -29,7 +29,8 @@ class Recipe(db.Model):
             "author": self.author.to_dict_author(),
             "title": self.title,
             "total_time": self.total_time,
-            "description": self.description
+            "description": self.description,
+            "preview_image_url": self.preview_image_url
         }
 
 
