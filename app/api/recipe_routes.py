@@ -82,8 +82,8 @@ def update_a_recipe(id):
 
     # Form validations
     if form.validate_on_submit():
-        recipe.title = data["title"],
-        recipe.total_time = data["total_time"],
+        recipe.title = data["title"]
+        recipe.total_time = data["total_time"]
         recipe.description = data["description"]
 
         db.session.commit()
