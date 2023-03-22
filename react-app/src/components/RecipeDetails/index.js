@@ -25,9 +25,9 @@ function RecipeDetails() {
     return (
         <>
             {isLoaded ? (
-                <div className="recipe_details_div">
-                    <div className="recipe_title">{recipe.title}</div>
-                    <div className="recipe_preview_image"></div>
+                <div className="recipe_container">
+                    <div className="single_recipe_title">{recipe.title}</div>
+                    <div className="single_recipe_preview_image"></div>
                     <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
                             <div className="recipe_details_title">{recipe.title}</div>
@@ -37,6 +37,16 @@ function RecipeDetails() {
                             <div className="recipe_avg_rating">{averageRating.toFixed(1)}</div>
                             <div className="recipe_num_reviews">{recipe.reviews.length} Reviews</div>
                         </div>
+                    </div>
+                    <div className="single_recipe_description">{recipe.description}</div>
+                    <div className="recipe_ingredients_div">
+                        <div className="recipe_ingredients_title">Ingredients</div>
+                        { console.log(recipe.ingredients)}
+                        {/* {recipe.ingredinets.map((ingredient, idx) => {
+                            return (
+                                <div key={idx} className="recipe_ingredient">{ingredient.ingredient} {ingredient.amount} {ingredient.units}</div>
+                            )
+                        })} */}
                     </div>
                 </div>
             ) : (

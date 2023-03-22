@@ -1,4 +1,5 @@
-const months = ["January",
+const months = [
+                "January",
                 "February",
                 "March",
                 "April",
