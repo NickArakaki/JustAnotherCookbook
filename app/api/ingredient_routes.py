@@ -20,6 +20,7 @@ def update_method(id):
     elif ingredient.recipe.author_id != current_user.id:
         return { "errors": ["User is not authorized to update this Method"] }, 401
 
+    data = request.get_json()
     form = IngredientForm()
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
@@ -29,6 +30,6 @@ def update_method(id):
         ingredient.amount = data["amount"]
         ingredient.units = data["units"]
         db.session.commit()
-        return recipe.to_dict_detailed()
+        return ingredient.recipe.to_dict_detailed()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
