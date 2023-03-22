@@ -20,3 +20,26 @@ class Recipe(db.Model):
     author = db.relationship("User", back_populates="recipes")
     ingredients = db.relationship("Ingredient", back_populates="recipe")
     methods = db.relationship("Method", back_populates="recipe")
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "author_id": self.author_id,
+            "title": self.title,
+            "total_time": self.total_time,
+            "description": self.description
+        }
+
+
+    def to_dict_detailed(self):
+        return {
+            "id": self.id,
+            "author": self.author.to_dict(),
+            "title": self.title,
+            "total_time": self.total_time,
+            "description": self.description,
+            "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
+            "methods": [method.to_dict() for method in self.methods],
+            "reviews": [review.to_dict_summary() for review in self.reviews]
+        }

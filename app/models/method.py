@@ -12,3 +12,10 @@ class Method(db.Model):
     details = db.Column(db.String, nullable=False)
 
     recipe = db.relationship("Recipe", back_populates="methods")
+
+
+    def to_dict(self):
+        return {
+            "step_number": self.step_number,
+            "details": self.details
+        }
