@@ -1,0 +1,24 @@
+.recipe_form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 50px auto;
+}
+
+.recipe_form_title_input,
+.recipe_form_description_input,
+.recipe_form_preview_image,
+.recipe_form_ingredients_div,
+.method_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredients_inputs {
+    display: flex;
+    margin: 5px 0px;
+}
+
+.ingredient_input {
+    margin: 0 15px;
+}

@@ -3,6 +3,8 @@ import "./RecipeForm.css"
 
 function RecipeForm() {
     const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [estimatedTime, setEstimatedTime] = useState(0)
     const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState([{description:"", imageURL:""}])
     const units = ["tsp", "tbsp", "cup"]
@@ -49,19 +51,28 @@ function RecipeForm() {
         }
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("handle submit")
+    }
+
     return (
-        <form className="recipe_form">
-            <div className="recipe_form_title">
-                <label>Title</label>
+        <form onSubmit={handleSubmit} className="recipe_form">
+            <div className="recipe_form_title">Submit a Recipe</div>
+            <div className="recipe_form_title_input">
+                <label>Recipe Title</label>
                 <input
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
             </div>
-            <div className="recipe_form_description">
+            <div className="recipe_form_description_input">
                 <label>Recipe Description</label>
-                <textarea />
+                <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                />
                 <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div>
             </div>
             <div className="recipe_form_preview_image">
@@ -70,14 +81,19 @@ function RecipeForm() {
             </div>
             <div className="recipe_form_time_to_make">
                 <label>Estimated Time to Make (min)</label>
-                <input type="number" />
+                <input
+                    type="number"
+                    value={estimatedTime}
+                    onChange={e => setEstimatedTime(e.target.value)}
+                />
             </div>
             <div className="recipe_form_ingredients_div">
                 <label className="ingredients_input_label">Ingredients</label>
                 {ingredientsList.map((ingredient, idx) => {
                     return (
-                        <>
+                        <div className="ingredients_inputs">
                             <input
+                                className="ingredient_input"
                                 name="ingredient"
                                 type="text"
                                 placeholder="Enter Name of Ingredient"
@@ -85,6 +101,7 @@ function RecipeForm() {
                                 onChange={e => handleIngredientInputChange(e, idx)}
                             />
                             <input
+                                className="ingredient_input"
                                 name="amount"
                                 type="number"
                                 placeholder="Enter Amount"
@@ -92,6 +109,7 @@ function RecipeForm() {
                                 onChange={e => handleIngredientInputChange(e, idx)}
                             />
                             <select
+                                className="ingredient_input"
                                 name="units"
                                 type="number"
                                 value={ingredient.units}
@@ -108,7 +126,7 @@ function RecipeForm() {
                             >
                                 Remove Ingredient
                             </button>
-                        </>
+                        </div>
                     )
                 })}
                 <button
@@ -123,23 +141,19 @@ function RecipeForm() {
                 {methodsList.map((method, idx) => {
                     return (
                         <div key={idx} className="method_div">
-                            <div className="method_description_div">
-                                <label>Description</label>
-                                <textarea
-                                    name="description"
-                                    value={method.description}
-                                    onChange={e => handleMethodInputChange(e, idx)}
-                                />
-                            </div>
-                            <div className="method_image_div">
-                                <label>Optional Image</label>
-                                <input
-                                    type="text"
-                                    name="imageURL"
-                                    value={method.imageURL}
-                                    onChange={e => handleMethodInputChange(e, idx)}
-                                />
-                            </div>
+                            <label>Description</label>
+                            <textarea
+                                name="description"
+                                value={method.description}
+                                onChange={e => handleMethodInputChange(e, idx)}
+                            />
+                            <label>Optional Image</label>
+                            <input
+                                type="text"
+                                name="imageURL"
+                                value={method.imageURL}
+                                onChange={e => handleMethodInputChange(e, idx)}
+                            />
                             <button
                                 type="button"
                                 className="remove_method_button"
@@ -157,6 +171,7 @@ function RecipeForm() {
                     Add Method
                 </button>
             </div>
+            <button type="submit">Submit</button>
         </form>
     )
 }
