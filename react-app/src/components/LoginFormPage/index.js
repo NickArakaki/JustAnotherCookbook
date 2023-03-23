@@ -13,6 +13,14 @@ function LoginFormPage() {
 
   if (sessionUser) return <Redirect to="/" />;
 
+  const handleDemoLogin = async(e) => {
+    e.preventDefault();
+    const data = await dispatch(login("demo@user.com", "password"))
+    if (data) {
+      setErrors(data);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await dispatch(login(email, password));
@@ -50,6 +58,7 @@ function LoginFormPage() {
         </label>
         <button type="submit">Log In</button>
       </form>
+      <button onClick={handleDemoLogin} type="button">Login as Demo</button>
     </>
   );
 }
