@@ -109,7 +109,7 @@ function RecipeForm() {
                 <label>Recipe Preview Image<span className="required_input">*</span></label>
                 <input
                     required
-                    type="text"
+                    type="url"
                     value={previewImageURL}
                     onChange={e => setPreviewImageURL(e.target.value)}
                 />
