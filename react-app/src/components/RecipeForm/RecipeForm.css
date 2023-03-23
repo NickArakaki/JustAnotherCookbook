@@ -1,26 +1,82 @@
 .recipe_form {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 33%;
     margin: 50px auto;
 }
 
-.recipe_form_title_input,
-.recipe_form_description_input,
-.recipe_form_preview_image,
-.recipe_form_ingredients_div,
+.recipe_form > * {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.recipe_form_label {
+    font-size: 20px;
+}
+
+.recipe_form_input_div,
 .method_div {
     display: flex;
     flex-direction: column;
+    margin-top: 15px;
+}
+
+.recipe_form_time_to_make {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.recipe_form_title {
+    font-size: 36px;
+}
+
+.recipe_form_description_input {
+    height: 6rem;
+    resize: none;
 }
 
 .ingredients_inputs {
-    display: flex;
     margin: 5px 0px;
+}
+
+.method_div > input {
+    margin-bottom: px;
+}
+
+.add_ingredient_button,
+.add_method_button,
+.remove_method_button {
+    width: fit-content;
+    align-self: flex-end;
+    margin: 10px 0px;
+}
+
+.remove_method_button,
+.remove_ingredient_button {
+    background-color: transparent;
+    border: none;
+    color: maroon;
+    cursor: pointer;
 }
 
 .ingredient_input {
     margin: 0 15px;
+}
+
+.recipe_form_submit_button {
+    width: 50%;
+    padding: 10px 0px;
+    margin-bottom: 15px;
+    align-self: center;
+    background-color: coral;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.recipe_form_legend {
+    text-align: right;
 }
 
 .required_input {

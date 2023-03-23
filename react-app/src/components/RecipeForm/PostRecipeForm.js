@@ -5,7 +5,7 @@ import { postARecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
-function RecipeForm() {
+function PostRecipeForm() {
     const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
@@ -74,7 +74,6 @@ function RecipeForm() {
         // validate
         // if pass validations dispatch thunk
         const data = await dispatch(postARecipeThunk(newRecipe))
-        console.log("Data===============================", data)
         if (data) {
             setErrors(data)
         } else {
@@ -96,8 +95,8 @@ function RecipeForm() {
                 )
                 })}
             </ul>
-            <div className="recipe_form_title_input">
-                <label>Recipe Title<span className="required_input">*</span></label>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
                 <input
                     required
                     type="text"
@@ -105,17 +104,18 @@ function RecipeForm() {
                     onChange={e => setTitle(e.target.value)}
                 />
             </div>
-            <div className="recipe_form_description_input">
-                <label>Recipe Description<span className="required_input">*</span></label>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Recipe Description<span className="required_input">*</span></label>
                 <textarea
                     required
+                    className="recipe_form_description_input"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
-                <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div>
+                {/* <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div> */}
             </div>
-            <div className="recipe_form_preview_image">
-                <label>Recipe Preview Image<span className="required_input">*</span></label>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
                 <input
                     required
                     type="url"
@@ -123,8 +123,8 @@ function RecipeForm() {
                     onChange={e => setPreviewImageURL(e.target.value)}
                 />
             </div>
-            <div className="recipe_form_time_to_make">
-                <label>Estimated Time to Make (min)<span className="required_input">*</span></label>
+            <div className="recipe_form_input_div recipe_form_time_to_make">
+                <label className="recipe_form_label">Estimated Time to Make (min)<span className="required_input">*</span></label>
                 <input
                     required
                     type="number"
@@ -132,8 +132,8 @@ function RecipeForm() {
                     onChange={e => setEstimatedTime(e.target.value)}
                 />
             </div>
-            <div className="recipe_form_ingredients_div">
-                <label className="ingredients_input_label">Ingredients<span className="required_input">*</span></label>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                 {ingredientsList.map((ingredient, idx) => {
                     return (
                         <div key={idx} className="ingredients_inputs">
@@ -184,25 +184,30 @@ function RecipeForm() {
                         Add Ingredient
                 </button>
             </div>
-            <div className="recipe_form_methods_div">
-                <label className="methods_input_lable">Steps</label>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Steps</label>
                 {methodsList.map((method, idx) => {
                     return (
                         <div key={idx} className="method_div">
-                            <label>Description<span className="required_input">*</span></label>
-                            <textarea
-                                required
-                                name="details"
-                                value={method.details}
-                                onChange={e => handleMethodInputChange(e, idx)}
-                            />
-                            <label>Optional Image URL</label>
-                            <input
-                                type="url"
-                                name="imageURL"
-                                value={method.imageURL}
-                                onChange={e => handleMethodInputChange(e, idx)}
-                            />
+                            <div className="recipe_form_input_div">
+                                <label>Description<span className="required_input">*</span></label>
+                                <textarea
+                                    required
+                                    className="recipe_form_description_input"
+                                    name="details"
+                                    value={method.details}
+                                    onChange={e => handleMethodInputChange(e, idx)}
+                                    />
+                            </div>
+                            <div className="recipe_form_input_div">
+                                <label>Optional Image URL</label>
+                                <input
+                                    type="url"
+                                    name="imageURL"
+                                    value={method.imageURL}
+                                    onChange={e => handleMethodInputChange(e, idx)}
+                                    />
+                            </div>
                             <button
                                 type="button"
                                 className="remove_method_button"
@@ -217,10 +222,10 @@ function RecipeForm() {
                     className="add_method_button"
                     onClick={handleAddMethod}
                 >
-                    Add Method
+                    Add Step
                 </button>
             </div>
-            <button type="submit">Submit</button>
+            <button className="recipe_form_submit_button" type="submit">Submit</button>
             <div className="recipe_form_legend">
                 <span className="required_input">*</span> = Required Field
             </div>
@@ -228,4 +233,4 @@ function RecipeForm() {
     )
 }
 
-export default RecipeForm;
+export default PostRecipeForm;

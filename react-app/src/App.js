@@ -7,7 +7,8 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import RecipeDetails from "./components/RecipeDetails";
-import RecipeForm from "./components/RecipeForm";
+import PostRecipeForm from "./components/RecipeForm/PostRecipeForm";
+import UpdateRecipeForm from "./components/RecipeForm/UpdateRecipeForm";
 import UserPage from "./components/UserPage";
 
 function App() {
@@ -32,7 +33,10 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route path='/recipes/submit'>
-            <RecipeForm />
+            <PostRecipeForm />
+          </Route>
+          <Route path={`/recipes/:recipeId/edit`}>
+            <UpdateRecipeForm />
           </Route>
           <Route path={`/recipes/:recipeId`}>
             <RecipeDetails />

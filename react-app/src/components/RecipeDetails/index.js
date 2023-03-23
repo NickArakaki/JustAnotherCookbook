@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
+import OpenModalButton from "../OpenModalButton";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
     const dispatch = useDispatch();
     const recipe = useSelector(state => state.recipes.singleRecipe)
+    const sessionUser = useSelector(state => state.session.user)
     console.log(recipe)
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
@@ -26,7 +28,21 @@ function RecipeDetails() {
         <>
             {isLoaded ? (
                 <div className="recipe_container">
-                    <div className="single_recipe_title">{recipe.title}</div>
+                    <div className="recipe_title_and_buttons_div">
+                        <div className="single_recipe_title">{recipe.title}</div>
+                        {recipe.author.id === sessionUser?.id ? (
+                            <div className="recipe_details_edit_and_delete_button_div">
+                                <Link to={`/recipes/${recipe.id}/edit`}>Edit</Link>
+                                <OpenModalButton
+                                    buttonText="Delete"
+                                    modalComponent={<p>Delete Modal Button Will Go Here</p>}
+                                />
+                            </div>
+                        ) : (
+                            null
+                        )
+                        }
+                    </div>
                     <div className="single_recipe_preview_image">
                         <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title} final product`} />
                     </div>
