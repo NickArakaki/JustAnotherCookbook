@@ -46,7 +46,7 @@ function RecipeDetails() {
                         <ul>
                             {isLoaded && recipe.ingredients.map((ingredient, idx) => {
                                 return (
-                                    <li key={idx} className="recipe_ingredient">{ingredient.ingredient} {ingredient.amount} {ingredient.units}</li>
+                                    <li key={idx} className="recipe_ingredient">{ingredient.amount} {ingredient.units} {ingredient.ingredient} </li>
                                     )
                                 })}
                         </ul>

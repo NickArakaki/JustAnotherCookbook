@@ -1,19 +1,21 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
 import { postARecipeThunk } from "../../store/recipes"
+import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
 function RecipeForm() {
     const dispatch = useDispatch();
+    const sessionUser = useSelector(state => state.session.user)
     const [errors, setErrors] = useState([]);
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [estimatedTime, setEstimatedTime] = useState(0)
+    const [estimatedTime, setEstimatedTime] = useState(null)
     const [previewImageURL, setPreviewImageURL] = useState("")
     const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState([{details:"", imageURL:""}])
-    const units = ["","tsp", "tbsp", "cup"]
+
 
     const handleIngredientInputChange = (e, idx) => {
         const { name, value } = e.target
@@ -80,12 +82,15 @@ function RecipeForm() {
 
     }
 
+    if (!sessionUser) return <Redirect to='/' />
+
     return (
         <form onSubmit={handleSubmit} className="recipe_form">
             <div className="recipe_form_title">Submit a Recipe</div>
             <div className="recipe_form_title_input">
                 <label>Recipe Title<span className="required_input">*</span></label>
                 <input
+                    required
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
@@ -94,6 +99,7 @@ function RecipeForm() {
             <div className="recipe_form_description_input">
                 <label>Recipe Description<span className="required_input">*</span></label>
                 <textarea
+                    required
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                 />
@@ -102,6 +108,7 @@ function RecipeForm() {
             <div className="recipe_form_preview_image">
                 <label>Recipe Preview Image<span className="required_input">*</span></label>
                 <input
+                    required
                     type="text"
                     value={previewImageURL}
                     onChange={e => setPreviewImageURL(e.target.value)}
@@ -110,6 +117,7 @@ function RecipeForm() {
             <div className="recipe_form_time_to_make">
                 <label>Estimated Time to Make (min)<span className="required_input">*</span></label>
                 <input
+                    required
                     type="number"
                     value={estimatedTime}
                     onChange={e => setEstimatedTime(e.target.value)}
@@ -121,6 +129,7 @@ function RecipeForm() {
                     return (
                         <div key={idx} className="ingredients_inputs">
                             <input
+                                required
                                 className="ingredient_input"
                                 name="ingredient"
                                 type="text"
@@ -129,6 +138,7 @@ function RecipeForm() {
                                 onChange={e => handleIngredientInputChange(e, idx)}
                             />
                             <input
+                                required
                                 className="ingredient_input"
                                 name="amount"
                                 type="number"
@@ -144,7 +154,7 @@ function RecipeForm() {
                                 value={ingredient.units}
                                 onChange={e => handleIngredientInputChange(e, idx)}
                             >
-                                {units.map((unit, idx) => {
+                                {measurementUnits.map((unit, idx) => {
                                     return <option key={idx} value={unit}>{unit}</option>
                                 })}
                             </select>
@@ -172,6 +182,7 @@ function RecipeForm() {
                         <div key={idx} className="method_div">
                             <label>Description<span className="required_input">*</span></label>
                             <textarea
+                                required
                                 name="details"
                                 value={method.details}
                                 onChange={e => handleMethodInputChange(e, idx)}
