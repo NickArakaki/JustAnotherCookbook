@@ -18,5 +18,6 @@ class Method(db.Model):
     def to_dict(self):
         return {
             "step_number": self.step_number,
-            "details": self.details
+            "details": self.details,
+            "image_url": self.image_url
         }

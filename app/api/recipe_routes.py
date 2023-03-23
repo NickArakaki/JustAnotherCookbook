@@ -2,13 +2,14 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
 from app.models import db, Recipe, Ingredient, Method
-from app.forms import RecipeForm, MethodForm, IngredientForm
+from app.forms import RecipeForm
 
 recipe_routes = Blueprint('recipes', __name__)
 
+# Custom Validators
 def validIngredient(ingredient):
     isValid = False
-    if ingredient["ingredient"] and ingredient["amount"]:
+    if ingredient["ingredient"] and (float(ingredient["amount"]) > 0):
         print("ingredient passed =====================================")
         isValid = True
     return isValid
@@ -20,6 +21,8 @@ def validMethod(method):
         isValid = True
     return isValid
 
+
+# Routes
 @recipe_routes.route('/')
 def get_all_recipes():
     """
@@ -44,6 +47,8 @@ def get_recipe_details(id):
     Query for single recipe and return single recipe details
     """
     recipe = Recipe.query.get(id)
+    if not recipe:
+        return { "errors": ["Recipe could not be found."] }, 404
     return recipe.to_dict_detailed()
 
 
@@ -69,32 +74,29 @@ def post_a_recipe():
             preview_image_url = data["preview_image_url"]
         )
         db.session.add(new_recipe)
-        # validate ingredients
-        db.session.commit()
-        for idx, ingredient in enumerate(ingredientsList):
-            print(ingredient["ingredient"])
-            if not validIngredient(ingredient):
-                return { "errors": ["Invalid Ingredient"] }
-            else:
+
+        for ingredient in data["ingredients"]:
+            # make sure is valid before create new ingredient
+            if validIngredient(ingredient):
                 new_ingredient = Ingredient(
-                    recipe_id = new_recipe.id,
                     ingredient = ingredient["ingredient"],
                     amount = ingredient["amount"],
                     units = ingredient["units"]
                 )
-                db.session.add(new_ingredient)
-        # validate methods
-        for idx, method in enumerate(methodsList):
-            if not validMethod(method):
-                return { "errors": ["Invalid Instructions"]}
+                new_recipe.ingredients.append(new_ingredient)
             else:
+                return { "errors": "Invalid Ingredient" }, 401
+
+        for idx, method in enumerate(methodsList):
+            if validMethod(method):
                 new_method = Method(
-                    recipe_id = new_recipe.id,
-                    step_number = (idx + 1),
+                    step_number = idx + 1,
                     details = method["details"],
-                    image_url = method["imageURL"]
+                    image_url = method["image_url"]
                 )
-                db.session.add(new_method)
+                new_recipe.methods.append(new_method)
+            else:
+                return { "errors": "Invalid Method" }, 401
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -126,6 +128,65 @@ def update_a_recipe(id):
         recipe.title = data["title"]
         recipe.total_time = data["total_time"]
         recipe.description = data["description"]
+        recipe.preview_image_url = data["preview_image_url"]
+
+        # compare lengths of the ingredients on recipe
+        # iterate over ingredients
+        ingredient_difference = len(data["ingredients"]) - len(recipe.ingredients)
+
+        for new_ingredient, old_ingredient in zip(data["ingredients"], recipe.ingredients):
+                if validIngredient(new_ingredient):
+                    old_ingredient.ingredient = new_ingredient["ingredient"]
+                    old_ingredient.amount = new_ingredient["amount"]
+                    old_ingredient.units = new_ingredient["units"]
+                else:
+                    return { "errors": ["Invalid Ingredient"] }
+
+        if ingredient_difference > 0: # new ingredients to be added
+            # iterate through, update existing ingredients with new data
+            for ingredient in data["ingredients"][(ingredient_difference * -1):]: # get the new ingredients
+                if validIngredient(ingredient):
+                    new_ingredient = Ingredient(
+                        ingredient = ingredient["ingredient"],
+                        amount = ingredient["amount"],
+                        units = ingredient["units"]
+                    )
+                    recipe.ingredients.append(new_ingredient)
+                else:
+                    return { "errors": ["Invalid Ingredient"] }
+            pass
+        elif ingredient_difference < 0: # fewer or same number of ingredients
+            # delete the extra recipe ingredients
+            for ingredient in recipe.ingredients[ingredient_difference:]:
+                recipe.ingredients.remove(ingredient)
+
+
+        # compare lengths of the methods on recipe
+        method_difference = len(data["methods"]) - len(recipe.methods)
+
+        for new_method, old_method in zip(data["methods"], recipe.methods):
+                if validMethod(new_method):
+                    old_method.details = new_method["details"]
+                    old_method.image_url = new_method["image_url"]
+                else:
+                    return { "errors": ["Invalid Method"] }
+
+        if method_difference > 0: # new methods to be added
+        # validate, and create new methods and add them to recipe
+            for idx, method in enumerate(data["methods"][(method_difference * -1):]): # iterate over the new methods
+                if validMethod(method):
+                    new_method = Method(
+                        step_number = len(recipe.methods) + 1,
+                        details = method["details"],
+                        image_url = method["image_url"]
+                    )
+                    recipe.methods.append(new_method)
+                else:
+                    return { "errors": ["Invalid Method"] }
+        elif method_difference < 0: # fewer or same number of methods
+        # if there are fewer methods, remove the methods that were removed
+            for method in recipe.methods[method_difference:]:
+                recipe.methods.remove(method)
 
         db.session.commit()
         return recipe.to_dict_detailed()

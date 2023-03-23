@@ -1,14 +1,15 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useHistory } from "react-router-dom"
-import { postARecipeThunk } from "../../store/recipes"
+import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
-function PostRecipeForm({ recipe }) {
+function RecipeForm({ recipe }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const [errors, setErrors] = useState([]);
+
     // controlled inputs
     const sessionUser = useSelector(state => state.session.user)
     const [title, setTitle] = useState(recipe ? recipe.title : "")
@@ -16,7 +17,7 @@ function PostRecipeForm({ recipe }) {
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", imageURL:""}])
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
 
 
     const handleIngredientInputChange = (e, idx) => {
@@ -24,7 +25,6 @@ function PostRecipeForm({ recipe }) {
         const updatedIngredientsList = [...ingredientsList]
         updatedIngredientsList[idx][name] = value
         setIngredientsList(updatedIngredientsList)
-        console.log(ingredientsList)
     }
 
     const handleAddIngredient = () => {
@@ -49,7 +49,7 @@ function PostRecipeForm({ recipe }) {
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {description:"", imageURL:""}])
+        setMethodsList([...methodsList, {description:"", image_url:""}])
     }
 
     const handleRemoveMethod = (idx) => {
@@ -83,12 +83,12 @@ function PostRecipeForm({ recipe }) {
                 history.push("/")
             }
         } else {
-            // const data = await dispatch(updateRecipeThunk(newRecipe))
-            // if (data) {
-            //     setErrors
-            // } else {
-            //     history.push('/')
-            // }
+            const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
+            if (data) {
+                setErrors(data)
+            } else {
+                history.push(`/recipes/${recipe.id}`)
+            }
         }
 
     }
@@ -138,6 +138,7 @@ function PostRecipeForm({ recipe }) {
                 <input
                     required
                     type="number"
+                    min="1"
                     value={estimatedTime}
                     onChange={e => setEstimatedTime(e.target.value)}
                 />
@@ -161,7 +162,8 @@ function PostRecipeForm({ recipe }) {
                                 className="ingredient_input"
                                 name="amount"
                                 type="number"
-                                step="0.001"
+                                step="0.01"
+                                min="0.01"
                                 placeholder="Enter Amount"
                                 value={ingredient.amount}
                                 onChange={e => handleIngredientInputChange(e, idx)}
@@ -213,8 +215,8 @@ function PostRecipeForm({ recipe }) {
                                 <label>Optional Image URL</label>
                                 <input
                                     type="url"
-                                    name="imageURL"
-                                    value={method.imageURL}
+                                    name="image_url"
+                                    value={method.image_url}
                                     onChange={e => handleMethodInputChange(e, idx)}
                                     />
                             </div>
@@ -243,4 +245,4 @@ function PostRecipeForm({ recipe }) {
     )
 }
 
-export default PostRecipeForm;
+export default RecipeForm;

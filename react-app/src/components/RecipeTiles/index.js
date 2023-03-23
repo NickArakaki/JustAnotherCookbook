@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link, Redirect, useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import "./RecipeTiles.css"
 
 function RecipeTiles() {
