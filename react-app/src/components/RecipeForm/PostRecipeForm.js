@@ -5,7 +5,7 @@ import { postARecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
-function RecipeForm() {
+function PostRecipeForm() {
     const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
@@ -233,4 +233,4 @@ function RecipeForm() {
     )
 }
 
-export default RecipeForm;
+export default PostRecipeForm;

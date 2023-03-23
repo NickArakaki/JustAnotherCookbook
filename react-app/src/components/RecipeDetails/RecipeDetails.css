@@ -7,6 +7,19 @@
     padding: 20px;
 }
 
+.recipe_title_and_buttons_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.recipe_details_edit_and_delete_button_div {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+
+}
+
 .recipe_container > * {
     margin: 15px 0px;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -27,5 +40,5 @@
 
 .recipe_detail_image {
     max-height: 500px;
-    max-width: 500px;
+    width: 100%;
 }
