@@ -23,3 +23,12 @@ def user(id):
     """
     user = User.query.get(id)
     return user.to_dict()
+
+
+@user_routes.route('/<int:id>/recipes')
+def get_user_recipes(id):
+    """
+    Query for a user's recipes by user id and returns a list of recipe dictionaries
+    """
+    user = User.query.get(id)
+    return { "recipes": [recipe.to_dict() for recipe in user.recipes] }
