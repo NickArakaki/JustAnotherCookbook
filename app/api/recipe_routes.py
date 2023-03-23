@@ -85,7 +85,6 @@ def post_a_recipe():
         for idx, method in enumerate(methodsList):
             if validMethod(method):
                 new_method = Method(
-                    recipe_id = new_recipe.id,
                     step_number = idx + 1,
                     details = method["details"],
                     image_url = method["imageURL"]
@@ -127,23 +126,62 @@ def update_a_recipe(id):
         recipe.preview_image_url = data["preview_image_url"]
 
         # compare lengths of the ingredients on recipe
-        # calculate the difference
-        ingredient_difference = len(recipe.ingredients) - len(data["ingredients"])
         # iterate over ingredients
-        # if difference is 0
-            # iterate through and update existing recipe with new data
-        # if difference is negative (more new ingredients)
+        ingredient_difference = len(data["ingredients"]) - len(recipe.ingredients)
+
+        for new_ingredient, old_ingredient in zip(data["ingredients"], recipe.ingredients):
+                if validIngredient(new_ingredient):
+                    old_ingredient.ingredient = new_ingredient["ingredient"]
+                    old_ingredient.amount = new_ingredient["amount"]
+                    old_ingredient.units = new_ingredient["units"]
+                else:
+                    return { "errors": ["Invalid Ingredient"] }
+
+        if ingredient_difference > 0: # new ingredients to be added
             # iterate through, update existing ingredients with new data
-            # once at the end create new ingredients for each of the new ingredients
-            # append to recipe
-        # if difference is positve (fewer ingredients)
-            # delete the extra ingredients
-            # iterate over new ingredients and update with new data
+            for ingredient in data["ingredients"][(ingredient_difference * -1):]:
+                if validIngredient(ingredient):
+                    new_ingredient = Ingredient(
+                        ingredient = ingredient["ingredient"],
+                        amount = ingredient["amount"],
+                        units = ingredient["units"]
+                    )
+                    recipe.ingredients.append(new_ingredient)
+                else:
+                    return { "errors": ["Invalid Ingredient"] }
+            pass
+        else: # fewer or same number of ingredients
+            # delete the extra recipe ingredients
+            for ingredient in recipe.ingredients[ingredient_difference:]:
+                db.session.delete(ingredient)
+
 
         # compare lengths of the methods on recipe
-        # if there are new methods, create new methods and add them to recipe
+        method_difference = len(data["methods"]) - len(recipe.methods)
+
+        for new_method, old_method in zip(data["methods"], recipe.methods):
+                if validMethod(new_method):
+                    old_method.details = new_method["details"],
+                    old_method.image_url = new_method["imageURL"]
+                else:
+                    return { "errors": ["Invalid Method"] }
+
+        if method_difference > 0: # new methods to be added
+        # validate, and create new methods and add them to recipe
+            for idx, method in enumerate(data["methods"][(method_difference * -1):]): # iterate over the new methods
+                if validMethod(method):
+                    new_method = Method(
+                        step_number = idx + len(recipe.methods),
+                        details = method["details"],
+                        image_url = method["imageURL"]
+                    )
+                    recipe.methods.append(new_method)
+                else:
+                    return { "errors": ["Invalid Method"] }
+        else: # fewer or same number of methods
         # if there are fewer methods, remove the methods that were removed
-        # iterate over methods
+            for method in recipe.methods[method_difference]:
+                db.session.delete(method)
 
         db.session.commit()
         return recipe.to_dict_detailed()
