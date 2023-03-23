@@ -5,17 +5,18 @@ import { postARecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
-function PostRecipeForm() {
+function PostRecipeForm({ recipe }) {
     const history = useHistory();
     const dispatch = useDispatch();
-    const sessionUser = useSelector(state => state.session.user)
     const [errors, setErrors] = useState([]);
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [estimatedTime, setEstimatedTime] = useState(null)
-    const [previewImageURL, setPreviewImageURL] = useState("")
-    const [ingredientsList, setIngredientsList] = useState([{ingredient:"", amount:"", units:""}])
-    const [methodsList, setMethodsList] = useState([{details:"", imageURL:""}])
+    // controlled inputs
+    const sessionUser = useSelector(state => state.session.user)
+    const [title, setTitle] = useState(recipe ? recipe.title : "")
+    const [description, setDescription] = useState(recipe ? recipe.description : "")
+    const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
+    const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
+    const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", imageURL:""}])
 
 
     const handleIngredientInputChange = (e, idx) => {
@@ -73,12 +74,21 @@ function PostRecipeForm() {
         }
         // validate
         // if pass validations dispatch thunk
-        const data = await dispatch(postARecipeThunk(newRecipe))
-        if (data) {
-            setErrors(data)
+        if (!recipe) {
+            const data = await dispatch(postARecipeThunk(newRecipe))
+            if (data) {
+                setErrors(data)
+            } else {
+                // redirect to details page for recipes
+                history.push("/")
+            }
         } else {
-            // redirect to details page for recipes
-            history.push("/")
+            // const data = await dispatch(updateRecipeThunk(newRecipe))
+            // if (data) {
+            //     setErrors
+            // } else {
+            //     history.push('/')
+            // }
         }
 
     }
