@@ -25,7 +25,6 @@ function RecipeForm({ recipe }) {
         const updatedIngredientsList = [...ingredientsList]
         updatedIngredientsList[idx][name] = value
         setIngredientsList(updatedIngredientsList)
-        console.log(ingredientsList)
     }
 
     const handleAddIngredient = () => {
@@ -139,6 +138,7 @@ function RecipeForm({ recipe }) {
                 <input
                     required
                     type="number"
+                    min="1"
                     value={estimatedTime}
                     onChange={e => setEstimatedTime(e.target.value)}
                 />
@@ -162,7 +162,8 @@ function RecipeForm({ recipe }) {
                                 className="ingredient_input"
                                 name="amount"
                                 type="number"
-                                step="0.001"
+                                step="0.01"
+                                min="0.01"
                                 placeholder="Enter Amount"
                                 value={ingredient.amount}
                                 onChange={e => handleIngredientInputChange(e, idx)}

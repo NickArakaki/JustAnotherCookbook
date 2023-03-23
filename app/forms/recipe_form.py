@@ -26,5 +26,5 @@ class RecipeForm(FlaskForm):
     preview_image_url = StringField("preview_image_url", validators=[DataRequired(message="Preview Image Required")])
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
-    ingredients = FieldList(FormField(IngredientForm), min_entries=1)
-    methods = FieldList(FormField(MethodForm), min_entries=1)
+    # ingredients = FieldList(FormField(IngredientForm), min_entries=1)
+    # methods = FieldList(FormField(MethodForm), min_entries=1)
