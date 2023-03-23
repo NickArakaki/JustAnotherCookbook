@@ -17,7 +17,7 @@ function RecipeForm({ recipe }) {
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", imageURL:""}])
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
 
 
     const handleIngredientInputChange = (e, idx) => {
@@ -49,7 +49,7 @@ function RecipeForm({ recipe }) {
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {description:"", imageURL:""}])
+        setMethodsList([...methodsList, {description:"", image_url:""}])
     }
 
     const handleRemoveMethod = (idx) => {
@@ -215,8 +215,8 @@ function RecipeForm({ recipe }) {
                                 <label>Optional Image URL</label>
                                 <input
                                     type="url"
-                                    name="imageURL"
-                                    value={method.imageURL}
+                                    name="image_url"
+                                    value={method.image_url}
                                     onChange={e => handleMethodInputChange(e, idx)}
                                     />
                             </div>

@@ -87,7 +87,7 @@ def post_a_recipe():
                 new_method = Method(
                     step_number = idx + 1,
                     details = method["details"],
-                    image_url = method["imageURL"]
+                    image_url = method["image_url"]
                 )
                 new_recipe.methods.append(new_method)
             else:
@@ -173,7 +173,7 @@ def update_a_recipe(id):
                     new_method = Method(
                         step_number = len(recipe.methods) + 1,
                         details = method["details"],
-                        image_url = method["imageURL"]
+                        image_url = method["image_url"]
                     )
                     recipe.methods.append(new_method)
                 else:
