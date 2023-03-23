@@ -15,12 +15,14 @@ function RecipeTiles() {
             {Object.values(recipes).map(recipe => {
                 return (
                     <div key={recipe.id} className="recipe_tile">
-                        <div className="recipe_tile_image">
-                            <div className="recipe_tile_favorite_button"></div>
-                            <img className="recipe_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
+                        <div onClick={() => goToRecipeDetails(recipe)}>
+                            <div className="recipe_tile_image">
+                                <div className="recipe_tile_favorite_button"></div>
+                                <img className="recipe_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
+                            </div>
+                            <div className="recipe_tile_title">{recipe.title}</div>
+                            <div className="recipe_tile_description">{recipe.description}</div>
                         </div>
-                        <div onClick={() => goToRecipeDetails(recipe)} className="recipe_tile_title">{recipe.title}</div>
-                        <div onClick={() => goToRecipeDetails(recipe)} className="recipe_tile_description">{recipe.description}</div>
                         <div className="recipe_tile_author">submitted by <Link to={`/users/${recipe.author.id}`}>{recipe.author.username}</Link></div>
                         <div className="recipe_tile_tags"></div>
                     </div>

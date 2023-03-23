@@ -126,12 +126,12 @@ export default function reducer(state = initialState, action) {
             return newState;
         }
         case GET_USER_RECIPES: {
-            newState.allRecipes = { ...state.allRecipes }
+            const userRecipes = {}
 
             for (const recipe of action.payload) {
-                newState.allRecipes[recipe.id] = recipe
+                userRecipes[recipe.id] = recipe
             }
-
+            newState.allRecipes = userRecipes;
             return newState
         }
         case GET_SINGLE_RECIPE: {
