@@ -67,7 +67,7 @@ export const getSingleRecipeThunk = (recipeId) => async (dispatch) => {
     if (res.ok) {
         const data = await res.json();
         dispatch(getSingleRecipe(data))
-        return null
+        return null;
     } else if (res.status < 500) {
         const data = await res.json();
         if (data.errors) {

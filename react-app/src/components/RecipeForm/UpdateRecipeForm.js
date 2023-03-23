@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import RecipeForm from "./RecipeForm";
 
 function UpdateRecipeForm() {
+    const history = useHistory();
     const dispatch = useDispatch();
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
@@ -13,15 +14,21 @@ function UpdateRecipeForm() {
 
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
-            .then(() => setIsLoaded(true))
+            .then((data) => {
+                if (data) {
+                    history.push("/")
+                } else {
+                    setIsLoaded(true)
+                }
+            })
     }, [dispatch])
 
-    if (isLoaded && sessionUser?.id !== recipe.author.id) return <Redirect to="/" />
+    if (isLoaded && sessionUser.id !== recipe.author.id) return <Redirect to="/" />
 
     return (
         // instead of making a whole new form, pass the recipe down as a prop to the recipe form
         <>
-            {isLoaded ? (<RecipeForm recipe={recipe} />) : <h1>Loading...</h1>}
+            {isLoaded ? <RecipeForm recipe={recipe} /> : <h1>Loading...</h1>}
         </>
     )
 }

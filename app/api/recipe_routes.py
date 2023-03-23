@@ -6,6 +6,7 @@ from app.forms import RecipeForm
 
 recipe_routes = Blueprint('recipes', __name__)
 
+# Custom Validators
 def validIngredient(ingredient):
     isValid = False
     if ingredient["ingredient"] and (float(ingredient["amount"]) > 0):
@@ -20,6 +21,8 @@ def validMethod(method):
         isValid = True
     return isValid
 
+
+# Routes
 @recipe_routes.route('/')
 def get_all_recipes():
     """
@@ -44,6 +47,8 @@ def get_recipe_details(id):
     Query for single recipe and return single recipe details
     """
     recipe = Recipe.query.get(id)
+    if not recipe:
+        return { "errors": ["Recipe could not be found."] }, 404
     return recipe.to_dict_detailed()
 
 
