@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import RecipeDetails from "./components/RecipeDetails";
 import PostRecipeForm from "./components/RecipeForm/PostRecipeForm";
+import UpdateRecipeForm from "./components/RecipeForm/UpdateRecipeForm";
 import UserPage from "./components/UserPage";
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path='/recipes/submit'>
             <PostRecipeForm />
+          </Route>
+          <Route path={`/recipes/:recipeId/edit`}>
+            <UpdateRecipeForm />
           </Route>
           <Route path={`/recipes/:recipeId`}>
             <RecipeDetails />
