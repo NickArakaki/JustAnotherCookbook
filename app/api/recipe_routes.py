@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
 from app.models import db, Recipe, Ingredient, Method
-from app.forms import RecipeForm, MethodForm, IngredientForm
+from app.forms import RecipeForm
 
 recipe_routes = Blueprint('recipes', __name__)
 
@@ -54,6 +54,7 @@ def post_a_recipe():
     Create and return a new Recipe
     """
     data = request.get_json()
+    print("data =============================", data)
     form = RecipeForm()
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
@@ -69,32 +70,25 @@ def post_a_recipe():
             preview_image_url = data["preview_image_url"]
         )
         db.session.add(new_recipe)
-        # validate ingredients
-        db.session.commit()
-        for idx, ingredient in enumerate(ingredientsList):
-            print(ingredient["ingredient"])
-            if not validIngredient(ingredient):
-                return { "errors": ["Invalid Ingredient"] }
-            else:
-                new_ingredient = Ingredient(
-                    recipe_id = new_recipe.id,
-                    ingredient = ingredient["ingredient"],
-                    amount = ingredient["amount"],
-                    units = ingredient["units"]
-                )
-                db.session.add(new_ingredient)
-        # validate methods
+        # db.session.commit()
+
+        for ingredient in data["ingredients"]:
+            new_ingredient = Ingredient(
+                recipe_id = new_recipe.id,
+                ingredient = ingredient["ingredient"],
+                amount = ingredient["amount"],
+                units = ingredient["units"]
+            )
+            db.session.add(new_ingredient)
+
         for idx, method in enumerate(methodsList):
-            if not validMethod(method):
-                return { "errors": ["Invalid Instructions"]}
-            else:
-                new_method = Method(
-                    recipe_id = new_recipe.id,
-                    step_number = (idx + 1),
-                    details = method["details"],
-                    image_url = method["imageURL"]
-                )
-                db.session.add(new_method)
+            new_method = Method(
+                recipe_id = new_recipe.id,
+                step_number = idx + 1,
+                details = method["details"],
+                image_url = method["imageURL"]
+            )
+            db.session.add(new_method)
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -126,6 +120,14 @@ def update_a_recipe(id):
         recipe.title = data["title"]
         recipe.total_time = data["total_time"]
         recipe.description = data["description"]
+
+        # compare lengths of the ingredients on recipe
+        # iterate over ingredients
+
+        # compare lengths of the methods on recipe
+        # if there are new methods, create new methods and add them to recipe
+        # if there are fewer methods, remove the methods that were removed
+        # iterate over methods
 
         db.session.commit()
         return recipe.to_dict_detailed()
