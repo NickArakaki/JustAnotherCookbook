@@ -1,6 +1,7 @@
 // constants
 const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
+const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
 
 // action creators
@@ -15,6 +16,13 @@ const getSingleRecipe = recipe => {
     return {
         type: GET_SINGLE_RECIPE,
         payload: recipe
+    }
+}
+
+const getUserRecipes = recipes => {
+    return {
+        type: GET_USER_RECIPES,
+        payload: recipes
     }
 }
 
@@ -62,6 +70,25 @@ export const getSingleRecipeThunk = (recipeId) => async (dispatch) => {
     }
 }
 
+export const getUserRecipesThunk = userId => async (dispatch) => {
+    const res = await fetch(`/api/users/${userId}/recipes`)
+
+    if (res.ok) {
+        // dispatch action creator
+        const data = await res.json();
+        dispatch(getUserRecipes(data.recipes));
+        return null;
+    } else if (res.status < 500) {
+        // display validation errors
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An error occured. Please try again later"]
+    }
+}
+
 export const postARecipeThunk = recipe => async (dispatch) => {
     const res = await fetch(`/api/recipes/`, {
         method: "POST",
@@ -97,6 +124,15 @@ export default function reducer(state = initialState, action) {
             }
 
             return newState;
+        }
+        case GET_USER_RECIPES: {
+            newState.allRecipes = { ...state.allRecipes }
+
+            for (const recipe of action.payload) {
+                newState.allRecipes[recipe.id] = recipe
+            }
+
+            return newState
         }
         case GET_SINGLE_RECIPE: {
             newState.singleRecipe = action.payload
