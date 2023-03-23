@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import { postARecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
 function RecipeForm() {
+    const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
     const [errors, setErrors] = useState([]);
@@ -73,11 +74,12 @@ function RecipeForm() {
         // validate
         // if pass validations dispatch thunk
         const data = await dispatch(postARecipeThunk(newRecipe))
+        console.log("Data===============================", data)
         if (data) {
             setErrors(data)
         } else {
             // redirect to details page for recipes
-            return <Redirect to={`/recipes/`} />
+            history.push("/")
         }
 
     }
@@ -87,6 +89,13 @@ function RecipeForm() {
     return (
         <form onSubmit={handleSubmit} className="recipe_form">
             <div className="recipe_form_title">Submit a Recipe</div>
+            <ul>
+            {errors.map((error, idx) => {
+                return (
+                    <li key={idx}>{error}</li>
+                )
+                })}
+            </ul>
             <div className="recipe_form_title_input">
                 <label>Recipe Title<span className="required_input">*</span></label>
                 <input
@@ -187,9 +196,9 @@ function RecipeForm() {
                                 value={method.details}
                                 onChange={e => handleMethodInputChange(e, idx)}
                             />
-                            <label>Optional Image</label>
+                            <label>Optional Image URL</label>
                             <input
-                                type="text"
+                                type="url"
                                 name="imageURL"
                                 value={method.imageURL}
                                 onChange={e => handleMethodInputChange(e, idx)}
@@ -212,6 +221,9 @@ function RecipeForm() {
                 </button>
             </div>
             <button type="submit">Submit</button>
+            <div className="recipe_form_legend">
+                <span className="required_input">*</span> = Required Field
+            </div>
         </form>
     )
 }
