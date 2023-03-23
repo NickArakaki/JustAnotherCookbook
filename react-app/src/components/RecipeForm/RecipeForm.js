@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useHistory } from "react-router-dom"
-import { postARecipeThunk } from "../../store/recipes"
+import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
@@ -83,12 +83,12 @@ function RecipeForm({ recipe }) {
                 history.push("/")
             }
         } else {
-            // const data = await dispatch(updateRecipeThunk(newRecipe))
-            // if (data) {
-            //     setErrors
-            // } else {
-            //     history.push('/')
-            // }
+            const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
+            if (data) {
+                setErrors(data)
+            } else {
+                history.push(`/recipes/${recipe.id}`)
+            }
         }
 
     }

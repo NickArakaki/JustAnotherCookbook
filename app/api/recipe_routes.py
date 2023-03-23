@@ -139,7 +139,7 @@ def update_a_recipe(id):
 
         if ingredient_difference > 0: # new ingredients to be added
             # iterate through, update existing ingredients with new data
-            for ingredient in data["ingredients"][(ingredient_difference * -1):]:
+            for ingredient in data["ingredients"][(ingredient_difference * -1):]: # get the new ingredients
                 if validIngredient(ingredient):
                     new_ingredient = Ingredient(
                         ingredient = ingredient["ingredient"],
@@ -153,7 +153,7 @@ def update_a_recipe(id):
         else: # fewer or same number of ingredients
             # delete the extra recipe ingredients
             for ingredient in recipe.ingredients[ingredient_difference:]:
-                db.session.delete(ingredient)
+                recipe.ingredients.remove(ingredient)
 
 
         # compare lengths of the methods on recipe
@@ -161,8 +161,8 @@ def update_a_recipe(id):
 
         for new_method, old_method in zip(data["methods"], recipe.methods):
                 if validMethod(new_method):
-                    old_method.details = new_method["details"],
-                    old_method.image_url = new_method["imageURL"]
+                    old_method.details = new_method["details"]
+                    old_method.image_url = new_method["image_url"]
                 else:
                     return { "errors": ["Invalid Method"] }
 
@@ -171,7 +171,7 @@ def update_a_recipe(id):
             for idx, method in enumerate(data["methods"][(method_difference * -1):]): # iterate over the new methods
                 if validMethod(method):
                     new_method = Method(
-                        step_number = idx + len(recipe.methods),
+                        step_number = len(recipe.methods) + 1,
                         details = method["details"],
                         image_url = method["imageURL"]
                     )
@@ -180,8 +180,8 @@ def update_a_recipe(id):
                     return { "errors": ["Invalid Method"] }
         else: # fewer or same number of methods
         # if there are fewer methods, remove the methods that were removed
-            for method in recipe.methods[method_difference]:
-                db.session.delete(method)
+            for method in recipe.methods[method_difference:]:
+                recipe.methods.remove(method)
 
         db.session.commit()
         return recipe.to_dict_detailed()

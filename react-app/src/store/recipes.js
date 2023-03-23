@@ -3,6 +3,7 @@ const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
 const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
+const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE'
 
 // action creators
 const getAllRecipes = recipes => {
@@ -29,6 +30,13 @@ const getUserRecipes = recipes => {
 const postARecipe = recipe => {
     return {
         type: POST_A_RECIPE,
+        payload: recipe
+    }
+}
+
+const updateRecipe = recipe => {
+    return {
+        type: UPDATE_RECIPE,
         payload: recipe
     }
 }
@@ -110,6 +118,27 @@ export const postARecipeThunk = recipe => async (dispatch) => {
     }
 }
 
+export const updateRecipeThunk = (recipeId, recipe) => async (dispatch) => {
+    const res = await fetch(`/api/recipes/${recipeId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipe)
+    })
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(updateRecipe(data));
+        return null;
+    } else if (res.status < 500) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors
+        }
+    } else {
+        return ["An error occured. Please try again later."]
+    }
+}
+
 // reducer
 const initialState = { allRecipes: {}, singleRecipe: {} }
 
@@ -135,11 +164,15 @@ export default function reducer(state = initialState, action) {
             return newState
         }
         case GET_SINGLE_RECIPE: {
-            newState.singleRecipe = action.payload
+            newState.singleRecipe = action.payload;
             return newState;
         }
         case POST_A_RECIPE: {
-            newState.singleRecipe = action.payload
+            newState.singleRecipe = action.payload;
+            return newState;
+        }
+        case UPDATE_RECIPE: {
+            newState.singleRecipe = action.payload;
             return newState;
         }
         default:
