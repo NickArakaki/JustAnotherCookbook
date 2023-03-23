@@ -5,10 +5,11 @@ import { postARecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
-function PostRecipeForm({ recipe }) {
+function RecipeForm({ recipe }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const [errors, setErrors] = useState([]);
+
     // controlled inputs
     const sessionUser = useSelector(state => state.session.user)
     const [title, setTitle] = useState(recipe ? recipe.title : "")
@@ -243,4 +244,4 @@ function PostRecipeForm({ recipe }) {
     )
 }
 
-export default PostRecipeForm;
+export default RecipeForm;
