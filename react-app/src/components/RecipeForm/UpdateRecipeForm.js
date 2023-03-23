@@ -16,7 +16,7 @@ function UpdateRecipeForm() {
             .then(() => setIsLoaded(true))
     }, [dispatch])
 
-    if (isLoaded && sessionUser.id !== recipe.author.id) return <Redirect to="/" />
+    if (isLoaded && sessionUser?.id !== recipe.author.id) return <Redirect to="/" />
 
     return (
         // instead of making a whole new form, pass the recipe down as a prop to the recipe form

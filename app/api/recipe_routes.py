@@ -150,7 +150,7 @@ def update_a_recipe(id):
                 else:
                     return { "errors": ["Invalid Ingredient"] }
             pass
-        else: # fewer or same number of ingredients
+        elif ingredient_difference < 0: # fewer or same number of ingredients
             # delete the extra recipe ingredients
             for ingredient in recipe.ingredients[ingredient_difference:]:
                 recipe.ingredients.remove(ingredient)
@@ -178,7 +178,7 @@ def update_a_recipe(id):
                     recipe.methods.append(new_method)
                 else:
                     return { "errors": ["Invalid Method"] }
-        else: # fewer or same number of methods
+        elif method_difference < 0: # fewer or same number of methods
         # if there are fewer methods, remove the methods that were removed
             for method in recipe.methods[method_difference:]:
                 recipe.methods.remove(method)
