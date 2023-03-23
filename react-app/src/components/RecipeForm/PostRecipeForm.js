@@ -97,7 +97,7 @@ function PostRecipeForm({ recipe }) {
 
     return (
         <form onSubmit={handleSubmit} className="recipe_form">
-            <div className="recipe_form_title">Submit a Recipe</div>
+            <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
             <ul>
             {errors.map((error, idx) => {
                 return (
@@ -235,7 +235,7 @@ function PostRecipeForm({ recipe }) {
                     Add Step
                 </button>
             </div>
-            <button className="recipe_form_submit_button" type="submit">Submit</button>
+            <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
             <div className="recipe_form_legend">
                 <span className="required_input">*</span> = Required Field
             </div>
