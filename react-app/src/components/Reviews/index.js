@@ -12,6 +12,14 @@ function RecipeReviews() {
         return accumulator + Number(currentReview.rating)
     }, 0) / reviews.length
 
+    let isUserReview = false;
+
+    for (const review of reviews) {
+        if (review.author.id === sessionUser.id) isUserReview = true;
+    }
+
+    const renderReviewButton = sessionUser && sessionUser.id !== recipe.author.id && !isUserReview
+
 
     return (
         <div className="reviews_div">
@@ -21,10 +29,10 @@ function RecipeReviews() {
                     <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"}</div>
                 </div>
                 <div className="review_heading_right_div">
-                    {sessionUser && sessionUser.id !== recipe.author.id &&
+                    {renderReviewButton &&
                         <OpenModalButton
                             buttonText="Leave a Review"
-                            modalComponent={<ReviewModal />}
+                            modalComponent={<ReviewModal recipeId={recipe.id}/>}
                         />
                     }
                 </div>
