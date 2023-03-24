@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
@@ -9,21 +9,29 @@ import "./RecipeDetails.css"
 
 function RecipeDetails() {
     const dispatch = useDispatch();
-    const recipe = useSelector(state => state.recipes.singleRecipe)
-    const sessionUser = useSelector(state => state.session.user)
-    console.log(recipe)
+    const history = useHistory();
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
+    const recipe = useSelector(state => state.recipes.singleRecipe)
+    const sessionUser = useSelector(state => state.session.user)
 
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
-        .then(() => setIsLoaded(true))
+        .then((data) => {
+            if (data) {
+                history.push('/')
+            } else {
+                setIsLoaded(true)
+            }
+        })
     }, [dispatch])
+
 
     // calculate average rating
     const averageRating = isLoaded ? recipe.reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
     }, 0) / recipe.reviews.length : null
+
 
     return (
         <>
