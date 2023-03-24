@@ -9,11 +9,11 @@ function ReviewModal({ recipeId }) {
     const sessionUser = useSelector(state => state.session.user);
     const { closeModal } = useModal();
     const dispatch = useDispatch();
-    const inputValues = [1,2,3,4,5]
-    const [review, setReview] = useState("");
-    const [starRating, setStarRating] = useState(0);
-    const [hover, setHover] = useState(0);
     const [formErrors, setFormErrors] = useState([]);
+    const [starRating, setStarRating] = useState(0);
+    const [review, setReview] = useState("");
+    const [hover, setHover] = useState(0);
+    const inputValues = [1,2,3,4,5]
 
     if (!sessionUser) return <Redirect to="/" />
 
