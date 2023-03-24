@@ -1,5 +1,6 @@
 // constants
 const GET_RECIPE_REVIEWS = "reviews/GET_RECIPE_REVIEWS"
+const POST_RECIPE_REVIEW = "reviews/POST_RECIPE_REVIEW"
 
 // action creators
 export const getRecipeReviews = reviews => {
@@ -9,7 +10,20 @@ export const getRecipeReviews = reviews => {
     }
 }
 
+const postRecipeReview = review => {
+    return {
+        type: POST_RECIPE_REVIEW,
+        payload: review
+    }
+}
+
 // thunks
+export const postRecipeReviewThunk = (recipeId, reveiw) => async (dispatch) => {
+    const res = await fetch(`/api/recipes/${recipeId}/reviews`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"}
+    })
+}
 
 // reducer
 const initialState = {recipeReviews: {}, userReviews: {}}

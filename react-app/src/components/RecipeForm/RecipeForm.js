@@ -171,7 +171,6 @@ function RecipeForm({ recipe }) {
                             <select
                                 className="ingredient_input"
                                 name="units"
-                                type="number"
                                 value={ingredient.units}
                                 onChange={e => handleIngredientInputChange(e, idx)}
                             >
