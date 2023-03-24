@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
@@ -27,6 +27,8 @@ function RecipeDetails() {
         })
     }, [dispatch, recipeId, history])
 
+
+    if (isLoaded && !Object.values(recipe).length) return <Redirect to="/" />
 
     // calculate average rating
     const averageRating = isLoaded ? recipe.reviews.reduce((accumulator, currentReview) => {
