@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
+import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -35,7 +36,7 @@ function RecipeDetails() {
                                 <Link to={`/recipes/${recipe.id}/edit`}>Edit</Link>
                                 <OpenModalButton
                                     buttonText="Delete"
-                                    modalComponent={<p>Delete Modal Button Will Go Here</p>}
+                                    modalComponent={<DeleteRecipeConfirmationModal recipe={recipe} />}
                                 />
                             </div>
                         ) : (

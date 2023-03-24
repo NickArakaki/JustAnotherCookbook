@@ -1,4 +1,4 @@
-export const measurementUnits = ["", "tsp", "tbsp", "oz", "fl. oz", "c", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
+export const measurementUnits = ["", "tsp", "tbsp", "oz", "fl. oz", "C", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
 
 
 // validate image url
