@@ -5,17 +5,17 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     demo = User(
-        username='Demo', first_name="Demo", last_name="User", email='demo@user.com', password='password')
+        username='Demo', email='demo@user.com', password='password')
     nick = User(
-        username='Nick', first_name="Nick", last_name="Arakaki", email='nick@user.com', password='password')
+        username='Nick', email='nick@user.com', password='password')
     peeb = User(
-        username='Peeb', first_name="Panduh", last_name="Bear", email='peeb@user.com', password='password')
+        username='Peeb', email='peeb@user.com', password='password')
     gordon = User(
-        username='G.Rams', first_name="Gordon", last_name="Ramsay", email='gordon@user.com', password='password')
+        username='G.Rams', email='gordon@user.com', password='password')
     joshua = User(
-        username='J.Weiss', first_name="Joshua", last_name="Weissman", email='joshua@user.com', password='password')
+        username='J.Weiss', email='joshua@user.com', password='password')
     kenji = User(
-        username='K.Lopez-Alt', first_name="Kenji", last_name="Lopez-Alt", email='kenji@user.com', password='password')
+        username='K.Lopez-Alt', email='kenji@user.com', password='password')
 
     db.session.add(demo)
     db.session.add(nick)

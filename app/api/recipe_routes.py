@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
-from app.models import db, Recipe, Ingredient, Method
-from app.forms import RecipeForm
+from app.models import db, Recipe, Ingredient, Method, Review
+from app.forms import RecipeForm, ReviewForm
 
 recipe_routes = Blueprint('recipes', __name__)
 
@@ -217,4 +217,27 @@ def post_a_review(id):
     """
     Create and return a Review for a recipe using Recipe id
     """
-    pass
+    recipe = Recipe.query.get(id)
+    print("reciep ========================================================================", recipe)
+    if not recipe:
+        return { "errors": ["Recipe could not be found."] }, 404
+    elif recipe.author.id == current_user.id: # User cannot leave Review on their own Recipe
+        return { "errors": ["User not authorized to leave comment on own Recipe"] }, 401
+    elif current_user.id in [review.user_id for review in recipe.reviews]: # User cannot leave more than one Review per Recipe
+        return { "errors": ["User cannot leave more than 1 Review per Recipe"] }, 401
+    # should also prevent users from making more than one review per recipe
+
+    form = ReviewForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        new_review = Review(
+            user_id = current_user.id,
+            rating = form.data["rating"],
+            review = form.data["review"]
+        )
+        recipe.reviews.append(new_review)
+        db.session.commit()
+        return new_review.to_dict_summary()
+    else:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401

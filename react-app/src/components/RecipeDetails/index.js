@@ -5,7 +5,7 @@ import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
-import Reviews from "../Reviews";
+import RecipeReviews from "../Reviews";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -64,8 +64,8 @@ function RecipeDetails() {
                             <div className="recipe_details_author">Posted by: {recipe.author.username} on {formatDateMonthDateYear(new Date(recipe.created_at))}</div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
-                            <div className="recipe_avg_rating">{averageRating.toFixed(1)} <i className="fa-sharp fa-solid fa-star" /></div>
-                            <div className="recipe_num_reviews">{recipe.reviews.length} Reviews</div>
+                            <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="fa-sharp fa-solid fa-star" /></div>
+                            <div className="recipe_num_reviews">{recipe.reviews.length} {recipe.reviews.length === 1 ? "Review" : "Reviews"}</div>
                         </div>
                     </div>
                     <div className="single_recipe_description">{recipe.description}</div>
@@ -94,7 +94,7 @@ function RecipeDetails() {
                         })}
                     </div>
                     <div className="recipe_reviews_div">
-                        <Reviews />
+                        {isLoaded && <RecipeReviews />}
                     </div>
                 </div>
             ) : (

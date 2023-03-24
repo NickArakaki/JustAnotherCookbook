@@ -1,3 +1,5 @@
+import { getRecipeReviews } from "./reviews"
+
 // constants
 const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
@@ -75,6 +77,7 @@ export const getSingleRecipeThunk = (recipeId) => async (dispatch) => {
     if (res.ok) {
         const data = await res.json();
         dispatch(getSingleRecipe(data))
+        dispatch(getRecipeReviews(data.reviews))
         return null;
     } else if (res.status < 500) {
         const data = await res.json();
