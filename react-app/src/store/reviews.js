@@ -23,6 +23,19 @@ export const postRecipeReviewThunk = (recipeId, reveiw) => async (dispatch) => {
         method: "POST",
         headers: {"Content-Type": "application/json"}
     })
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(postRecipeReview(data))
+        return null;
+    } else if (res.status < 500) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors
+        }
+    } else {
+        return ["An error occured. Please try again later."]
+    }
 }
 
 // reducer
@@ -36,6 +49,13 @@ export default function reducer(state = initialState, action) {
             for (const review of action.payload) {
                 newState.recipeReviews[review.id] = review
             }
+            return newState;
+        }
+        case POST_RECIPE_REVIEW: {
+            newState.recipeReviews = { ...state.recipeReviews }
+            newState.userReviews = { ...state.userReviews}
+            newState.recipeReviews[action.payload.id] = action.payload
+            newState.userReviews[action.payload.id] = action.payload
             return newState;
         }
         default:

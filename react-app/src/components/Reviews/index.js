@@ -4,6 +4,8 @@ import OpenModalButton from "../OpenModalButton"
 import "./Reviews.css"
 
 function RecipeReviews() {
+    const sessionUser = useSelector(state => state.session.user)
+    const recipe = useSelector(state => state.recipes.singleRecipe)
     const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
 
     const averageRating = reviews.reduce((accumulator, currentReview) => {
@@ -19,10 +21,12 @@ function RecipeReviews() {
                     <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"}</div>
                 </div>
                 <div className="review_heading_right_div">
-                    <OpenModalButton
-                        buttonText="Leave a Review"
-                        modalComponent={<ReviewModal />}
-                    />
+                    {sessionUser && sessionUser.id !== recipe.author.id &&
+                        <OpenModalButton
+                            buttonText="Leave a Review"
+                            modalComponent={<ReviewModal />}
+                        />
+                    }
                 </div>
             </div>
             {reviews.map(review => {
@@ -36,11 +40,9 @@ function RecipeReviews() {
                                         return <i key={idx} className="fa-solid fa-star filled_star" />
                                     })}
                                     {Array(5 - Number(review.rating)).fill(undefined).map((unfilledStar, idx) => {
-                                        return <i key={idx} className="fa-light fa-star unfilled_star" />
+                                        return <i class="fa-regular fa-star" />
                                     })}
                                 </div>
-                                {/* iterate for rating and display filled in stars */}
-                                {/* iterate over 5 - rating and display empty stars  */}
                             </div>
                             <div className="review_timestamp_div">
                                 <div className="review_timestamp">Posted on: {review.created_at}</div>

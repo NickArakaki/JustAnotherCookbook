@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
-import { Redirect } from 'react-router-dom';
+import { postRecipeReviewThunk } from "../../../store/reviews";
 
 import "./ReviewModal.css";
 
@@ -32,14 +33,14 @@ function ReviewModal({ recipeId }) {
                 stars: starRating
             }
 
-            // dispatch(reviewActions.addSpotReviewThunk(spotId, userReview, sessionUser))
-            //     .then(closeModal)
-            //     .catch(async res => {
-            //         const data = await res.json();
-            //         if (data && data.errors) {
-            //             setFormErrors(Object.values(data.errors));
-            //         }
-            //     })
+            dispatch(postRecipeReviewThunk(recipeId, userReview))
+                .then((data) => {
+                    if (data) {
+                        setFormErrors(data)
+                    } else {
+                        closeModal()
+                    }
+                })
         }
     }
 
