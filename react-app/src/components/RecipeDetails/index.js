@@ -5,6 +5,7 @@ import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
+import Reviews from "../Reviews";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -91,7 +92,7 @@ function RecipeDetails() {
                         })}
                     </div>
                     <div className="recipe_reviews_div">
-                        <p>This is where the reviews component will go</p>
+                        <Reviews />
                     </div>
                 </div>
             ) : (

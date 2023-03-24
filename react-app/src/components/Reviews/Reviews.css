@@ -1,0 +1,14 @@
+.reviews_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_heading_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review {
+    margin: 15px 0px;
+}
