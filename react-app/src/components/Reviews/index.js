@@ -52,8 +52,19 @@ function RecipeReviews() {
                                 </div>
                             </div>
                             <div className="review_timestamp_div">
-                                <div className="review_timestamp">Posted on: {review.created_at}</div>
                                 <div className="review_timestamp">Last updated: {review.updated_at}</div>
+                                {sessionUser?.id === review.author.id && (
+                                    <div>
+                                        <OpenModalButton
+                                            buttonText="edit"
+                                            modalComponent={<ReviewModal reviewToUpdate={review} />}
+                                        />
+                                        <OpenModalButton
+                                            buttonText="delete"
+                                            modalComponent={<h1>Confirm Delete Review will go here</h1>}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="review_lower_div">{review.review}</div>

@@ -11,8 +11,8 @@ function ReviewModal({ recipeId, reviewToUpdate }) {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const [formErrors, setFormErrors] = useState([]);
-    const [starRating, setStarRating] = useState(reviewToUpdate ? review.rating : 0);
-    const [review, setReview] = useState(reviewToUpdate ? review.review : "");
+    const [starRating, setStarRating] = useState(reviewToUpdate ? reviewToUpdate.rating : 0);
+    const [review, setReview] = useState(reviewToUpdate ? reviewToUpdate.review : "");
     const [hover, setHover] = useState(0);
     const inputValues = [1,2,3,4,5]
 
