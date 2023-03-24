@@ -24,11 +24,19 @@ function Reviews() {
             {reviews.map(review => {
                 return (
                     <div key={review.id} className="review">
-                        <div className="review_rating">{review.rating}</div>
-                        <div className="review_details">{review.review}</div>
-                        <div className="review_author">{review.author.username}</div>
-                        <div className="review_timestamp">Posted on: {review.created_at}</div>
-                        <div className="review_timestamp">Last updated: {review.updated_at}</div>
+                        <div className="review_upper_div">
+                            <div className="review_author_rating_div">
+                                <div className="review_author">{review.author.username}</div>
+                                <div className="review_rating">{review.rating} stars</div>
+                                {/* iterate for rating and display filled in stars */}
+                                {/* iterate over 5 - rating and display empty stars  */}
+                            </div>
+                            <div className="review_timestamp_div">
+                                <div className="review_timestamp">Posted on: {review.created_at}</div>
+                                <div className="review_timestamp">Last updated: {review.updated_at}</div>
+                            </div>
+                        </div>
+                        <div className="review_lower_div">{review.review}</div>
                     </div>
                 )
             })}

@@ -12,3 +12,19 @@
 .review {
     margin: 15px 0px;
 }
+
+.review_upper_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review_rating_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_timetamp_div {
+    display: flex;
+    flex-direction: column;
+}
