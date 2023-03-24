@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
+import ReviewModal from "./PostReviewModal";
+import OpenModalButton from "../OpenModalButton"
 import "./Reviews.css"
 
-function Reviews() {
+function RecipeReviews() {
     const reviews = useSelector(state => state.recipes.singleRecipe.reviews)
-    console.log(reviews)
 
     const averageRating = reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
@@ -18,7 +19,10 @@ function Reviews() {
                     <div className="review_average_rating">{averageRating.toFixed(1)}</div>
                 </div>
                 <div className="review_heading_right_div">
-                    <button className="add_review_button">Leave a Review</button>
+                    <OpenModalButton
+                        buttonText="Leave a Review"
+                        modalComponent={<ReviewModal />}
+                    />
                 </div>
             </div>
             {reviews.map(review => {
@@ -44,4 +48,4 @@ function Reviews() {
     )
 }
 
-export default Reviews;
+export default RecipeReviews;

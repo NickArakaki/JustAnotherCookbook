@@ -5,7 +5,7 @@ import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
-import Reviews from "../Reviews";
+import RecipeReviews from "../Reviews";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -94,7 +94,7 @@ function RecipeDetails() {
                         })}
                     </div>
                     <div className="recipe_reviews_div">
-                        <Reviews />
+                        <RecipeReviews />
                     </div>
                 </div>
             ) : (
