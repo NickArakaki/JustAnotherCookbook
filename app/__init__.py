@@ -8,8 +8,6 @@ from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.recipe_routes import recipe_routes
-from .api.method_routes import method_routes
-from .api.ingredient_routes import ingredient_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -32,8 +30,6 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(recipe_routes, url_prefix='/api/recipes')
-app.register_blueprint(method_routes, url_prefix='/api/methods')
-app.register_blueprint(ingredient_routes, url_prefix='/api/ingredients')
 db.init_app(app)
 Migrate(app, db)
 
