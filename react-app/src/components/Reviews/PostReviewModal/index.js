@@ -30,9 +30,9 @@ function ReviewModal({ recipeId }) {
         } else {
             const userReview = {
                 review,
-                stars: starRating
+                rating: starRating
             }
-
+            console.log(userReview)
             dispatch(postRecipeReviewThunk(recipeId, userReview))
                 .then((data) => {
                     if (data) {

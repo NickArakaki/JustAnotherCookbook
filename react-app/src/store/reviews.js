@@ -18,10 +18,11 @@ const postRecipeReview = review => {
 }
 
 // thunks
-export const postRecipeReviewThunk = (recipeId, reveiw) => async (dispatch) => {
+export const postRecipeReviewThunk = (recipeId, review) => async (dispatch) => {
     const res = await fetch(`/api/recipes/${recipeId}/reviews`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"}
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(review)
     })
 
     if (res.ok) {

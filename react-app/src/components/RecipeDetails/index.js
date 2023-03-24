@@ -94,7 +94,7 @@ function RecipeDetails() {
                         })}
                     </div>
                     <div className="recipe_reviews_div">
-                        <RecipeReviews />
+                        {isLoaded && <RecipeReviews />}
                     </div>
                 </div>
             ) : (
