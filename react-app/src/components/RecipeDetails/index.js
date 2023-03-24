@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
@@ -24,7 +24,7 @@ function RecipeDetails() {
                 setIsLoaded(true)
             }
         })
-    }, [dispatch])
+    }, [dispatch, recipeId, history])
 
 
     // calculate average rating

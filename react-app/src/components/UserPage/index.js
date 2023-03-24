@@ -15,7 +15,7 @@ function UserPage() {
         dispatch(getUserRecipesThunk(userId))
             .then(() => dispatch(getAllUsersThunk()))
             .then(() => setIsLoaded(true))
-    }, [dispatch])
+    }, [dispatch, userId])
 
     return (
         <>

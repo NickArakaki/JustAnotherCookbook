@@ -21,7 +21,7 @@ function UpdateRecipeForm() {
                     setIsLoaded(true)
                 }
             })
-    }, [dispatch])
+    }, [dispatch, history, recipeId])
 
     if (isLoaded && sessionUser.id !== recipe.author.id) return <Redirect to="/" />
 
