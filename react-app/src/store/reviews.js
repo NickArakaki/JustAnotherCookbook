@@ -2,6 +2,7 @@
 const GET_RECIPE_REVIEWS = "reviews/GET_RECIPE_REVIEWS"
 const POST_RECIPE_REVIEW = "reviews/POST_RECIPE_REVIEW"
 const UPDATE_RECIPE_REVIEW = "reviews/UPDATE_RECIPE_REVIEW"
+const DELETE_RECIPE_REVIEW = "reviews/DELETE_RECIPE_REVIEW"
 
 // action creators
 export const getRecipeReviews = reviews => {
@@ -22,6 +23,13 @@ const updateRecipeReview = review => {
     return {
         type: UPDATE_RECIPE_REVIEW,
         payload: review
+    }
+}
+
+const deleteRecipeReview = reviewId => {
+    return {
+        type: DELETE_RECIPE_REVIEW,
+        payload: reviewId
     }
 }
 
@@ -68,6 +76,24 @@ export const updateRecipeReviewThunk = review => async (dispatch) => {
     }
 }
 
+export const deleteRecipeReviewThunk = reviewId => async (dispatch) => {
+    const res = await fetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE"
+    })
+
+    if (res.ok) {
+        dispatch(deleteRecipeReview(reviewId))
+        return null;
+    } else if (res.status < 500) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors
+        }
+    } else {
+        return ["An error occured. Please try again later."]
+    }
+}
+
 // reducer
 const initialState = {recipeReviews: {}, userReviews: {}}
 
@@ -94,6 +120,13 @@ export default function reducer(state = initialState, action) {
             newState.recipeReviews[action.payload.id] = action.payload
             newState.userReviews[action.payload.id] = action.payload
             return newState
+        }
+        case DELETE_RECIPE_REVIEW: {
+            newState.recipeReviews = { ...state.recipeReviews }
+            newState.userReviews = { ...state.userReviews }
+            delete newState.recipeReviews[action.payload]
+            delete newState.userReviews[action.payload]
+            return newState;
         }
         default:
             return state;

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import ReviewModal from "./PostReviewModal";
+import DeleteReviewConfirmationModal from "./DeleteReviewConfirmationModal";
 import OpenModalButton from "../OpenModalButton"
 import "./Reviews.css"
 
@@ -61,7 +62,7 @@ function RecipeReviews() {
                                         />
                                         <OpenModalButton
                                             buttonText="delete"
-                                            modalComponent={<h1>Confirm Delete Review will go here</h1>}
+                                            modalComponent={<DeleteReviewConfirmationModal review={review} />}
                                         />
                                     </div>
                                 )}
