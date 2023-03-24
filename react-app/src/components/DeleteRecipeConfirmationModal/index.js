@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteRecipeThunk } from "../../store/recipes";
-
+import "./DeleteConfirmation.css"
 
 function DeleteRecipeConfirmationModal({ recipe }) {
     const dispatch = useDispatch();
