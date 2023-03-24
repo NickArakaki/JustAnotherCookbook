@@ -218,7 +218,6 @@ def post_a_review(id):
     Create and return a Review for a recipe using Recipe id
     """
     recipe = Recipe.query.get(id)
-    print("reciep ========================================================================", recipe)
     if not recipe:
         return { "errors": ["Recipe could not be found."] }, 404
     elif recipe.author.id == current_user.id: # User cannot leave Review on their own Recipe
