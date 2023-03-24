@@ -4,7 +4,7 @@ import OpenModalButton from "../OpenModalButton"
 import "./Reviews.css"
 
 function RecipeReviews() {
-
+    const sessionUser = useSelector(state => state.session.user)
     const recipe = useSelector(state => state.recipes.singleRecipe)
     const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
 
@@ -12,7 +12,13 @@ function RecipeReviews() {
         return accumulator + Number(currentReview.rating)
     }, 0) / reviews.length
 
+    let isUserReview = false;
 
+    for (const review of reviews) {
+        if (sessionUser?.id === review.author.id) isUserReview = true;
+    }
+
+    const renderReviewButton = sessionUser && sessionUser.id !== recipe.author.id && !isUserReview
 
     return (
         <div className="reviews_div">
@@ -22,7 +28,7 @@ function RecipeReviews() {
                     <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"}</div>
                 </div>
                 <div className="review_heading_right_div">
-                    {
+                    {renderReviewButton &&
                         <OpenModalButton
                             buttonText="Leave a Review"
                             modalComponent={<ReviewModal recipeId={recipe.id}/>}
@@ -41,7 +47,7 @@ function RecipeReviews() {
                                         return <i key={idx} className="fa-solid fa-star filled_star" />
                                     })}
                                     {Array(5 - Number(review.rating)).fill(undefined).map((unfilledStar, idx) => {
-                                        return <i class="fa-regular fa-star" />
+                                        return <i key={idx} className="fa-regular fa-star" />
                                     })}
                                 </div>
                             </div>
