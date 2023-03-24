@@ -10,14 +10,12 @@ recipe_routes = Blueprint('recipes', __name__)
 def validIngredient(ingredient):
     isValid = False
     if ingredient["ingredient"] and (float(ingredient["amount"]) > 0):
-        print("ingredient passed =====================================")
         isValid = True
     return isValid
 
 def validMethod(method):
     isValid = False
     if method["details"]:
-        print("method passed ======================================")
         isValid = True
     return isValid
 
@@ -256,7 +254,7 @@ def delete_recipe(id):
     recipe = Recipe.query.get(id)
 
     if not recipe:
-        return { "errors": ["Recipe could not be found"] }
+        return { "errors": ["Recipe could not be found"] }, 404
     elif recipe.author.id != current_user.id:
         return { "errors": ["User is unauthorized to delete this recipe"] }, 401
     else:
