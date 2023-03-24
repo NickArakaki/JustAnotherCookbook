@@ -12,7 +12,7 @@ def seed_ingredients():
         recipe_id = 1,
         ingredient = "All-Purpose Flour",
         amount = 1.5,
-        units = "cup"
+        units = "C"
     )
     i3 = Ingredient(
         recipe_id = 1,
@@ -36,7 +36,7 @@ def seed_ingredients():
         recipe_id = 1,
         ingredient = "Hot Water",
         amount = "1",
-        units = "cup"
+        units = "C"
     )
     i7 = Ingredient(
         recipe_id = 1,
@@ -48,7 +48,7 @@ def seed_ingredients():
         recipe_id = 1,
         ingredient = "Evaporated Milk (room temp)",
         amount = 0.5,
-        units = "cup"
+        units = "C"
     )
     i9 = Ingredient(
         recipe_id = 1,
@@ -60,19 +60,19 @@ def seed_ingredients():
         recipe_id = 1,
         ingredient = "Sugar",
         amount = 0.5,
-        units = "cup"
+        units = "C"
     )
     i11 = Ingredient(
         recipe_id = 2,
         ingredient = "cereal",
         amount = 1,
-        units = "cup"
+        units = "C"
     )
     i12 = Ingredient(
         recipe_id = 2,
         ingredient = "Milk",
         amount = 0.5,
-        units = "cup"
+        units = "C"
     )
 
     db.session.add_all([i1,i2,i3,i4,i5,i6,i7,i8,i9,i10])

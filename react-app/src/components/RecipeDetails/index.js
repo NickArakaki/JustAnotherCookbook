@@ -1,28 +1,37 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
+import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
     const dispatch = useDispatch();
-    const recipe = useSelector(state => state.recipes.singleRecipe)
-    const sessionUser = useSelector(state => state.session.user)
-    console.log(recipe)
+    const history = useHistory();
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
+    const recipe = useSelector(state => state.recipes.singleRecipe)
+    const sessionUser = useSelector(state => state.session.user)
 
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
-        .then(() => setIsLoaded(true))
-    }, [dispatch])
+        .then((data) => {
+            if (data) {
+                history.push('/')
+            } else {
+                setIsLoaded(true)
+            }
+        })
+    }, [dispatch, recipeId, history])
+
 
     // calculate average rating
     const averageRating = isLoaded ? recipe.reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
     }, 0) / recipe.reviews.length : null
+
 
     return (
         <>
@@ -35,7 +44,7 @@ function RecipeDetails() {
                                 <Link to={`/recipes/${recipe.id}/edit`}>Edit</Link>
                                 <OpenModalButton
                                     buttonText="Delete"
-                                    modalComponent={<p>Delete Modal Button Will Go Here</p>}
+                                    modalComponent={<DeleteRecipeConfirmationModal recipe={recipe} />}
                                 />
                             </div>
                         ) : (

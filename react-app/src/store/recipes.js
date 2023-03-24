@@ -4,6 +4,7 @@ const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
 const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
 const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE'
+const DELETE_RECIPE = 'recipes/DELETE_RECIPE'
 
 // action creators
 const getAllRecipes = recipes => {
@@ -38,6 +39,13 @@ const updateRecipe = recipe => {
     return {
         type: UPDATE_RECIPE,
         payload: recipe
+    }
+}
+
+const deleteRecipe = recipeId => {
+    return {
+        type: DELETE_RECIPE,
+        payload: recipeId
     }
 }
 
@@ -139,6 +147,24 @@ export const updateRecipeThunk = (recipeId, recipe) => async (dispatch) => {
     }
 }
 
+export const deleteRecipeThunk = recipeId => async (dispatch) => {
+    const res = await fetch(`/api/recipes/${recipeId}`, {
+        method: "DELETE"
+    })
+
+    if (res.ok) {
+        dispatch(deleteRecipe(recipeId))
+        return null;
+    } else if (res.status < 500) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors
+        }
+    } else {
+        return ["An error occured. Please try again later."]
+    }
+}
+
 // reducer
 const initialState = { allRecipes: {}, singleRecipe: {} }
 
@@ -174,6 +200,17 @@ export default function reducer(state = initialState, action) {
         case UPDATE_RECIPE: {
             newState.singleRecipe = action.payload;
             return newState;
+        }
+        case DELETE_RECIPE: {
+            newState.allRecipes = { ...state.allRecipes }
+            delete newState.allRecipes[action.payload]
+
+            newState.singleRecipe = { ...state.singleRecipe }
+            if (newState.singleRecipe.id === action.payload) {
+                newState.singleRecipe = {}
+            }
+
+            return newState
         }
         default:
             return state
