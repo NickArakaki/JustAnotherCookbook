@@ -48,7 +48,11 @@ export const postRecipeReviewThunk = (recipeId, review) => async (dispatch) => {
 }
 
 export const updateRecipeReviewThunk = review => async (dispatch) => {
-    const res = await fetch (`/api/reviews/${review.id}`)
+    const res = await fetch (`/api/reviews/${review.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(review)
+    })
 
     if (res.ok) {
         const data = await res.json();

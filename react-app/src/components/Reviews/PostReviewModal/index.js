@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
-import { postRecipeReviewThunk } from "../../../store/reviews";
+import { postRecipeReviewThunk, updateRecipeReviewThunk } from "../../../store/reviews";
 
 import "./ReviewModal.css";
 
@@ -29,12 +29,20 @@ function ReviewModal({ recipeId, reviewToUpdate }) {
         if (errors.length) {
             setFormErrors(errors)
         } else {
-            const userReview = {
-                review,
-                rating: starRating
-            }
-            console.log(userReview)
-            dispatch(postRecipeReviewThunk(recipeId, userReview))
+            if (reviewToUpdate) {
+                reviewToUpdate.review = review;
+                reviewToUpdate.rating = starRating;
+                dispatch(updateRecipeReviewThunk(reviewToUpdate))
+                    .then((data) => {
+                        if (data) {
+                            setFormErrors(data)
+                        } else {
+                            closeModal()
+                        }
+                    })
+            } else {
+                const userReview = { review, rating: starRating };
+                dispatch(postRecipeReviewThunk(recipeId, userReview))
                 .then((data) => {
                     if (data) {
                         setFormErrors(data)
@@ -42,6 +50,7 @@ function ReviewModal({ recipeId, reviewToUpdate }) {
                         closeModal()
                     }
                 })
+            }
         }
     }
 
