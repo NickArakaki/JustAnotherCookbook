@@ -6,13 +6,13 @@ import { postRecipeReviewThunk } from "../../../store/reviews";
 
 import "./ReviewModal.css";
 
-function ReviewModal({ recipeId }) {
+function ReviewModal({ recipeId, reviewToUpdate }) {
     const sessionUser = useSelector(state => state.session.user);
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const [formErrors, setFormErrors] = useState([]);
-    const [starRating, setStarRating] = useState(0);
-    const [review, setReview] = useState("");
+    const [starRating, setStarRating] = useState(reviewToUpdate ? review.rating : 0);
+    const [review, setReview] = useState(reviewToUpdate ? review.review : "");
     const [hover, setHover] = useState(0);
     const inputValues = [1,2,3,4,5]
 
@@ -20,10 +20,11 @@ function ReviewModal({ recipeId }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+
         // validate inputs
         const errors = [];
         if (starRating <= 0 || starRating > 5) errors.push("Please provide 1 to 5 stars")
-        if (review.length < 10) errors.push("Please provide a review at least 10 characters long")
+        if (review.length < 5) errors.push("Please provide a review at least 5 characters long")
 
         if (errors.length) {
             setFormErrors(errors)
@@ -44,7 +45,7 @@ function ReviewModal({ recipeId }) {
         }
     }
 
-    const buttonEnabled = (starRating > 0 && review.length > 10) ? true : false;
+    const buttonEnabled = (starRating > 0 && review.length > 5) ? true : false;
 
     return (
         <form className="add_review_modal" onSubmit={onSubmit}>
