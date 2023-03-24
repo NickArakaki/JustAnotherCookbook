@@ -34,6 +34,7 @@ class Review(db.Model):
 
     def to_dict_summary(self):
         return {
+            "id": self.id,
             "author": self.author.to_dict(),
             "rating": self.rating,
             "review": self.review,

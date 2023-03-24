@@ -4,7 +4,7 @@ import OpenModalButton from "../OpenModalButton"
 import "./Reviews.css"
 
 function RecipeReviews() {
-    const reviews = useSelector(state => state.recipes.singleRecipe.reviews)
+    const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
 
     const averageRating = reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
@@ -31,7 +31,9 @@ function RecipeReviews() {
                         <div className="review_upper_div">
                             <div className="review_author_rating_div">
                                 <div className="review_author">{review.author.username}</div>
-                                <div className="review_rating">{review.rating} stars</div>
+                                <div className="review_rating">{review.rating}
+                                    {}
+                                </div>
                                 {/* iterate for rating and display filled in stars */}
                                 {/* iterate over 5 - rating and display empty stars  */}
                             </div>
