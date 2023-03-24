@@ -192,58 +192,6 @@ def update_a_recipe(id):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@recipe_routes.route('/<int:id>/ingredients', methods=["POST"])
-@login_required
-def add_ingredients_to_recipe(id):
-    """
-    Add Ingredient to a Recipe and return the Recipe details
-    """
-    data = request.get_json()
-    recipe = Recipe.query.get(id)
-    form = IngredientForm()
-    # Get the csrf_token from the request cookie and put it into the
-    # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        new_ingredient = Ingredient(
-            ingredient = data["ingredient"],
-            amount = data["amount"],
-            units = data["units"]
-        )
-
-        recipe.ingredients.append(new_ingredient)
-        db.session.commit()
-        return recipe.to_dict_detailed()
-    else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
-
-@recipe_routes.route('/<int:id>/methods', methods=["POST"])
-@login_required
-def add_methods_to_recipe(id):
-    """
-    Add Method to a Recipe and return the Recipe details
-    """
-    data = request.get_json()
-    recipe = Recipe.query.get(id)
-    form = MethodForm()
-    # Get the csrf_token from the request cookie and put it into the
-    # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    if form.validate_on_submit():
-        new_method = Method(
-            step_number = data["step_number"],
-            details = data["details"]
-        )
-
-        recipe.methods.append(new_method)
-        db.session.commit()
-        return recipe.to_dict_detailed()
-    else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
-
 @recipe_routes.route('/<int:id>', methods=["DELETE"])
 @login_required
 def delete_recipe(id):
@@ -261,3 +209,12 @@ def delete_recipe(id):
         db.session.delete(recipe)
         db.session.commit()
         return { "message": "Successfully Removed" }
+
+
+@recipe_routes.route('/<int:id>/reviews', methods=["POST"])
+@login_required
+def post_a_review(id):
+    """
+    Create and return a Review for a recipe using Recipe id
+    """
+    pass
