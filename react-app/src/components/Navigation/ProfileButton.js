@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
@@ -31,6 +30,7 @@ function ProfileButton({ user }) {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    setShowMenu(false)
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -38,26 +38,17 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
+       <button className='profile_menu_button' onClick={openMenu}>
+        <i className="fa-solid fa-user profile_icon" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        {user ? (
+        {user && (
           <>
-            <li>{user.username}</li>
+            <li>Hello, {user.username}</li>
             <li>{user.email}</li>
             <li>
               <button onClick={handleLogout}>Log Out</button>
             </li>
-          </>
-        ) : (
-          <>
-            <Link onClick={closeMenu} to="/login">
-              <button>Log In</button>
-            </Link>
-            <Link onClick={closeMenu} to="/signup">
-              <button>Sign Up</button>
-            </Link>
           </>
         )}
       </ul>

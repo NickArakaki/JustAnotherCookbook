@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/session';
 import './Navigation.css';
+import ProfileButton from './ProfileButton';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
@@ -17,7 +18,7 @@ function Navigation({ isLoaded }){
 	return (
 		<div className='navbar_div'>
 			<div className='navbar_user_container'>
-				<NavLink exact to="/">Home</NavLink>
+				<ProfileButton />
 				{isLoaded && !sessionUser ? (
 				<div className='navbar_logged_out_elements'>
 						<NavLink to='/login'>Log in</NavLink>
