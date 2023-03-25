@@ -38,14 +38,13 @@ function ProfileButton({ user }) {
 
   return (
     <>
-       <button className='profile_menu_button' onClick={openMenu}>
-        <i className="fa-solid fa-user profile_icon" />
+      <button className='profile_menu_button' onClick={openMenu}>
+      <i className="fa-solid fa-user" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user && (
           <>
             <li>Hello, {user.username}</li>
-            <li>{user.email}</li>
             <li>
               <button onClick={handleLogout}>Log Out</button>
             </li>

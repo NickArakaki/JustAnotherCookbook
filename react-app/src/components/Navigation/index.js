@@ -18,23 +18,27 @@ function Navigation({ isLoaded }){
 	return (
 		<div className='navbar_div'>
 			<div className='navbar_user_container'>
-				<ProfileButton />
 				{isLoaded && !sessionUser ? (
-				<div className='navbar_logged_out_elements'>
+					<div className='navbar_logged_out_elements'>
 						<NavLink to='/login'>Log in</NavLink>
 						<NavLink to='/signup'>Sign up</NavLink>
 					</div>
 				): (
 					<div className='navbar_logged_in_elements'>
+						<ProfileButton user={sessionUser} />
 						<NavLink to='/recipes/submit'>Submit</NavLink>
-						<button onClick={handleLogout}>Log out</button>
 					</div>
 				)
 				}
 			</div>
-			<NavLink exact to="/">JustAnotherCookbook</NavLink>
+			<NavLink exact to="/"><span className='navbar_logo'>JustAnotherCookbook</span></NavLink>
 			<div className='navbar_search_div'>
-				Search Feature Coming Soon
+				<form className='search_form'>
+					<input
+						type='text'
+						placeholder='Recipe Search'
+					/>
+				</form>
 			</div>
 		</div>
 	);
