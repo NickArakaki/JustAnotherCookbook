@@ -1,6 +1,7 @@
 .navbar_div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .navbar_div a {
@@ -9,8 +10,15 @@
 
 .navbar_user_container {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 15%;
+}
+
+.navbar_logged_out_elements {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  width: 10%;
 }
 
 .navbar_logo {

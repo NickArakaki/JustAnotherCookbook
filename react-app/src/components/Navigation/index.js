@@ -18,11 +18,14 @@ function Navigation({ isLoaded }){
 	return (
 		<div className='navbar_div'>
 			<div className='navbar_user_container'>
+				<NavLink to="/" >
+					<i className="fa-solid fa-bowl-food" />
+				</NavLink>
 				{isLoaded && !sessionUser ? (
-					<div className='navbar_logged_out_elements'>
+					<>
 						<NavLink to='/login'>Log in</NavLink>
 						<NavLink to='/signup'>Sign up</NavLink>
-					</div>
+					</>
 				): (
 					<div className='navbar_logged_in_elements'>
 						<ProfileButton user={sessionUser} />
