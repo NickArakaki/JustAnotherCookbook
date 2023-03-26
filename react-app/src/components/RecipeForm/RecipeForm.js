@@ -73,7 +73,7 @@ function RecipeForm({ recipe }) {
             const inputTags = e.target.value.split(",")
             const newTags = [...tags]
             inputTags.forEach(tag => {
-                if (tag.trim()) {
+                if (tag.trim() && tag.trim().length <= 60) {
                     newTags.push(tag.trim());
                 }
             })
