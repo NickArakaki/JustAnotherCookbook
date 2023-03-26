@@ -70,13 +70,16 @@ function RecipeForm({ recipe }) {
     const handleAddTag = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
+
             const inputTags = e.target.value.split(",")
             const newTags = [...tags]
+
             inputTags.forEach(tag => {
                 if (tag.trim() && tag.trim().length <= 60) {
                     newTags.push(tag.trim());
                 }
             })
+
             setTags(newTags)
             setTagInput("")
         }
@@ -97,7 +100,8 @@ function RecipeForm({ recipe }) {
             "preview_image_url": previewImageURL,
             "total_time": estimatedTime,
             "ingredients": ingredientsList,
-            "methods": methodsList
+            "methods": methodsList,
+            tags
         }
         // validate
         // if pass validations dispatch thunk
@@ -276,7 +280,7 @@ function RecipeForm({ recipe }) {
                     {tags.map((tag, idx) => {
                         return (
                             <div className="tag" key={idx}>
-                                <span className="tag_name">{tag}</span><span className="remove_tag">x</span>
+                                <span className="tag_name">{tag}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
                             </div>
                         )
                     })}

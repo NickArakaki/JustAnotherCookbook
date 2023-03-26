@@ -2,12 +2,16 @@ import { useSelector } from "react-redux";
 import ReviewModal from "./PostReviewModal";
 import DeleteReviewConfirmationModal from "./DeleteReviewConfirmationModal";
 import OpenModalButton from "../OpenModalButton"
+import { formatDateMonthDateYear } from "../../utils/dateUtils";
 import "./Reviews.css"
 
 function RecipeReviews() {
     const sessionUser = useSelector(state => state.session.user)
     const recipe = useSelector(state => state.recipes.singleRecipe)
     const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
+    reviews.sort((a,b) => {
+        return (new Date(b.updated_at)).valueOf() - (new Date(a.updated_at)).valueOf()
+    })
 
     const averageRating = reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
@@ -19,6 +23,7 @@ function RecipeReviews() {
         if (sessionUser?.id === review.author.id) isUserReview = true;
     }
 
+    // Render add review button when the logged in user is not the author and does not currently have a review for the recipe already
     const renderReviewButton = sessionUser && sessionUser.id !== recipe.author.id && !isUserReview
 
     return (
@@ -53,7 +58,11 @@ function RecipeReviews() {
                                 </div>
                             </div>
                             <div className="review_timestamp_div">
-                                <div className="review_timestamp">Last updated: {review.updated_at}</div>
+                                {review.created_at === review.updated_at ? (
+                                    <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
+                                ) : (
+                                    <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
+                                )}
                                 {sessionUser?.id === review.author.id && (
                                     <div>
                                         <OpenModalButton
