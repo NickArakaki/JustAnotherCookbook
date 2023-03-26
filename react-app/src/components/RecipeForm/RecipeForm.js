@@ -70,14 +70,22 @@ function RecipeForm({ recipe }) {
     const handleAddTag = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            const newTags = e.target.value.split(",")
-            setTags([...newTags, ...tags])
+            const inputTags = e.target.value.split(",")
+            const newTags = [...tags]
+            inputTags.forEach(tag => {
+                if (tag.trim()) {
+                    newTags.push(tag.trim());
+                }
+            })
+            setTags(newTags)
             setTagInput("")
         }
     }
 
     const handleRemoveTag = (idx) => {
-
+        const newTags = [ ...tags ]
+        newTags.splice(idx, 1)
+        setTags(newTags)
     }
 
     /********************************************** Submit *****************************************************/
@@ -267,7 +275,9 @@ function RecipeForm({ recipe }) {
                 <div className="recipe_form_display_tag_div">
                     {tags.map((tag, idx) => {
                         return (
-                            <div className="tag" key={idx}>{tag}</div>
+                            <div className="tag" key={idx}>
+                                <span className="tag_name">{tag}</span><span className="remove_tag">x</span>
+                            </div>
                         )
                     })}
                 </div>
