@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 15px;
 }
 
 .navbar_div a,
@@ -10,6 +10,7 @@
 .navbar_div a:active {
   text-decoration: none;
   color: black;
+  cursor: pointer;
 }
 
 
@@ -29,6 +30,20 @@
 .navbar_logo {
   font-size: 32px;
   font-family: 'Great Vibes', cursive;
+}
+
+.navbar_search_div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.search_form_input {
+  margin-right: 5px;
+}
+
+.navbar_section {
+  width: 15%;
 }
 
 /*From Starter Code*/

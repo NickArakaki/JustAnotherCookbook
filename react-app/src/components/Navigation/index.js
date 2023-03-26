@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/session';
@@ -7,6 +7,7 @@ import ProfileButton from './ProfileButton';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
+	const [searchInput, setSearchInput] = useState("")
 	const dispatch = useDispatch();
 
 
@@ -17,7 +18,7 @@ function Navigation({ isLoaded }){
 
 	return (
 		<div className='navbar_div'>
-			<div className='navbar_user_container'>
+			<div className='navbar_section navbar_user_container'>
 				<NavLink to="/" >
 					<i className="fa-solid fa-bowl-food" />
 				</NavLink>
@@ -34,13 +35,22 @@ function Navigation({ isLoaded }){
 				)
 				}
 			</div>
-			<NavLink exact to="/"><span className='navbar_logo'>JustAnotherCookbook</span></NavLink>
-			<div className='navbar_search_div'>
-				<form className='search_form'>
+			<NavLink exact to="/"><span className='navbar_section navbar_logo'>JustAnotherCookbook</span></NavLink>
+			<div className='navbar_section navbar_search_div'>
+				<form onSubmit={(e) => {
+					e.preventDefault();
+					alert("Serch Feature Coming Soon!")
+					setSearchInput("")
+					}}
+					className='search_form'>
 					<input
+						className='search_form_input'
+						value={searchInput}
+						onChange={(e) => setSearchInput(e.target.value)}
 						type='text'
 						placeholder='Recipe Search'
 					/>
+					<i className="fa-solid fa-magnifying-glass" />
 				</form>
 			</div>
 		</div>

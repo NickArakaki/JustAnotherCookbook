@@ -66,8 +66,8 @@ function LoginFormPage() {
             />
           </div>
           <div className="auth_form_button_div">
-            <button className="auth_form_button" type="submit">Log In</button>
             <button className="auth_form_button" onClick={handleDemoLogin} type="button">Login as Demo</button>
+            <button className="auth_form_button" type="submit">Log In</button>
           </div>
         </form>
         <div className="auth_form_signup_link_div">

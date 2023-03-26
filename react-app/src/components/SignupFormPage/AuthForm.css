@@ -4,6 +4,7 @@
     background-repeat: no-repeat;
     height: 100vh;
     width: 100vw;
+    margin: 0;
 }
 
 .signup_background_image {
@@ -17,7 +18,7 @@
 
 .auth_form_container{
     width: 50%;
-    background-color: #ffffffab;
+    background-color: #ffffffc5;
     border-radius: 15px;
     padding: 15px;
     position: relative;
@@ -81,7 +82,6 @@
 .auth_form_button:hover {
     background-color: #ee7936;
 }
-
 
 
 /* Bottom */
