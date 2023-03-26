@@ -29,52 +29,64 @@ function SignupFormPage() {
 
   return (
     <div className="signup_form_container">
-      <h1 className="signup_form_title">Sign Up</h1>
+      <h1 className="signup_form_title">Sign up</h1>
       <form className="signup_form" onSubmit={handleSubmit}>
         <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.map((error, idx) => <li className="signup_error" key={idx}>{error}</li>)}
         </ul>
-        <label>
-          Username
+        <div className="signup_form_input_div">
+          <div className="signup_form_input_label">
+            Username
+          </div>
           <input
+            className="signup_form_input"
             type="text"
             value={username}
             placeholder="Enter a username"
             onChange={(e) => setUsername(e.target.value)}
             required
-          />
-        </label>
-        <label>
-          Email address
+            />
+          </div>
+        <div className="signup_form_input_div">
+            <div className="signup_form_input_label">
+              Email address
+            </div>
+            <input
+              className="signup_form_input"
+              type="text"
+              value={email}
+              placeholder="Enter your email address"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+        </div>
+        <div className="signup_form_input_div">
+          <div className="signup_form_input_label">
+            Password
+          </div>
           <input
-            type="text"
-            value={email}
-            placeholder="Enter your email address"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
+            className="signup_form_input"
             type="password"
             value={password}
             placeholder="Enter a password here"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Confirm Password
+        </div>
+        <div className="signup_form_input_div">
+          <div className="signup_form_input_label">
+            Confirm Password
+            </div>
           <input
+            className="signup_form_input"
             type="password"
             value={confirmPassword}
             placeholder="Re-type your password again here"
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        <button className="signup_form_botton" type="submit">Register</button>
+        </div>
+        <button className="signup_form_button" type="submit">Register</button>
       </form>
     </div>
   );

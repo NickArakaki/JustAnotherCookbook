@@ -27,10 +27,10 @@ function Navigation({ isLoaded }){
 						<NavLink to='/signup'>Sign up</NavLink>
 					</>
 				): (
-					<div className='navbar_logged_in_elements'>
+					<>
 						<ProfileButton user={sessionUser} />
 						<NavLink to='/recipes/submit'>Submit</NavLink>
-					</div>
+					</>
 				)
 				}
 			</div>
