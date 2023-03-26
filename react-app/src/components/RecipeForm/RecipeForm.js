@@ -19,7 +19,7 @@ function RecipeForm({ recipe }) {
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
     const [tags, setTags] = useState(recipe ? recipe.tags : [])
-    const [tag, setTag] = useState("")
+    const [tagInput, setTagInput] = useState("")
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -67,6 +67,22 @@ function RecipeForm({ recipe }) {
     }
 
     /********************************************** Tag Helpers *****************************************************/
+    const handleTagInputChange = (e, idx) => {
+        e.preventDefault();
+        if (e.key === "Enter") {
+            const newTags = e.target.value.split(",")
+            setTags([...newTags, ...tags])
+            setTagInput("")
+        }
+    }
+
+    const handleAddTag = () => {
+
+    }
+
+    const handleRemoveTag = (idx) => {
+
+    }
 
     /********************************************** Submit *****************************************************/
     const handleSubmit = async (e) => {
@@ -248,13 +264,14 @@ function RecipeForm({ recipe }) {
                 <input
                     type="text"
                     placeholder="Press [Enter] after each tag"
-                    value={tag}
-                    // onKeyDown={(e) => handleTagEnter(e)}
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => handleTagInputChange(e)}
                 />
                 <div className="recipe_form_display_tag_div">
                     {tags.map((tag, idx) => {
                         return (
-                            <div className="tag">{tag}</div>
+                            <div className="tag" key={idx}>{tag}</div>
                         )
                     })}
                 </div>
