@@ -31,7 +31,7 @@ function RecipeReviews() {
             <div className="review_heading_div">
                 <div className="review_heading_left_div">
                     <div className="review_title">Reviews</div>
-                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"}</div>
+                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"} <i className="fa-sharp fa-solid fa-star" /></div>
                 </div>
                 <div className="review_heading_right_div">
                     {renderReviewButton &&
