@@ -4,8 +4,11 @@
   align-items: center;
 }
 
-.navbar_div a {
+.navbar_div a,
+.navbar_div a:visited,
+.navbar_div a:active {
   text-decoration: none;
+  color: black;
 }
 
 .navbar_user_container {
