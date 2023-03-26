@@ -5,3 +5,4 @@ from .recipe import Recipe
 from .ingredient import Ingredient
 from .method import Method
 from .review import Review
+from .tags import Tag, recipes_tags
