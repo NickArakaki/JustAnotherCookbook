@@ -1,10 +1,56 @@
 .navbar_div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 15px;
 }
+
+.navbar_div a,
+.navbar_div a:visited,
+.navbar_div a:active {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
 
 .navbar_user_container {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 15%;
+}
+
+.navbar_logged_out_elements {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  width: 10%;
+}
+
+.navbar_logo {
+  font-size: 32px;
+  font-family: 'Great Vibes', cursive;
+}
+
+.navbar_search_div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.search_form_input {
+  margin-right: 5px;
+}
+
+.navbar_section {
+  width: 15%;
+}
+
+/*From Starter Code*/
+.profile-dropdown {
+  position: absolute;
+}
+
+.hidden {
+  display: none;
 }

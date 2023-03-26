@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/session";
-import './SignupForm.css';
+import './AuthForm.css';
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -28,54 +28,68 @@ function SignupFormPage() {
   };
 
   return (
-    <div className="signup_form_container">
-      <h1 className="signup_form_title">Sign Up</h1>
-      <form className="signup_form" onSubmit={handleSubmit}>
-        <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-        </ul>
-        <label>
-          Username
-          <input
-            type="text"
-            value={username}
-            placeholder="Enter a username"
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Email address
-          <input
-            type="text"
-            value={email}
-            placeholder="Enter your email address"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            placeholder="Enter a password here"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            placeholder="Re-type your password again here"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button className="signup_form_botton" type="submit">Register</button>
-      </form>
+    <div className="signup_background_image">
+      <div className="auth_form_container">
+        <h1 className="auth_form_title">Sign up</h1>
+        <form className="auth_form" onSubmit={handleSubmit}>
+          <ul>
+            {errors.map((error, idx) => <li className="auth_form_error" key={idx}>{error}</li>)}
+          </ul>
+          <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
+              Username
+            </div>
+            <input
+              className="auth_form_input"
+              type="text"
+              value={username}
+              placeholder="Enter a username"
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              />
+            </div>
+          <div className="auth_form_input_div">
+              <div className="auth_form_input_label">
+                Email address
+              </div>
+              <input
+                className="auth_form_input"
+                type="text"
+                value={email}
+                placeholder="Enter your email address"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+          </div>
+          <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
+              Password
+            </div>
+            <input
+              className="auth_form_input"
+              type="password"
+              value={password}
+              placeholder="Enter a password here"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
+              Confirm Password
+              </div>
+            <input
+              className="auth_form_input"
+              type="password"
+              value={confirmPassword}
+              placeholder="Re-type your password again here"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button className="auth_form_button" type="submit">Register</button>
+        </form>
+      </div>
     </div>
   );
 }

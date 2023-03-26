@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/session';
 import './Navigation.css';
+import ProfileButton from './ProfileButton';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
+	const [searchInput, setSearchInput] = useState("")
 	const dispatch = useDispatch();
 
 
@@ -16,24 +18,40 @@ function Navigation({ isLoaded }){
 
 	return (
 		<div className='navbar_div'>
-			<div className='navbar_user_container'>
-				<NavLink exact to="/">Home</NavLink>
+			<div className='navbar_section navbar_user_container'>
+				<NavLink to="/" >
+					<i className="fa-solid fa-bowl-food" />
+				</NavLink>
 				{isLoaded && !sessionUser ? (
-				<div className='navbar_logged_out_elements'>
+					<>
 						<NavLink to='/login'>Log in</NavLink>
 						<NavLink to='/signup'>Sign up</NavLink>
-					</div>
+					</>
 				): (
-					<div className='navbar_logged_in_elements'>
+					<>
+						<ProfileButton user={sessionUser} />
 						<NavLink to='/recipes/submit'>Submit</NavLink>
-						<button onClick={handleLogout}>Log out</button>
-					</div>
+					</>
 				)
 				}
 			</div>
-			<NavLink exact to="/">JustAnotherCookbook</NavLink>
-			<div className='navbar_search_div'>
-				Search Feature Coming Soon
+			<NavLink exact to="/"><span className='navbar_section navbar_logo'>JustAnotherCookbook</span></NavLink>
+			<div className='navbar_section navbar_search_div'>
+				<form onSubmit={(e) => {
+					e.preventDefault();
+					alert("Serch Feature Coming Soon!")
+					setSearchInput("")
+					}}
+					className='search_form'>
+					<input
+						className='search_form_input'
+						value={searchInput}
+						onChange={(e) => setSearchInput(e.target.value)}
+						type='text'
+						placeholder='Recipe Search'
+					/>
+					<i className="fa-solid fa-magnifying-glass" />
+				</form>
 			</div>
 		</div>
 	);

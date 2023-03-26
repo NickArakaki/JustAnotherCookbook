@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { login } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import './LoginForm.css';
+import { Link, Redirect } from "react-router-dom";
+import "../SignupFormPage/AuthForm.css"
 
 function LoginFormPage() {
   const dispatch = useDispatch();
@@ -30,36 +30,53 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Log In</button>
-      </form>
-      <button onClick={handleDemoLogin} type="button">Login as Demo</button>
-    </>
+    <div className="login_background_image">
+      <div className="auth_form_container">
+        <h1 className="auth_form_title">Log in</h1>
+        <form className="auth_form" onSubmit={handleSubmit}>
+          <ul>
+            {errors.map((error, idx) => (
+              <li className="auth_form_error" key={idx}>{error}</li>
+            ))}
+          </ul>
+          <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
+              Email
+            </div>
+            <input
+              className="auth_form_input"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address here"
+              required
+            />
+          </div>
+          <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
+              Password
+            </div>
+            <input
+              className="auth_form_input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password here"
+              required
+            />
+          </div>
+          <div className="auth_form_button_div">
+            <button className="auth_form_button" onClick={handleDemoLogin} type="button">Login as Demo</button>
+            <button className="auth_form_button" type="submit">Log In</button>
+          </div>
+        </form>
+        <div className="auth_form_signup_link_div">
+          <Link to={"/signup"}>
+            <span className="auth_form_signup_link">Need to sign up?</span>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 
