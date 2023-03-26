@@ -30,36 +30,40 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="auth_form_container">
+      <h1 className="auth_form_title">Log in</h1>
+      <form className="auth_form" onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
+            <li className="auth_form_error" key={idx}>{error}</li>
           ))}
         </ul>
-        <label>
-          Email
+        <div className="auth_form_input_div">
+          <div className="auth_form_input_label">
+            Email
+          </div>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
+        </div>
+        <div className="auth_form_input_div">
+          <div className="auth_form_input_label">
+            Password
+          </div>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Log In</button>
+        </div>
+        <button className="auth_form_button" type="submit">Log In</button>
       </form>
-      <button onClick={handleDemoLogin} type="button">Login as Demo</button>
-    </>
+      <button className="auth_form_demo_button" onClick={handleDemoLogin} type="button">Login as Demo</button>
+    </div>
   );
 }
 

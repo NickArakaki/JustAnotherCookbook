@@ -28,18 +28,18 @@ function SignupFormPage() {
   };
 
   return (
-    <div className="signup_form_container">
-      <h1 className="signup_form_title">Sign up</h1>
-      <form className="signup_form" onSubmit={handleSubmit}>
+    <div className="auth_form_container">
+      <h1 className="auth_form_title">Sign up</h1>
+      <form className="auth_form" onSubmit={handleSubmit}>
         <ul>
-          {errors.map((error, idx) => <li className="signup_error" key={idx}>{error}</li>)}
+          {errors.map((error, idx) => <li className="auth_form_error" key={idx}>{error}</li>)}
         </ul>
-        <div className="signup_form_input_div">
-          <div className="signup_form_input_label">
+        <div className="auth_form_input_div">
+          <div className="auth_form_input_label">
             Username
           </div>
           <input
-            className="signup_form_input"
+            className="auth_form_input"
             type="text"
             value={username}
             placeholder="Enter a username"
@@ -47,12 +47,12 @@ function SignupFormPage() {
             required
             />
           </div>
-        <div className="signup_form_input_div">
-            <div className="signup_form_input_label">
+        <div className="auth_form_input_div">
+            <div className="auth_form_input_label">
               Email address
             </div>
             <input
-              className="signup_form_input"
+              className="auth_form_input"
               type="text"
               value={email}
               placeholder="Enter your email address"
@@ -60,12 +60,12 @@ function SignupFormPage() {
               required
             />
         </div>
-        <div className="signup_form_input_div">
-          <div className="signup_form_input_label">
+        <div className="auth_form_input_div">
+          <div className="auth_form_input_label">
             Password
           </div>
           <input
-            className="signup_form_input"
+            className="auth_form_input"
             type="password"
             value={password}
             placeholder="Enter a password here"
@@ -73,12 +73,12 @@ function SignupFormPage() {
             required
           />
         </div>
-        <div className="signup_form_input_div">
-          <div className="signup_form_input_label">
+        <div className="auth_form_input_div">
+          <div className="auth_form_input_label">
             Confirm Password
             </div>
           <input
-            className="signup_form_input"
+            className="auth_form_input"
             type="password"
             value={confirmPassword}
             placeholder="Re-type your password again here"
@@ -86,7 +86,7 @@ function SignupFormPage() {
             required
           />
         </div>
-        <button className="signup_form_button" type="submit">Register</button>
+        <button className="auth_form_button" type="submit">Register</button>
       </form>
     </div>
   );
