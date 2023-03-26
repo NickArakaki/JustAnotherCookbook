@@ -25,7 +25,7 @@ function LoginFormPage() {
     e.preventDefault();
     const data = await dispatch(login(email, password));
     if (data) {
-      setErrors(data);
+      setErrors(["Invalid Credentials"]);
     }
   };
 
@@ -34,11 +34,9 @@ function LoginFormPage() {
       <div className="auth_form_container">
         <h1 className="auth_form_title">Log in</h1>
         <form className="auth_form" onSubmit={handleSubmit}>
-          <ul>
-            {errors.map((error, idx) => (
-              <li className="auth_form_error" key={idx}>{error}</li>
+            {errors.length > 0 && errors.map((error, idx) => (
+              <div className="auth_form_error" key={idx}>{error}</div>
             ))}
-          </ul>
           <div className="auth_form_input_div">
             <div className="auth_form_input_label">
               Email
