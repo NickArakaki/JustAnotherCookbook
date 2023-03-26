@@ -25,7 +25,7 @@ function LoginFormPage() {
     e.preventDefault();
     const data = await dispatch(login(email, password));
     if (data) {
-      setErrors(["Invalid Credentials"]);
+      setErrors(["Invalid email and/or password"]);
     }
   };
 

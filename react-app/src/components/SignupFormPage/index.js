@@ -23,8 +23,11 @@ function SignupFormPage() {
     e.preventDefault();
     if (!usernameErrors.length && !passwordErrors.length && !confirmPasswordErrors.length) {
       const data = await dispatch(signUp(username, email, password))
-      if (data) {
+
+      if (data?.errors) {
         setErrors(["User Already Exists"])
+      } else if (data) {
+        setErrors(data)
       }
     }
   };
