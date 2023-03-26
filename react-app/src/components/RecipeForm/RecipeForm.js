@@ -18,7 +18,7 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
-    const [tags, setTags] = useState(recipe ? recipe.tags : [])
+    const [tags, setTags] = useState(recipe?.tags ? recipe.tags : [])
     const [tagInput, setTagInput] = useState("")
 
 
@@ -67,17 +67,13 @@ function RecipeForm({ recipe }) {
     }
 
     /********************************************** Tag Helpers *****************************************************/
-    const handleTagInputChange = (e, idx) => {
-        e.preventDefault();
+    const handleAddTag = (e) => {
         if (e.key === "Enter") {
+            e.stopImmediatePropagation();
             const newTags = e.target.value.split(",")
             setTags([...newTags, ...tags])
             setTagInput("")
         }
-    }
-
-    const handleAddTag = () => {
-
     }
 
     const handleRemoveTag = (idx) => {
@@ -266,7 +262,7 @@ function RecipeForm({ recipe }) {
                     placeholder="Press [Enter] after each tag"
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={(e) => handleTagInputChange(e)}
+                    onKeyDown={(e) => handleAddTag(e)}
                 />
                 <div className="recipe_form_display_tag_div">
                     {tags.map((tag, idx) => {
