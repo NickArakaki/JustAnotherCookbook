@@ -1,14 +1,23 @@
-.signup_background_image {
-    background-image: url("../../assets/images/bread.jpg");
+.signup_background_image,
+.login_background_image {
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;
     width: 100vw;
 }
 
+.signup_background_image {
+    background-image: url("../../assets/images/bread.jpg");
+}
+
+.login_background_image {
+    background-image: url("../../assets/images/grapes.jpg");
+}
+
+
 .auth_form_container{
     width: 50%;
-    background-color: #ffffff9b;
+    background-color: #ffffffab;
     border-radius: 15px;
     padding: 15px;
     position: relative;
@@ -17,7 +26,7 @@
 }
 
 .auth_form_title {
-    margin: 0;
+    margin: 15px;
 }
 
 .auth_form {
@@ -31,7 +40,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 90%;
+    width: 95%;
     margin: 15px;
 }
 
@@ -56,6 +65,7 @@
     display: flex;
     justify-content: space-between;
     margin-right: 25px;
+
 }
 
 .auth_form_button {
