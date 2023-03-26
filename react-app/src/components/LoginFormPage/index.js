@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { login } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import './LoginForm.css';
 
 function LoginFormPage() {
@@ -43,9 +43,11 @@ function LoginFormPage() {
             Email
           </div>
           <input
+            className="auth_form_input"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your username here"
             required
           />
         </div>
@@ -54,15 +56,24 @@ function LoginFormPage() {
             Password
           </div>
           <input
+            className="auth_form_input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password here"
             required
           />
         </div>
-        <button className="auth_form_button" type="submit">Log In</button>
+        <div className="auth_form_button_div">
+          <button className="auth_form_button" type="submit">Log In</button>
+          <button className="auth_form_button" onClick={handleDemoLogin} type="button">Login as Demo</button>
+        </div>
       </form>
-      <button className="auth_form_demo_button" onClick={handleDemoLogin} type="button">Login as Demo</button>
+      <div className="auth_form_signup_link_div">
+        <Link to={"/signup"}>
+          <span className="auth_form_signup_link">Need to sign up?</span>
+        </Link>
+      </div>
     </div>
   );
 }

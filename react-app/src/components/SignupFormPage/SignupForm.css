@@ -15,6 +15,8 @@
     flex-direction: column;
 }
 
+
+/* Inputs */
 .auth_form_input_div {
     display: flex;
     flex-direction: column;
@@ -26,6 +28,24 @@
 .auth_form_input_label{
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px;
+}
+
+.auth_form_input {
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.auth_form_input::placeholder {
+    font-style: italic;
+    font-family: serif;
+}
+
+
+/* Buttons */
+.auth_form_button_div {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 25px;
 }
 
 .auth_form_button {
@@ -42,16 +62,17 @@
     background-color: #ee7936;
 }
 
-.auth_form_input {
-    margin-top: 5px;
-    padding: 5px;
-}
 
-.auth_form_input::placeholder {
-    font-style: italic;
-    font-family: serif;
-}
 
+/* Bottom */
 .auth_form_error{
     color: red;
+}
+
+.auth_form_signup_link {
+    text-decoration: underline yellow solid;
+}
+
+.auth_form_signup_link:hover {
+    text-decoration: underline yellow solid 3px;
 }
