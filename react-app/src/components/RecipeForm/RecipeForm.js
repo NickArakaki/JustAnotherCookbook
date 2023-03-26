@@ -69,7 +69,7 @@ function RecipeForm({ recipe }) {
     /********************************************** Tag Helpers *****************************************************/
     const handleAddTag = (e) => {
         if (e.key === "Enter") {
-            e.stopImmediatePropagation();
+            e.preventDefault();
             const newTags = e.target.value.split(",")
             setTags([...newTags, ...tags])
             setTagInput("")
