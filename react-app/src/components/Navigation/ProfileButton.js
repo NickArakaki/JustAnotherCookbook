@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 
@@ -39,16 +40,21 @@ function ProfileButton({ user }) {
   return (
     <>
       <button className='profile_menu_button' onClick={openMenu}>
-      <i className="fa-solid fa-user" />
+        <i className="site_icon fa-solid fa-bowl-food" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user && (
-          <>
-            <li>Hello, {user.username}</li>
-            <li>
+          <div className="user_drop_down_div">
+            <div>
+              <Link onClick={closeMenu} to={`/users/${user.id}`}>My Recipes</Link>
+            </div>
+            <div>
+              <Link onClick={closeMenu} to={`/`}>Favorite Recipes</Link>
+            </div>
+            <div>
               <button onClick={handleLogout}>Log Out</button>
-            </li>
-          </>
+            </div>
+          </div>
         )}
       </ul>
     </>
