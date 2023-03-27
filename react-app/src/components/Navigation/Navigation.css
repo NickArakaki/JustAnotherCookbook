@@ -56,7 +56,6 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   top: 50px;
   left: 15px;
   min-width: 3em;
@@ -64,6 +63,10 @@
   background-color: rgba(245, 245, 220, 0.967);
   border-radius: .5em;
   padding: 1em;
+}
+
+.user_drop_down_div {
+  margin: 1em 0;
 }
 
 .hidden {
