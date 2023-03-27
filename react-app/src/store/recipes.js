@@ -196,7 +196,7 @@ export const deleteRecipeThunk = recipeId => async (dispatch) => {
 }
 
 // reducer
-const initialState = { allRecipes: {}, singleRecipe: {}, tagRecipes: {} }
+const initialState = { allRecipes: {}, singleRecipe: {} }
 
 export default function reducer(state = initialState, action) {
     const newState = { ...state };

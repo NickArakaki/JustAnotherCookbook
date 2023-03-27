@@ -18,7 +18,7 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
-    const [tags, setTags] = useState(recipe?.tags ? recipe.tags : [])
+    const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
 
