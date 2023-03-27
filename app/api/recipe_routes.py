@@ -7,19 +7,6 @@ import json
 
 recipe_routes = Blueprint('recipes', __name__)
 
-# Custom Validators
-def validIngredient(ingredient):
-    isValid = False
-    if ingredient["ingredient"] and (float(ingredient["amount"]) > 0):
-        isValid = True
-    return isValid
-
-def validMethod(method):
-    isValid = False
-    if method["details"]:
-        isValid = True
-    return isValid
-
 
 # Routes
 @recipe_routes.route('/')
@@ -113,7 +100,7 @@ def update_a_recipe(id):
     if not recipe:
         return { "errors": ["Recipe could not be found" ] }, 404
     elif recipe.author.id != current_user.id:
-        return { "errors": ["User is not authorized to edit this Recipe"] }, 401
+        return { "errors": ["User is not authorized to edit this Recipe"] }, 403
 
     # Form validations
     if form.validate_on_submit():
@@ -189,7 +176,7 @@ def delete_recipe(id):
     if not recipe:
         return { "errors": ["Recipe could not be found"] }, 404
     elif recipe.author.id != current_user.id:
-        return { "errors": ["User is unauthorized to delete this recipe"] }, 401
+        return { "errors": ["User is unauthorized to delete this recipe"] }, 403
     else:
         db.session.delete(recipe)
         db.session.commit()
@@ -206,7 +193,7 @@ def post_a_review(id):
     if not recipe:
         return { "errors": ["Recipe could not be found."] }, 404
     elif recipe.author.id == current_user.id: # User cannot leave Review on their own Recipe
-        return { "errors": ["User not authorized to leave comment on own Recipe"] }, 401
+        return { "errors": ["User not authorized to leave comment on own Recipe"] }, 403
     elif current_user.id in [review.user_id for review in recipe.reviews]: # User cannot leave more than one Review per Recipe
         return { "errors": ["User cannot leave more than 1 Review per Recipe"] }, 401
     # should also prevent users from making more than one review per recipe
