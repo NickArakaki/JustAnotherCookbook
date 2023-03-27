@@ -2,6 +2,14 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+users_liked_recipes = db.Table(
+    "users_liked_recipes",
+    db.Column("recipe_id", db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), primary_key=True),
+    db.Column("user_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), primary_key=True)
+)
+# Add schema to recipes_tags table in production
+if environment == "production":
+    users_liked_recipes = SCHEMA
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -16,6 +24,7 @@ class User(db.Model, UserMixin):
 
     reviews = db.relationship("Review", back_populates="author")
     recipes = db.relationship("Recipe", back_populates="author")
+    liked_recipes = db.relationship("Recipe", secondary=users_liked_recipes, back_populates="liked_users")
 
     @property
     def password(self):

@@ -2,6 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime, timezone
 from sqlalchemy.sql import func
 from .tags import recipes_tags
+from .user import users_liked_recipes
 
 class Recipe(db.Model):
     __tablename__ = "recipes"
@@ -23,7 +24,7 @@ class Recipe(db.Model):
     ingredients = db.relationship("Ingredient", back_populates="recipe", cascade="all, delete-orphan")
     methods = db.relationship("Method", back_populates="recipe", cascade="all, delete-orphan")
     tags = db.relationship("Tag", secondary=recipes_tags, back_populates="recipes")
-
+    liked_users = db.relationship("User", secondary=users_liked_recipes, back_populates="liked_recipes")
 
     def to_dict(self):
         return {
