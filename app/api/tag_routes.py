@@ -7,6 +7,14 @@ from app.forms import ReviewForm
 
 tag_routes = Blueprint("tags", __name__)
 
+@tag_routes.route("/")
+def get_all_tags():
+    """
+    get and return a list of all tags
+    """
+    return { "tags": [tag.to_dict() for tag in Tag.query.all()] }
+
+
 @tag_routes.route("/<int:id>")
 def get_recipes_by_tag_name(id):
     """

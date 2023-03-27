@@ -4,12 +4,14 @@ import session from './session'
 import recipes from './recipes'
 import users from './users'
 import reviews from './reviews'
+import tags from './tags'
 
 const rootReducer = combineReducers({
   session,
   recipes,
   users,
-  reviews
+  reviews,
+  tags
 });
 
 

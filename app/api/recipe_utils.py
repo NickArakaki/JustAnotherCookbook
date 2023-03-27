@@ -1,5 +1,8 @@
 from app.models import Ingredient, Method, Tag
 
+def add_ingredients(recipe, ingredients_list):
+    pass
+
 def update_ingredients(recipe, ingredients_list):
     pass
 

@@ -58,6 +58,11 @@ function RecipeDetails() {
                         )
                         }
                     </div>
+                    <div className="single_recipe_tags">
+                            {recipe.tags.map(tag => {
+                                return <Link to={`/tags/${tag.id}`} key={tag.id} className="single_recipe_tag">{tag.tag}</Link>
+                            })}
+                        </div>
                     <div className="single_recipe_image_div">
                         <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
                     </div>

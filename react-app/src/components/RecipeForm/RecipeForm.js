@@ -273,7 +273,7 @@ function RecipeForm({ recipe }) {
                     </button>
                 </div>
                 <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Tags</label>
+                    <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
                     <input
                         className="recipe_form_input recipe_form_tag_input"
                         type="text"
