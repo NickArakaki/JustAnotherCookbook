@@ -75,8 +75,10 @@ function RecipeForm({ recipe }) {
             const newTags = [...tags]
 
             inputTags.forEach(tag => {
-                if (tag.trim() && tag.trim().length <= 60) {
-                    newTags.push(tag.trim());
+                // Only add new tags, no repeats
+                const formattedTag = tag.trim().toUpperCase();
+                if (formattedTag && formattedTag.length <= 60 && !newTags.includes(formattedTag)) {
+                    newTags.push(formattedTag);
                 }
             })
 
