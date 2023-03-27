@@ -4,6 +4,7 @@ import { getRecipeReviews } from "./reviews"
 const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
 const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
+const GET_TAG_RECIPES = "recipes/GET_TAG_RECIPES"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
 const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE'
 const DELETE_RECIPE = 'recipes/DELETE_RECIPE'
@@ -26,6 +27,13 @@ const getSingleRecipe = recipe => {
 const getUserRecipes = recipes => {
     return {
         type: GET_USER_RECIPES,
+        payload: recipes
+    }
+}
+
+const getTagRecipes = recipes => {
+    return {
+        type: GET_TAG_RECIPES,
         payload: recipes
     }
 }
@@ -108,6 +116,25 @@ export const getUserRecipesThunk = userId => async (dispatch) => {
     }
 }
 
+export const getTagRecipesThunk = tagId => async (dispatch) => {
+    const res = await fetch(`/api/tags/${tagId}`)
+
+    if (res.ok) {
+        // dispatch action creator
+        const data = await res.json();
+        dispatch(getTagRecipes(data.recipes));
+        return null;
+    } else if (res.status < 500) {
+        // display validation errors
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An error occured. Please try again later"]
+    }
+}
+
 export const postARecipeThunk = recipe => async (dispatch) => {
     const res = await fetch(`/api/recipes/`, {
         method: "POST",
@@ -169,7 +196,7 @@ export const deleteRecipeThunk = recipeId => async (dispatch) => {
 }
 
 // reducer
-const initialState = { allRecipes: {}, singleRecipe: {} }
+const initialState = { allRecipes: {}, singleRecipe: {}, tagRecipes: {} }
 
 export default function reducer(state = initialState, action) {
     const newState = { ...state };
@@ -194,6 +221,14 @@ export default function reducer(state = initialState, action) {
         }
         case GET_SINGLE_RECIPE: {
             newState.singleRecipe = action.payload;
+            return newState;
+        }
+        case GET_TAG_RECIPES: {
+            newState.allRecipes = {};
+            for (const recipe of action.payload) {
+                newState.allRecipes[recipe.id] = recipe
+            }
+
             return newState;
         }
         case POST_A_RECIPE: {

@@ -45,7 +45,7 @@ function App() {
           <Route path={`/users/:userId`}>
             <UserPage />
           </Route>
-          <Route path={`/tags/:tagName`}>
+          <Route path={`/tags/:tagId`}>
             <TagRecipePage />
           </Route>
         </Switch>
