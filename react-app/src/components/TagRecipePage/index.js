@@ -8,6 +8,8 @@ function TagRecipePage() {
     const dispatch = useDispatch();
     const { tagId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false);
+    // probably want to get the tag at some point
+    // should probably load all of the tags
 
     useEffect(() => {
         // dispatch thunk to get recipes
@@ -25,6 +27,7 @@ function TagRecipePage() {
         <>
             {isLoaded ? (
                 <>
+                    <div className="tag_recipe_header">Recipes for {}</div>
                     <RecipeTiles />
                 </>
             ): (

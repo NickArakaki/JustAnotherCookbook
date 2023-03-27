@@ -127,6 +127,7 @@ def update_a_recipe(id):
         recipe.description = data["description"]
         recipe.preview_image_url = data["preview_image_url"]
 
+        # INGREDIENTS
         # compare lengths of the ingredients on recipe
         # iterate over ingredients
         ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
@@ -150,7 +151,7 @@ def update_a_recipe(id):
             for ingredient in recipe.ingredients[ingredient_difference:]:
                 recipe.ingredients.remove(ingredient)
 
-
+        # METHODS
         # compare lengths of the methods on recipe
         method_difference = len(methods_list) - len(recipe.methods)
 
@@ -173,7 +174,7 @@ def update_a_recipe(id):
             for method in recipe.methods[method_difference:]:
                 recipe.methods.remove(method)
 
-        # update tags
+        # TAGS
         # get list of tags for incoming change (either get existing tag, or create new one)
         new_tags = []
         for tag in tags_list:
@@ -185,8 +186,9 @@ def update_a_recipe(id):
                 db.session.add(new_tag)
                 new_tags.append(new_tag)
 
-        print("=================================================================================================",set(new_tags))
-        print("=================================================================================================",set(recipe.tags))
+        # compare incoming tags and recipe tags as sets
+            # remove the ones that are in recipe tags and not incoming
+            # add the ones that are in incoming and not in recipe tags
         tags_to_remove = set(recipe.tags) - set(new_tags)
         tags_to_add = set(new_tags) - set(recipe.tags)
         for tag in tags_to_remove:
@@ -196,10 +198,6 @@ def update_a_recipe(id):
 
         for tag in tags_to_add:
             recipe.tags.append(tag)
-        # compare incoming tags and recipe tags as sets
-            # remove the ones that are in recipe tags and not incoming
-            # add the ones that are in incoming and not in recipe tags
-
 
         db.session.commit()
         return recipe.to_dict_detailed()
