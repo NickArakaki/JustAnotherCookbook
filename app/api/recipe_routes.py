@@ -3,21 +3,9 @@ from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
 from app.models import db, Recipe, Ingredient, Method, Review
 from app.forms import RecipeForm, ReviewForm
+import json
 
 recipe_routes = Blueprint('recipes', __name__)
-
-# Custom Validators
-def validIngredient(ingredient):
-    isValid = False
-    if ingredient["ingredient"] and (float(ingredient["amount"]) > 0):
-        isValid = True
-    return isValid
-
-def validMethod(method):
-    isValid = False
-    if method["details"]:
-        isValid = True
-    return isValid
 
 
 # Routes
@@ -61,9 +49,11 @@ def post_a_recipe():
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
-    ingredientsList = data["ingredients"]
-    methodsList = data["methods"]
     if form.validate_on_submit():
+        ingredient_list = json.loads(data["ingredients"])
+        method_list = json.loads(data["methods"])
+        tag_list = json.loads(data["tags"])
+
         new_recipe = Recipe(
             author_id = current_user.id,
             title = data["title"],
@@ -73,28 +63,24 @@ def post_a_recipe():
         )
         db.session.add(new_recipe)
 
-        for ingredient in data["ingredients"]:
-            # make sure is valid before create new ingredient
-            if validIngredient(ingredient):
-                new_ingredient = Ingredient(
-                    ingredient = ingredient["ingredient"],
-                    amount = ingredient["amount"],
-                    units = ingredient["units"]
-                )
-                new_recipe.ingredients.append(new_ingredient)
-            else:
-                return { "errors": "Invalid Ingredient" }, 401
+        for ingredient in ingredient_list:
+            new_ingredient = Ingredient(
+                ingredient = ingredient["ingredient"],
+                amount = ingredient["amount"],
+                units = ingredient["units"]
+            )
+            new_recipe.ingredients.append(new_ingredient)
 
-        for idx, method in enumerate(methodsList):
-            if validMethod(method):
+        for idx, method in enumerate(method_list):
                 new_method = Method(
                     step_number = idx + 1,
                     details = method["details"],
                     image_url = method["image_url"]
                 )
                 new_recipe.methods.append(new_method)
-            else:
-                return { "errors": "Invalid Method" }, 401
+
+        for tag in tag_list:
+            pass
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -119,10 +105,13 @@ def update_a_recipe(id):
     if not recipe:
         return { "errors": ["Recipe could not be found" ] }, 404
     elif recipe.author.id != current_user.id:
-        return { "errors": ["User is not authorized to edit this Recipe"] }, 401
+        return { "errors": ["User is not authorized to edit this Recipe"] }, 403
 
     # Form validations
     if form.validate_on_submit():
+        ingredients_list = json.loads(data["ingredients"])
+        methods_list = json.loads(data["methods"])
+
         recipe.title = data["title"]
         recipe.total_time = data["total_time"]
         recipe.description = data["description"]
@@ -130,29 +119,22 @@ def update_a_recipe(id):
 
         # compare lengths of the ingredients on recipe
         # iterate over ingredients
-        ingredient_difference = len(data["ingredients"]) - len(recipe.ingredients)
+        ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
 
-        for new_ingredient, old_ingredient in zip(data["ingredients"], recipe.ingredients):
-                if validIngredient(new_ingredient):
+        for new_ingredient, old_ingredient in zip(ingredients_list, recipe.ingredients):
                     old_ingredient.ingredient = new_ingredient["ingredient"]
                     old_ingredient.amount = new_ingredient["amount"]
                     old_ingredient.units = new_ingredient["units"]
-                else:
-                    return { "errors": ["Invalid Ingredient"] }
 
         if ingredient_difference > 0: # new ingredients to be added
             # iterate through, update existing ingredients with new data
-            for ingredient in data["ingredients"][(ingredient_difference * -1):]: # get the new ingredients
-                if validIngredient(ingredient):
+            for ingredient in ingredients_list[(ingredient_difference * -1):]: # get the new ingredients
                     new_ingredient = Ingredient(
                         ingredient = ingredient["ingredient"],
                         amount = ingredient["amount"],
                         units = ingredient["units"]
                     )
                     recipe.ingredients.append(new_ingredient)
-                else:
-                    return { "errors": ["Invalid Ingredient"] }
-            pass
         elif ingredient_difference < 0: # fewer or same number of ingredients
             # delete the extra recipe ingredients
             for ingredient in recipe.ingredients[ingredient_difference:]:
@@ -160,27 +142,22 @@ def update_a_recipe(id):
 
 
         # compare lengths of the methods on recipe
-        method_difference = len(data["methods"]) - len(recipe.methods)
+        method_difference = len(methods_list) - len(recipe.methods)
 
-        for new_method, old_method in zip(data["methods"], recipe.methods):
-                if validMethod(new_method):
+        for new_method, old_method in zip(methods_list, recipe.methods):
                     old_method.details = new_method["details"]
                     old_method.image_url = new_method["image_url"]
-                else:
-                    return { "errors": ["Invalid Method"] }
 
         if method_difference > 0: # new methods to be added
-        # validate, and create new methods and add them to recipe
-            for idx, method in enumerate(data["methods"][(method_difference * -1):]): # iterate over the new methods
-                if validMethod(method):
+
+            for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
                     new_method = Method(
                         step_number = len(recipe.methods) + 1,
                         details = method["details"],
                         image_url = method["image_url"]
                     )
                     recipe.methods.append(new_method)
-                else:
-                    return { "errors": ["Invalid Method"] }
+
         elif method_difference < 0: # fewer or same number of methods
         # if there are fewer methods, remove the methods that were removed
             for method in recipe.methods[method_difference:]:
@@ -204,7 +181,7 @@ def delete_recipe(id):
     if not recipe:
         return { "errors": ["Recipe could not be found"] }, 404
     elif recipe.author.id != current_user.id:
-        return { "errors": ["User is unauthorized to delete this recipe"] }, 401
+        return { "errors": ["User is unauthorized to delete this recipe"] }, 403
     else:
         db.session.delete(recipe)
         db.session.commit()
@@ -221,7 +198,7 @@ def post_a_review(id):
     if not recipe:
         return { "errors": ["Recipe could not be found."] }, 404
     elif recipe.author.id == current_user.id: # User cannot leave Review on their own Recipe
-        return { "errors": ["User not authorized to leave comment on own Recipe"] }, 401
+        return { "errors": ["User not authorized to leave comment on own Recipe"] }, 403
     elif current_user.id in [review.user_id for review in recipe.reviews]: # User cannot leave more than one Review per Recipe
         return { "errors": ["User cannot leave more than 1 Review per Recipe"] }, 401
     # should also prevent users from making more than one review per recipe

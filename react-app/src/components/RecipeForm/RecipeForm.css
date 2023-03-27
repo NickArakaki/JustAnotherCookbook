@@ -1,16 +1,39 @@
-.recipe_form {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    margin: 50px auto;
+.recipe_form_background_image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    background-image: url("../../assets/images/bread.jpg");
+    background-attachment: fixed;
 }
 
-.recipe_form > * {
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+.recipe_form {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    min-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffffd9;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    position: relative;
+    top: 25px;
 }
 
 .recipe_form_label {
-    font-size: 20px;
+    font-size: 1rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-bottom: .75rem;
+    font-weight: bold;
+}
+
+.recipe_form_input {
+    padding: .25rem;
+}
+
+.recipe_form_input::placeholder{
+    font-style: italic;
 }
 
 .recipe_form_input_div,
@@ -27,7 +50,9 @@
 }
 
 .recipe_form_title {
-    font-size: 36px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
 }
 
 .recipe_form_description_input {
@@ -35,12 +60,16 @@
     resize: none;
 }
 
+/* Ingredients */
+
 .ingredients_inputs {
+    display: inline-flex;
+    justify-content: space-between;
     margin: 5px 0px;
 }
 
-.method_div > input {
-    margin-bottom: px;
+.ingredient_input {
+    width: fit-content;
 }
 
 .add_ingredient_button,
@@ -51,6 +80,7 @@
     margin: 10px 0px;
 }
 
+/* Methods */
 .remove_method_button,
 .remove_ingredient_button {
     background-color: transparent;
@@ -59,10 +89,46 @@
     cursor: pointer;
 }
 
-.ingredient_input {
-    margin: 0 15px;
+/* Tags */
+.recipe_form_display_tag_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
+.tag {
+    margin: .5rem;
+    padding: .25rem;
+    background-color: #ee5836;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tag_name {
+    margin-right: .25rem;
+    font-size: 12px;
+}
+
+.tag_name,
+.remove_tag_button {
+    color: #fff;
+}
+
+.remove_tag_button {
+    font-size: 8px;;
+    justify-self: flex-start;
+    cursor: pointer;
+
+}
+
+.remove_tag_button:hover {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+/* Bottom */
 .recipe_form_submit_button {
     width: 50%;
     padding: 10px 0px;

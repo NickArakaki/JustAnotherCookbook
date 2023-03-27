@@ -44,9 +44,11 @@ function RecipeDetails() {
                         <div className="single_recipe_title">{recipe.title}</div>
                         {recipe.author.id === sessionUser?.id ? (
                             <div className="recipe_details_edit_and_delete_button_div">
-                                <Link to={`/recipes/${recipe.id}/edit`}>Edit</Link>
+                                <Link to={`/recipes/${recipe.id}/edit`}>
+                                    <i className="edit_recipe_icon fa-solid fa-pen-to-square" />
+                                </Link>
                                 <OpenModalButton
-                                    buttonText="Delete"
+                                    buttonText={<i className="delete_recipe_icon fa-solid fa-trash" />}
                                     modalComponent={<DeleteRecipeConfirmationModal recipe={recipe} />}
                                 />
                             </div>
@@ -55,7 +57,7 @@ function RecipeDetails() {
                         )
                         }
                     </div>
-                    <div className="single_recipe_preview_image">
+                    <div className="single_recipe_image_div">
                         <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
                     </div>
                     <div className="recipe_details_div">

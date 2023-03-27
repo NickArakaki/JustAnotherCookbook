@@ -5,6 +5,7 @@
     height: 100vh;
     width: 100vw;
     margin: 0;
+    background-attachment: fixed;
 }
 
 .signup_background_image {
