@@ -1,16 +1,38 @@
-.recipe_form {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    margin: 50px auto;
+.recipe_form_background_image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-image: url("../../assets/images/bread.jpg");
+    background-attachment: fixed;
 }
 
-.recipe_form > * {
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+.recipe_form {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    min-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffffc5;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
 }
 
 .recipe_form_label {
-    font-size: 20px;
+    font-size: 1rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-bottom: .75rem;
+    font-weight: bold;
+}
+
+.recipe_form_input {
+    padding: .25rem;
+}
+
+.recipe_form_input::placeholder{
+    font-style: italic;
 }
 
 .recipe_form_input_div,
@@ -28,6 +50,8 @@
 
 .recipe_form_title {
     font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
 }
 
 .recipe_form_description_input {
@@ -36,7 +60,13 @@
 }
 
 .ingredients_inputs {
+    display: inline-flex;
+    justify-content: space-between;
     margin: 5px 0px;
+}
+
+.ingredient_input {
+    width: fit-content;
 }
 
 .method_div > input {
@@ -57,10 +87,6 @@
     border: none;
     color: maroon;
     cursor: pointer;
-}
-
-.ingredient_input {
-    margin: 0 15px;
 }
 
 .recipe_form_submit_button {
