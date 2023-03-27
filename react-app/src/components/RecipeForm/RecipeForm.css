@@ -15,7 +15,7 @@
     width: 25%;
     min-width: 600px;
     margin: 0 auto;
-    background-color: #ffffffc5;
+    background-color: #ffffffd9;
     padding: 1.5rem;
     border-radius: 1.5rem;
 }
@@ -59,6 +59,8 @@
     resize: none;
 }
 
+/* Ingredients */
+
 .ingredients_inputs {
     display: inline-flex;
     justify-content: space-between;
@@ -69,10 +71,6 @@
     width: fit-content;
 }
 
-.method_div > input {
-    margin-bottom: px;
-}
-
 .add_ingredient_button,
 .add_method_button,
 .remove_method_button {
@@ -81,6 +79,7 @@
     margin: 10px 0px;
 }
 
+/* Methods */
 .remove_method_button,
 .remove_ingredient_button {
     background-color: transparent;
@@ -89,6 +88,46 @@
     cursor: pointer;
 }
 
+/* Tags */
+.recipe_form_display_tag_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.tag {
+    margin: .5rem;
+    padding: .25rem;
+    background-color: #ee5836;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tag_name {
+    margin-right: .25rem;
+    font-size: 12px;
+}
+
+.tag_name,
+.remove_tag_button {
+    color: #fff;
+}
+
+.remove_tag_button {
+    font-size: 8px;;
+    justify-self: flex-start;
+    cursor: pointer;
+
+}
+
+.remove_tag_button:hover {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+/* Bottom */
 .recipe_form_submit_button {
     width: 50%;
     padding: 10px 0px;
