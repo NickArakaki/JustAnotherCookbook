@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
 from app.models import db, Recipe, Ingredient, Method, Review
 from app.forms import RecipeForm, ReviewForm
+import json
 
 recipe_routes = Blueprint('recipes', __name__)
 
@@ -61,8 +62,8 @@ def post_a_recipe():
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
-    ingredientsList = data["ingredients"]
-    methodsList = data["methods"]
+    ingredientsList = json.loads(data["ingredients"])
+    methodsList = json.loads(data["methods"])
     if form.validate_on_submit():
         new_recipe = Recipe(
             author_id = current_user.id,
@@ -73,28 +74,21 @@ def post_a_recipe():
         )
         db.session.add(new_recipe)
 
-        for ingredient in data["ingredients"]:
-            # make sure is valid before create new ingredient
-            if validIngredient(ingredient):
-                new_ingredient = Ingredient(
-                    ingredient = ingredient["ingredient"],
-                    amount = ingredient["amount"],
-                    units = ingredient["units"]
-                )
-                new_recipe.ingredients.append(new_ingredient)
-            else:
-                return { "errors": "Invalid Ingredient" }, 401
+        for ingredient in ingredientsList:
+            new_ingredient = Ingredient(
+                ingredient = ingredient["ingredient"],
+                amount = ingredient["amount"],
+                units = ingredient["units"]
+            )
+            new_recipe.ingredients.append(new_ingredient)
 
         for idx, method in enumerate(methodsList):
-            if validMethod(method):
                 new_method = Method(
                     step_number = idx + 1,
                     details = method["details"],
                     image_url = method["image_url"]
                 )
                 new_recipe.methods.append(new_method)
-            else:
-                return { "errors": "Invalid Method" }, 401
 
         db.session.commit()
         return new_recipe.to_dict_detailed()

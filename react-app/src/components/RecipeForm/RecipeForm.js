@@ -99,9 +99,9 @@ function RecipeForm({ recipe }) {
             description,
             "preview_image_url": previewImageURL,
             "total_time": estimatedTime,
-            "ingredients": ingredientsList,
-            "methods": methodsList,
-            tags
+            "ingredients": JSON.stringify(ingredientsList),
+            "methods": JSON.stringify(methodsList),
+            "tags": JSON.stringify(tags)
         }
         // validate
         // if pass validations dispatch thunk
