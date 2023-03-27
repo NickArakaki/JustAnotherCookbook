@@ -1,0 +1,17 @@
+.user_page_container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.user_page_title_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.user_page_title,
+.user_page_icon {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0 .5em;
+}

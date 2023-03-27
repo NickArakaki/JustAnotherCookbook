@@ -27,7 +27,7 @@ function RecipeTiles() {
                         <div className="recipe_tile_tags">
                             {recipe.tags.map(tag =>{
                                 return (
-                                    <Link key={tag.id} to={`/tags/${tag.id}`}>{tag.tag}</Link>
+                                    <Link key={tag.id} to={`/tags/${tag.id}`}>{tag.tag.toUpperCase()}</Link>
                                 )
                             })}
                         </div>
