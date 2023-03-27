@@ -34,7 +34,7 @@ export default function reducer(state = initialState, action) {
     switch(action.type) {
         case GET_ALL_TAGS: {
             for (const tag of action.payload) {
-                newState[tag.tag] = tag; // normalize by tag name for easier look up with use params
+                newState[tag.id] = tag; // normalize by tag name for easier look up with use params
             }
             return newState;
         }
