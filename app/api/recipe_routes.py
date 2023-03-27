@@ -119,6 +119,8 @@ def update_a_recipe(id):
     if form.validate_on_submit():
         ingredients_list = json.loads(data["ingredients"])
         methods_list = json.loads(data["methods"])
+        tags_list = json.loads(data["tags"])
+        db_tags_list = Tag.query.all()
 
         recipe.title = data["title"]
         recipe.total_time = data["total_time"]
@@ -170,6 +172,34 @@ def update_a_recipe(id):
         # if there are fewer methods, remove the methods that were removed
             for method in recipe.methods[method_difference:]:
                 recipe.methods.remove(method)
+
+        # update tags
+        # get list of tags for incoming change (either get existing tag, or create new one)
+        new_tags = []
+        for tag in tags_list:
+            existing_tag = [db_tag for db_tag in db_tags_list if db_tag.tag == tag]
+            if existing_tag:
+                new_tags.append(*existing_tag)
+            if not existing_tag:
+                new_tag = Tag(tag=tag)
+                db.session.add(new_tag)
+                new_tags.append(new_tag)
+
+        print("=================================================================================================",set(new_tags))
+        print("=================================================================================================",set(recipe.tags))
+        tags_to_remove = set(recipe.tags) - set(new_tags)
+        tags_to_add = set(new_tags) - set(recipe.tags)
+        for tag in tags_to_remove:
+            recipe.tags.remove(tag)
+            if not tag.recipes:
+                db.session.delete(tag)
+
+        for tag in tags_to_add:
+            recipe.tags.append(tag)
+        # compare incoming tags and recipe tags as sets
+            # remove the ones that are in recipe tags and not incoming
+            # add the ones that are in incoming and not in recipe tags
+
 
         db.session.commit()
         return recipe.to_dict_detailed()

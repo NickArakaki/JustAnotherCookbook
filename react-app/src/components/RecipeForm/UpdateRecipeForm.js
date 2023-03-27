@@ -16,7 +16,7 @@ function UpdateRecipeForm() {
         dispatch(getSingleRecipeThunk(recipeId))
             .then((data) => {
                 if (data) {
-                    history.push("/")
+                    history.push("/") // if there is data probably means 404?
                 } else {
                     setIsLoaded(true)
                 }
