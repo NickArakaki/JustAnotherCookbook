@@ -76,7 +76,7 @@ function RecipeForm({ recipe }) {
 
             inputTags.forEach(tag => {
                 // Only add new tags, no repeats
-                const formattedTag = tag.trim().toUpperCase();
+                const formattedTag = tag.trim().toLowerCase();
                 if (formattedTag && formattedTag.length <= 60 && !newTags.includes(formattedTag)) {
                     newTags.push(formattedTag);
                 }
@@ -286,13 +286,15 @@ function RecipeForm({ recipe }) {
                         {tags.map((tag, idx) => {
                             return (
                                 <div className="tag" key={idx}>
-                                    <span className="tag_name">{tag}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
+                                    <span className="tag_name">{tag.toUpperCase()}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
                                 </div>
                             )
                         })}
                     </div>
                     <p className="recipe_form_input_recommendations">
-                        To give your recipe the best opportunity to be found please use at least 5 tags, making sure to include the meal type, any relevant dietary tags, and primary ingredient types. Other relevant tags could be seasons or holidays, event types, or cooking techniques.
+                        To give your recipe the best opportunity to be found please use at least 5 tags,
+                        making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
+                        Other relevant tags could be seasons or holidays, event types, or cooking techniques.
                     </p>
                 </div>
                 <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
