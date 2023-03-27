@@ -10,6 +10,7 @@ import RecipeDetails from "./components/RecipeDetails";
 import RecipeForm from "./components/RecipeForm/RecipeForm";
 import UpdateRecipeForm from "./components/RecipeForm/UpdateRecipeForm";
 import UserPage from "./components/UserPage";
+import TagRecipePage from "./components/TagRecipePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path={`/users/:userId`}>
             <UserPage />
+          </Route>
+          <Route path={`/tags/:tagName`}>
+            <TagRecipePage />
           </Route>
         </Switch>
       )}

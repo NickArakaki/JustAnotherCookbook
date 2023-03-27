@@ -59,3 +59,20 @@
 .recipe_tile_author > a:hover {
     text-decoration-thickness: 4px;
 }
+
+.recipe_tile_tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.recipe_tile_tags > a {
+    margin: .25em;
+    padding: .25em;
+    background-color: coral;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+}
