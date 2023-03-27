@@ -3,24 +3,59 @@
     margin: 15px auto;
     max-width: 1400px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 20px;
-    font-family: sans-serif;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
+    grid-column-gap: 2%;
+    grid-row-gap: 3rem;
 }
 
 .recipe_tile {
     display: flex;
     flex-direction: column;
     margin: 15px;
-    border-radius: 15px;
-    box-shadow: 5px 5px 5px #999;
-    padding: 5px;
+    height: 600px;
+    max-width: 250px;
+    border-radius: 0 0 15px 15px;
+    border: 1px solid #ccc;
 }
 
-.recipe_image {
+.recipe_tile_details_link {
+    cursor: pointer;
+}
+
+.recipe_tile_details_link:hover .recipe_tile_title {
+    text-decoration: underline 4px #e6ec31;
+    text-underline-position: under;
+}
+
+.recipe_tile_image {
     width: 100%;
-    height: 250px;
+    height: 300px;
     display: block;
-    border-radius: 25px;
     object-fit: cover;
+}
+
+.recipe_tile_title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.recipe_tile_description,
+.recipe_tile_author {
+    font-size: 1rem;
+    min-height: fit-content;
+    padding: 0 1rem;
+    margin-top: .5rem;
+}
+
+.recipe_tile_author {
+    font-style: italic;
+}
+
+.recipe_tile_author > a {
+    text-decoration: underline #e6ec31;
+}
+
+.recipe_tile_author > a:hover {
+    text-decoration-thickness: 4px;
 }

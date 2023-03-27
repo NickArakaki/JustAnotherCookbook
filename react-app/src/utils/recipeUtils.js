@@ -1,7 +1,9 @@
 export const measurementUnits = ["", "tsp", "tbsp", "oz", "fl. oz", "C", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
 
 
-// validate image url
+// validate ingredients
+// validate methods
+// validate tags
 
 
 // validate recipe method

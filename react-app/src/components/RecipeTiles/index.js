@@ -15,10 +15,10 @@ function RecipeTiles() {
             {Object.values(recipes).map(recipe => {
                 return (
                     <div key={recipe.id} className="recipe_tile">
-                        <div onClick={() => goToRecipeDetails(recipe)}>
+                        <div className="recipe_tile_details_link" onClick={() => goToRecipeDetails(recipe)}>
                             <div className="recipe_tile_image">
                                 <div className="recipe_tile_favorite_button"></div>
-                                <img className="recipe_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
+                                <img className="recipe_tile_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
                             </div>
                             <div className="recipe_tile_title">{recipe.title}</div>
                             <div className="recipe_tile_description">{recipe.description}</div>

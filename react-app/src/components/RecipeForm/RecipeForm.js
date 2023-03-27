@@ -18,8 +18,11 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
+    const [tags, setTags] = useState(recipe?.tags ? recipe.tags : [])
+    const [tagInput, setTagInput] = useState("")
 
 
+    /********************************************** Ingredient Helpers *****************************************************/
     const handleIngredientInputChange = (e, idx) => {
         const { name, value } = e.target
         const updatedIngredientsList = [...ingredientsList]
@@ -41,6 +44,7 @@ function RecipeForm({ recipe }) {
         }
     }
 
+    /********************************************** Method Helpers *****************************************************/
     const handleMethodInputChange = (e, idx) => {
         const { name, value } = e.target
         const updatedMethodsList = [...methodsList]
@@ -62,6 +66,32 @@ function RecipeForm({ recipe }) {
         }
     }
 
+    /********************************************** Tag Helpers *****************************************************/
+    const handleAddTag = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            const inputTags = e.target.value.split(",")
+            const newTags = [...tags]
+
+            inputTags.forEach(tag => {
+                if (tag.trim() && tag.trim().length <= 60) {
+                    newTags.push(tag.trim());
+                }
+            })
+
+            setTags(newTags)
+            setTagInput("")
+        }
+    }
+
+    const handleRemoveTag = (idx) => {
+        const newTags = [ ...tags ]
+        newTags.splice(idx, 1)
+        setTags(newTags)
+    }
+
+    /********************************************** Submit *****************************************************/
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newRecipe = {
@@ -70,7 +100,8 @@ function RecipeForm({ recipe }) {
             "preview_image_url": previewImageURL,
             "total_time": estimatedTime,
             "ingredients": ingredientsList,
-            "methods": methodsList
+            "methods": methodsList,
+            tags
         }
         // validate
         // if pass validations dispatch thunk
@@ -235,6 +266,28 @@ function RecipeForm({ recipe }) {
                 >
                     Add Step
                 </button>
+            </div>
+            <div className="recipe_form_input_div">
+                <label className="recipe_form_label">Tags</label>
+                <input
+                    type="text"
+                    placeholder="Press [Enter] after each tag"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => handleAddTag(e)}
+                />
+                <div className="recipe_form_display_tag_div">
+                    {tags.map((tag, idx) => {
+                        return (
+                            <div className="tag" key={idx}>
+                                <span className="tag_name">{tag}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="recipe_form_input_recommendations">
+                    To give your recipe the best opportunity to be found please use at least 5 tags, making sure to include the meal type, any relevant dietary tags, and primary ingredient types. Other relevant tags could be seasons or holidays, event types, or cooking techniques.
+                </div>
             </div>
             <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
             <div className="recipe_form_legend">

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 1rem 1.5rem;
 }
 
 .navbar_div a,
@@ -21,6 +21,10 @@
   width: 15%;
 }
 
+.navbar_user_container > a:hover {
+  border-bottom: 4px solid #e6ec31;
+}
+
 .navbar_logged_out_elements {
   display: flex;
   flex-direction: row;
@@ -33,9 +37,10 @@
 }
 
 .navbar_search_div {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   justify-content: flex-end;
+  min-width: fit-content;
 }
 
 .search_form_input {
