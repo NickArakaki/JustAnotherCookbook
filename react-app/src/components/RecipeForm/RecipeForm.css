@@ -1,8 +1,8 @@
 .recipe_form_background_image {
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     background-image: url("../../assets/images/bread.jpg");
     background-attachment: fixed;
@@ -18,6 +18,8 @@
     background-color: #ffffffd9;
     padding: 1.5rem;
     border-radius: 1.5rem;
+    position: relative;
+    top: 25px;
 }
 
 .recipe_form_label {

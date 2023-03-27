@@ -55,7 +55,7 @@ function RecipeDetails() {
                         )
                         }
                     </div>
-                    <div className="single_recipe_preview_image">
+                    <div className="single_recipe_image_div">
                         <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
                     </div>
                     <div className="recipe_details_div">
