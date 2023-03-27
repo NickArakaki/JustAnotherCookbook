@@ -4,9 +4,16 @@ from wtforms.validators import DataRequired, ValidationError
 import json
 
 def tag_validation(form, field):
-    # Checking if user exists
     tags = json.loads(field.data)
-    pass
+
+    if len(tags) < 5:
+        raise ValidationError("Must have at least 5 tags")
+
+    for tag in tags:
+        if not tag.strip():
+            raise ValidationError("Tags Cannot Be Empty Strings")
+        if len(tag) > 60:
+            raise ValidationError("Tags Cannot Be Longer Than 60 Characters")
 
 
 def ingredient_validation(form, field):

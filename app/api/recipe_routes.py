@@ -49,9 +49,11 @@ def post_a_recipe():
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
-    ingredientsList = json.loads(data["ingredients"])
-    methodsList = json.loads(data["methods"])
     if form.validate_on_submit():
+        ingredient_list = json.loads(data["ingredients"])
+        method_list = json.loads(data["methods"])
+        tag_list = json.loads(data["tags"])
+
         new_recipe = Recipe(
             author_id = current_user.id,
             title = data["title"],
@@ -61,7 +63,7 @@ def post_a_recipe():
         )
         db.session.add(new_recipe)
 
-        for ingredient in ingredientsList:
+        for ingredient in ingredient_list:
             new_ingredient = Ingredient(
                 ingredient = ingredient["ingredient"],
                 amount = ingredient["amount"],
@@ -69,13 +71,16 @@ def post_a_recipe():
             )
             new_recipe.ingredients.append(new_ingredient)
 
-        for idx, method in enumerate(methodsList):
+        for idx, method in enumerate(method_list):
                 new_method = Method(
                     step_number = idx + 1,
                     details = method["details"],
                     image_url = method["image_url"]
                 )
                 new_recipe.methods.append(new_method)
+
+        for tag in tag_list:
+            pass
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
