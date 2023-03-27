@@ -14,6 +14,7 @@ function RecipeDetails() {
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
     const recipe = useSelector(state => state.recipes.singleRecipe)
+    const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
     const sessionUser = useSelector(state => state.session.user)
 
     useEffect(() => {
@@ -31,9 +32,9 @@ function RecipeDetails() {
     if (isLoaded && !Object.values(recipe).length) return <Redirect to="/" />
 
     // calculate average rating
-    const averageRating = isLoaded ? recipe.reviews.reduce((accumulator, currentReview) => {
+    const averageRating = isLoaded ? reviews.reduce((accumulator, currentReview) => {
         return accumulator + Number(currentReview.rating)
-    }, 0) / recipe.reviews.length : null
+    }, 0) / reviews.length : null
 
 
     return (
