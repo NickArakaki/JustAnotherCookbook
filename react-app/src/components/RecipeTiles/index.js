@@ -24,7 +24,13 @@ function RecipeTiles() {
                             <div className="recipe_tile_description">{recipe.description}</div>
                         </div>
                         <div className="recipe_tile_author">submitted by <Link to={`/users/${recipe.author.id}`}>{recipe.author.username}</Link></div>
-                        <div className="recipe_tile_tags"></div>
+                        <div className="recipe_tile_tags">
+                            {recipe.tags.map(tag =>{
+                                return (
+                                    <Link key={tag.id} to={`/tags/${tag.tag}`}>{tag.tag}</Link>
+                                )
+                            })}
+                        </div>
                     </div>
                 )
             })}

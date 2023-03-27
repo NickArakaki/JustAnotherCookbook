@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
-from app.models import db, Recipe, Ingredient, Method, Review
+from app.models import db, Recipe, Ingredient, Method, Review, Tag
 from app.forms import RecipeForm, ReviewForm
 import json
 
@@ -53,6 +53,7 @@ def post_a_recipe():
         ingredient_list = json.loads(data["ingredients"])
         method_list = json.loads(data["methods"])
         tag_list = json.loads(data["tags"])
+        db_tags = Tag.query.all()
 
         new_recipe = Recipe(
             author_id = current_user.id,
@@ -80,7 +81,14 @@ def post_a_recipe():
                 new_recipe.methods.append(new_method)
 
         for tag in tag_list:
-            pass
+            existing_tag = [db_tag for db_tag in db_tags if db_tag.tag == tag]
+
+            if not existing_tag:
+                new_tag = Tag(tag=tag)
+                new_recipe.tags.append(new_tag)
+            else:
+                new_recipe.tags.append(existing_tag[0])
+
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
