@@ -1,14 +1,13 @@
 .recipe_form_background_image {
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
-    width: 100vw;
     background-image: url("../../assets/images/bread.jpg");
     background-attachment: fixed;
+    height: 100%;
+    width: 100%;
 }
 
 .recipe_form {
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -17,8 +16,6 @@
     background-color: #ffffffd9;
     padding: 1.5rem;
     border-radius: 1.5rem;
-    position: relative;
-    top: 25px;
 }
 
 .recipe_form_label {
@@ -80,6 +77,16 @@
     margin: 10px 0px;
 }
 
+.add_ingredient_button,
+.add_method_button {
+    border: none;
+    background-color: coral;
+    border-radius: .25em;
+    color: white;
+    cursor: pointer;
+    padding: .5em;
+}
+
 /* Methods */
 .remove_method_button,
 .remove_ingredient_button {
@@ -99,7 +106,7 @@
 .tag {
     margin: .5rem;
     padding: .25rem;
-    background-color: #ee5836;
+    background-color: coral;
     display: inline-flex;
     align-items: center;
     justify-content: center;

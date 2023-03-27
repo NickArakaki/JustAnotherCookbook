@@ -90,10 +90,19 @@
     color: red;
 }
 
+
+
+.auth_form_signup_link_div > a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: black
+}
+
 .auth_form_signup_link {
     text-decoration: underline yellow solid;
+    text-underline-position: under;
 }
 
 .auth_form_signup_link:hover {
-    text-decoration: underline yellow solid 3px;
+    text-decoration: underline 4px #e6ec31;
 }
