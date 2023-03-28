@@ -24,7 +24,11 @@ def authenticate():
     Authenticates a user.
     """
     if current_user.is_authenticated:
-        return current_user.to_dict()
+        return {
+                    "user": current_user.to_dict(),
+                    "userFavoriteRecipes": [recipe.to_dict() for recipe in current_user.liked_recipes],
+                    "userReviewedRecipes": [review.recipe.to_dict() for review in current_user.reviews ]
+                }
     return {'errors': ['Unauthorized']}
 
 
@@ -41,7 +45,11 @@ def login():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
-        return user.to_dict()
+        return {
+                "user": user.to_dict(),
+                "userFavoriteRecipes": [recipe.to_dict() for recipe in user.liked_recipes],
+                "userReviewedRecipes": [review.recipe.to_dict() for review in user.reviews ]
+                }
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 

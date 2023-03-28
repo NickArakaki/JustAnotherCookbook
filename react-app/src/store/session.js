@@ -11,7 +11,6 @@ const removeUser = () => ({
 	type: REMOVE_USER,
 });
 
-const initialState = { user: null };
 
 export const authenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/", {
@@ -43,6 +42,7 @@ export const login = (email, password) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
+		// hydrate the userReviewdRecipes, and userFavoriteRecipes
 		dispatch(setUser(data));
 		return null;
 	} else if (response.status < 500) {
@@ -94,12 +94,30 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
+const initialState = { user: null, userFavoriteRecipes: {}, userReviewedRecipes: {} };
+
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
-			return { user: action.payload };
+			const newState = { ...state };
+
+			newState.user = action.payload.user
+			console.log("action payload", action.payload)
+			const normalizedFavorites = {}
+			for (const recipe of action.payload.userFavoriteRecipes) {
+				normalizedFavorites[recipe.id] = recipe
+			}
+			newState.userFavoriteRecipes = normalizedFavorites
+
+			const normalizedReviewedRecipes = {};
+			for (const recipe of action.payload.userReviewedRecipes) {
+				normalizedReviewedRecipes[recipe.id] = recipe
+			}
+			newState.userReviewedRecipes = normalizedReviewedRecipes
+
+			return newState;
 		case REMOVE_USER:
-			return { user: null };
+			return initialState;
 		default:
 			return state;
 	}

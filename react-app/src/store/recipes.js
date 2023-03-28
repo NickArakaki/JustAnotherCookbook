@@ -5,6 +5,7 @@ const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
 const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
 const GET_TAG_RECIPES = "recipes/GET_TAG_RECIPES"
+// const LIKE_A_RECIPE = "recipes/LIKE_A_RECIPE"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
 const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE'
 const DELETE_RECIPE = 'recipes/DELETE_RECIPE'
@@ -37,6 +38,13 @@ const getTagRecipes = recipes => {
         payload: recipes
     }
 }
+
+// const likeARecipe = recipe => {
+//     return {
+//         type: LIKE_A_RECIPE,
+//         payload: recipe
+//     }
+// }
 
 const postARecipe = recipe => {
     return {
@@ -135,6 +143,25 @@ export const getTagRecipesThunk = tagId => async (dispatch) => {
     }
 }
 
+// export const likeARecipeThunk = recipeId => async (dispatch) => {
+//     const res = await fetch(`/api/recipes/${recipeId}/likes`, {
+//         method: "POST"
+//     })
+
+//     if (res.ok) {
+//         const data = await res.json();
+//         dispatch(likeARecipe(data));
+//         return null;
+//     } else if (res.status < 500) {
+//         const data = await res.json();
+//         if (data.errors) {
+//             return data.errors
+//         }
+//     } else {
+//         return ["An error occured. Please try again later."]
+//     }
+// }
+
 export const postARecipeThunk = recipe => async (dispatch) => {
     const res = await fetch(`/api/recipes/`, {
         method: "POST",
@@ -231,6 +258,11 @@ export default function reducer(state = initialState, action) {
 
             return newState;
         }
+        // case LIKE_A_RECIPE: {
+        //     newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
+        //     newState.userFavoriteRecipes[action.payload.id] = action.payload
+        //     return newState
+        // }
         case POST_A_RECIPE: {
             newState.singleRecipe = action.payload;
             return newState;
