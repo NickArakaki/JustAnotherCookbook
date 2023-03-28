@@ -1,5 +1,5 @@
 from .db import db
-from .user import User, users_liked_recipes
+from .user import User
 from .db import environment, SCHEMA
 from .recipe import Recipe
 from .ingredient import Ingredient
