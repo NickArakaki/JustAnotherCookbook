@@ -2,8 +2,7 @@ import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom"
 import "./RecipeTiles.css"
 
-function RecipeTiles() {
-    const recipes = useSelector(state => state.recipes.allRecipes)
+function RecipeTiles({ recipes }) {
     const history = useHistory();
 
     const goToRecipeDetails = (recipe) => {

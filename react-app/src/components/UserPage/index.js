@@ -11,6 +11,7 @@ function UserPage() {
     const [isLoaded, setIsLoaded] = useState(false)
     const { userId } = useParams();
     const user = useSelector(state => state.users[userId])
+    const userRecipes = useSelector(state => state.recipes.allRecipes)
 
     useEffect(() => {
         dispatch(getUserRecipesThunk(userId))
@@ -26,7 +27,7 @@ function UserPage() {
                         <div className="user_page_icon"><i className="fa-solid fa-user" /></div>
                         <div className="user_page_title">{user.username}'s Recipes</div>
                     </div>
-                    <RecipeTiles />
+                    <RecipeTiles recipes={userRecipes}/>
                 </div>
             ) : (
                 <h1>Loading...</h1>
