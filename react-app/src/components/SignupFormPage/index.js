@@ -69,7 +69,6 @@ function SignupFormPage() {
               value={username}
               placeholder="Enter a username"
               onChange={(e) => setUsername(e.target.value)}
-              // onBlur={(e) => setUsernameErrors(validateUsername(e.target.value))}
               required
               />
             </div>
