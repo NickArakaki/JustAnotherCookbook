@@ -1,3 +1,5 @@
+import { getUserFavoriteRecipes } from "./recipes";
+
 // constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
@@ -24,7 +26,8 @@ export const authenticate = () => async (dispatch) => {
 			return;
 		}
 
-		dispatch(setUser(data));
+		dispatch(setUser(data.user));
+		dispatch(getUserFavoriteRecipes(data.userFavoriteRecipes))
 	}
 };
 
@@ -42,8 +45,9 @@ export const login = (email, password) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
-		// hydrate the userReviewdRecipes, and userFavoriteRecipes
-		dispatch(setUser(data));
+
+		dispatch(setUser(data.user));
+		dispatch(getUserFavoriteRecipes(data.userFavoriteRecipes))
 		return null;
 	} else if (response.status < 500) {
 		const data = await response.json();
@@ -94,28 +98,12 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
-const initialState = { user: null, userFavoriteRecipes: {}, userReviewedRecipes: {} };
+const initialState = { user: null };
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
-			const newState = { ...state };
-
-			newState.user = action.payload.user
-			console.log("action payload", action.payload)
-			const normalizedFavorites = {}
-			for (const recipe of action.payload.userFavoriteRecipes) {
-				normalizedFavorites[recipe.id] = recipe
-			}
-			newState.userFavoriteRecipes = normalizedFavorites
-
-			const normalizedReviewedRecipes = {};
-			for (const recipe of action.payload.userReviewedRecipes) {
-				normalizedReviewedRecipes[recipe.id] = recipe
-			}
-			newState.userReviewedRecipes = normalizedReviewedRecipes
-
-			return newState;
+			return { user: action.payload };
 		case REMOVE_USER:
 			return initialState;
 		default:

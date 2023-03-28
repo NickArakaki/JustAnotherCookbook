@@ -5,6 +5,7 @@ const GET_ALL_RECIPES = "recipes/GET_ALL_RECIPES"
 const GET_SINGLE_RECIPE = "recipes/GET_SINGLE_RECIPE"
 const GET_USER_RECIPES = "recipes/GET_USER_RECIPES"
 const GET_TAG_RECIPES = "recipes/GET_TAG_RECIPES"
+const GET_USER_FAVORITE_RECIPES = "recipes/GET_USER_FAVORITE_RECIPES"
 // const LIKE_A_RECIPE = "recipes/LIKE_A_RECIPE"
 const POST_A_RECIPE = 'recipes/POST_A_RECIPE'
 const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE'
@@ -35,6 +36,13 @@ const getUserRecipes = recipes => {
 const getTagRecipes = recipes => {
     return {
         type: GET_TAG_RECIPES,
+        payload: recipes
+    }
+}
+
+export const getUserFavoriteRecipes = recipes => {
+    return {
+        type: GET_USER_FAVORITE_RECIPES,
         payload: recipes
     }
 }
@@ -223,7 +231,7 @@ export const deleteRecipeThunk = recipeId => async (dispatch) => {
 }
 
 // reducer
-const initialState = { allRecipes: {}, singleRecipe: {} }
+const initialState = { allRecipes: {}, singleRecipe: {}, userFavoriteRecipes: {}, userReviewedRecipes: {} }
 
 export default function reducer(state = initialState, action) {
     const newState = { ...state };
@@ -256,6 +264,15 @@ export default function reducer(state = initialState, action) {
                 newState.allRecipes[recipe.id] = recipe
             }
 
+            return newState;
+        }
+        case GET_USER_FAVORITE_RECIPES: {
+            const newState = { ...state }
+            const normalizedFavoriteRecipes = {}
+            for (const recipe of action.payload) {
+                normalizedFavoriteRecipes[recipe.id] = recipe
+            }
+            newState.userFavoriteRecipes = normalizedFavoriteRecipes
             return newState;
         }
         // case LIKE_A_RECIPE: {
