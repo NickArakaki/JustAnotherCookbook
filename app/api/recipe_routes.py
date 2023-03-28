@@ -162,3 +162,22 @@ def post_a_review(id):
         return new_review.to_dict_summary()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@recipe_routes.route('/<int:id>/likes', methods=["POST"])
+@login_required
+def like_recipe(id):
+    """
+    Add current logged in user to recipes liked_users, and return the recipe object
+    """
+    recipe = Recipe.query.get(id)
+
+    # should users be able to like their own recipes? Maybe not?
+    if not recipe:
+        return { "errors": ["Recipe could not be found"] }, 404
+    elif current_user in recipe.liked_users:
+        return { "errors": ["User already liked Recipe"] }, 401
+    else:
+        recipe.liked_users.append(current_user)
+        db.session.commit()
+        return recipe.to_dict()
