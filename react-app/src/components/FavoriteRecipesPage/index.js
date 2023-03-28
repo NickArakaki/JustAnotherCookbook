@@ -1,6 +1,8 @@
 function FavoriteRecipesPage() {
     return (
-        <h1>Favorite Recipes Coming Soon...</h1>
+        <>
+            <h1>Favorite Recipes Coming Soon...</h1>
+        </>
     )
 }
 
