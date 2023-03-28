@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
-from .recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
+from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
 from app.models import db, Recipe, Ingredient, Method, Review, Tag
 from app.forms import RecipeForm, ReviewForm
 import json
