@@ -7,7 +7,7 @@ users_liked_recipes = db.Table(
     db.Column("recipe_id", db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), primary_key=True),
     db.Column("user_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), primary_key=True)
 )
-# Add schema to recipes_tags table in production
+# Add schema to users_liked_recipes table in production
 if environment == "production":
     users_liked_recipes = SCHEMA
 
