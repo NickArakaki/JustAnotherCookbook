@@ -30,7 +30,7 @@ function SignupFormPage() {
     const validatePasswordErrors = validatePassword(password)
     setPasswordErrors(validatePasswordErrors)
 
-    const validateConfirmPasswordErrors = validateConfirmPassword(confirmPassword)
+    const validateConfirmPasswordErrors = validateConfirmPassword(password, confirmPassword)
     setConfrimPasswordErrors(validateConfirmPasswordErrors)
 
     if (!validatedUsernameErrors.length && !validatePasswordErrors.length && !validateConfirmPasswordErrors.length) {
