@@ -181,3 +181,21 @@ def like_recipe(id):
         recipe.liked_users.append(current_user)
         db.session.commit()
         return recipe.to_dict()
+
+
+@recipe_routes.route('/<int:id>/likes', methods=["DELETE"])
+@login_required
+def remove_like(id):
+    """
+    Remove current user from Recipe liked_users and return Recipe as dictionary
+    """
+    recipe = Recipe.query.get(id)
+
+    if not recipe:
+        return { "errors": ["Recipe could not be foudn"] }, 404
+    elif current_user not in recipe.liked_users:
+        return { "errors": ["User has not liked this Recipe"]}, 401
+    else:
+        recipe.liked_users.remove(current_user)
+        db.session.commit()
+        return recipe.to_dict()
