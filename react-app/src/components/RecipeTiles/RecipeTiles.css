@@ -1,11 +1,11 @@
 /* TODO: Add styling for recipe tiles */
 .recipe_tiles_div {
-    margin: 15px auto;
+    margin: 0 auto;
     max-width: 1400px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
-    /* grid-column-gap: .75em; */
-    /* grid-row-gap: 3rem; */
+    grid-column-gap: .75em;
+    grid-row-gap: 3rem;
 }
 
 .recipe_tile {
@@ -75,4 +75,10 @@
     justify-content: center;
     text-decoration: none;
     color: #fff;
+    transition: 350ms ease;
+    border-radius: .25em;
+}
+
+.recipe_tile_tags > a:hover {
+    background-color: black;
 }

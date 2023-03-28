@@ -58,6 +58,11 @@ function RecipeDetails() {
                         )
                         }
                     </div>
+                    <div className="single_recipe_tags">
+                            {recipe.tags.map(tag => {
+                                return <Link to={`/tags/${tag.id}`} key={tag.id} className="single_recipe_tag">{tag.tag}</Link>
+                            })}
+                        </div>
                     <div className="single_recipe_image_div">
                         <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
                     </div>
@@ -68,7 +73,7 @@ function RecipeDetails() {
                         </div>
                         <div className="recipe_details_reviews_summary_div">
                             <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="fa-sharp fa-solid fa-star" /></div>
-                            <div className="recipe_num_reviews">{recipe.reviews.length} {recipe.reviews.length === 1 ? "Review" : "Reviews"}</div>
+                            <div className="recipe_num_reviews">{reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}</div>
                         </div>
                     </div>
                     <div className="single_recipe_description">{recipe.description}</div>

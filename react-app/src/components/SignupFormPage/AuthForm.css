@@ -19,6 +19,7 @@
 
 .auth_form_container{
     width: 50%;
+    max-width: 800px;
     background-color: #ffffffc5;
     border-radius: 15px;
     padding: 15px;
@@ -87,7 +88,13 @@
 
 /* Bottom */
 .auth_form_error{
-    color: red;
+    color: white;
+    font-size: .75em;
+    border-radius: .5em;
+    background-color: rgba(255, 0, 0, 0.723);
+    width: fit-content;
+    padding: .5em;
+    margin: .25em 15px;
 }
 
 

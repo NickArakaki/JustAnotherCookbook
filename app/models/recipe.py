@@ -2,6 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime, timezone
 from sqlalchemy.sql import func
 from .tags import recipes_tags
+from .user import users_liked_recipes
 
 class Recipe(db.Model):
     __tablename__ = "recipes"
@@ -13,7 +14,7 @@ class Recipe(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     title = db.Column(db.String, nullable=False)
     total_time = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
     preview_image_url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
     updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
@@ -23,7 +24,7 @@ class Recipe(db.Model):
     ingredients = db.relationship("Ingredient", back_populates="recipe", cascade="all, delete-orphan")
     methods = db.relationship("Method", back_populates="recipe", cascade="all, delete-orphan")
     tags = db.relationship("Tag", secondary=recipes_tags, back_populates="recipes")
-
+    liked_users = db.relationship("User", secondary=users_liked_recipes, back_populates="liked_recipes")
 
     def to_dict(self):
         return {

@@ -3,22 +3,38 @@ import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
+import {
+        validateRecipeTitle,
+        validateRecipeDescription,
+        validateEstimatedTime,
+        validateRecipeImageURL,
+        validateIngredients,
+        validateMethods,
+        validateTags
+} from "../../utils/recipeUtils"
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
     const history = useHistory();
     const dispatch = useDispatch();
-    const [errors, setErrors] = useState([]);
-
-    // controlled inputs
     const sessionUser = useSelector(state => state.session.user)
+
+    /*************************************  controlled inputs      ******************************************************/
+    const [errors, setErrors] = useState([]);
     const [title, setTitle] = useState(recipe ? recipe.title : "")
+    const [titleErrors, setTitleErrors] = useState([])
     const [description, setDescription] = useState(recipe ? recipe.description : "")
+    const [descriptionErrors, setDescriptionErrors] = useState([])
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
+    const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
     const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
+    const [previewImageURLErrors, setPreviewImageURLErrors] = useState([])
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
+    const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
+    const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
+    const [tagsErrors, setTagsErrors] = useState([])
     const [tagInput, setTagInput] = useState("")
 
 
@@ -32,6 +48,7 @@ function RecipeForm({ recipe }) {
 
     const handleAddIngredient = () => {
         setIngredientsList([...ingredientsList, {ingredient:"", amount:"", units:""}])
+        setIngredientsListErrors([...ingredientListErrors, []])
     }
 
     const handleRemoveIngredient = (idx) => {
@@ -39,8 +56,10 @@ function RecipeForm({ recipe }) {
             const updatedIngredientsList = [...ingredientsList]
             updatedIngredientsList.splice(idx, 1)
             setIngredientsList(updatedIngredientsList)
-        } else {
-            // add error to set errors ("Must be at least one ingredient in your recipe")
+
+            const updatedIngredientListErrors = [...ingredientListErrors]
+            updatedIngredientListErrors.splice(idx, 1)
+            setIngredientsListErrors(updatedIngredientListErrors)
         }
     }
 
@@ -53,7 +72,8 @@ function RecipeForm({ recipe }) {
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {description:"", image_url:""}])
+        setMethodsList([...methodsList, {details:"", image_url:""}])
+        setMethodsListErrors([...methodsListErrors, []])
     }
 
     const handleRemoveMethod = (idx) => {
@@ -61,8 +81,10 @@ function RecipeForm({ recipe }) {
             const updatedMethodsList = [...methodsList]
             updatedMethodsList.splice(idx, 1)
             setMethodsList(updatedMethodsList)
-        } else {
-            // add error handling here to prevent user from removing all methods
+
+            const updatedMethodListErrors = [...methodsListErrors]
+            updatedMethodListErrors.splice(idx, 1)
+            setMethodsListErrors(updatedMethodListErrors)
         }
     }
 
@@ -96,34 +118,60 @@ function RecipeForm({ recipe }) {
     /********************************************** Submit *****************************************************/
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newRecipe = {
-            title,
-            description,
-            "preview_image_url": previewImageURL,
-            "total_time": estimatedTime,
-            "ingredients": JSON.stringify(ingredientsList),
-            "methods": JSON.stringify(methodsList),
-            "tags": JSON.stringify(tags)
-        }
-        // validate
-        // if pass validations dispatch thunk depending on situation (post vs update)
-        if (!recipe) {
-            const data = await dispatch(postARecipeThunk(newRecipe))
-            if (data) {
-                setErrors(data)
-            } else {
-                // redirect to details page for recipes
-                history.push("/")
-            }
-        } else {
-            const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
-            if (data) {
-                setErrors(data)
-            } else {
-                history.push(`/recipes/${recipe.id}`)
-            }
-        }
 
+        // validate the form
+        // need to do it this way because of asynchronicity of useState
+        const validatedTitleErrors = validateRecipeTitle(title)
+        setTitleErrors(validatedTitleErrors)
+
+        const validatedDescriptionErrors = validateRecipeDescription(description)
+        setDescriptionErrors(validatedDescriptionErrors)
+
+        const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
+        setEstimatedTimeErrors(validatedEstimatedTimeErrors)
+
+        const validatedPreviewImageURLErrors = validateRecipeImageURL(previewImageURL)
+        setPreviewImageURLErrors(validatedPreviewImageURLErrors)
+
+        const validatedIngredientsErrors = validateIngredients(ingredientsList)
+        setIngredientsListErrors(validatedIngredientsErrors)
+
+        const validatedMethodsErrors = validateMethods(methodsList)
+        setMethodsListErrors(validatedMethodsErrors)
+
+        const validatedTagsErrors = validateTags(tags)
+        setTagsErrors(validatedTagsErrors)
+
+
+        // if there are no errors after validating, dispatch appropriate thunk
+        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageURLErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
+
+            const newRecipe = {
+                title,
+                description,
+                "preview_image_url": previewImageURL,
+                "total_time": estimatedTime,
+                "ingredients": JSON.stringify(ingredientsList),
+                "methods": JSON.stringify(methodsList),
+                "tags": JSON.stringify(tags)
+            }
+
+            if (!recipe) { // POST Recipe
+                const data = await dispatch(postARecipeThunk(newRecipe))
+                if (data) {
+                    setErrors(data)
+                } else {
+                    history.push("/")
+                }
+            } else { // PUT Recipe
+                const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
+                if (data) {
+                    setErrors(data)
+                } else {
+                    history.push(`/recipes/${recipe.id}`)
+                }
+            }
+        }
     }
 
     if (!sessionUser) return <Redirect to='/' />
@@ -139,6 +187,11 @@ function RecipeForm({ recipe }) {
                     })}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
+                    {titleErrors.map((error, idx) => {
+                        return (
+                            <div className="form_error" key={idx}>{error}</div>
+                        )
+                    })}
                     <input
                         required
                         className="recipe_form_input recipe_form_title_input"
@@ -149,16 +202,27 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Description<span className="required_input">*</span></label>
+                    {descriptionErrors.map((error, idx) => {
+                        return (
+                            <div className="form_error" key={idx}>{error}</div>
+                        )
+                    })}
                     <textarea
                         required
                         className="recipe_form_input recipe_form_description_input"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        maxLength="200"
                     />
-                    {/* <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div> */}
+                    <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
+                    {previewImageURLErrors.map((error, idx) => {
+                        return (
+                            <div className="form_error" key={idx}>{error}</div>
+                        )
+                    })}
                     <input
                         required
                         className="recipe_form_input recipe_form_preview_image_input"
@@ -168,6 +232,11 @@ function RecipeForm({ recipe }) {
                     />
                 </div>
                 <div className="recipe_form_input_div recipe_form_time_to_make">
+                    {estimatedTimeErrors.map((error, idx) => {
+                        return (
+                            <div className="form_error" key={idx}>{error}</div>
+                        )
+                    })}
                     <label className="recipe_form_label">Estimated Time to Make (min)<span className="required_input">*</span></label>
                     <input
                         required
@@ -175,13 +244,19 @@ function RecipeForm({ recipe }) {
                         type="number"
                         min="1"
                         value={estimatedTime}
-                        onChange={e => setEstimatedTime(e.target.value)}
+                        onChange={e => setEstimatedTime(Math.round(e.target.value))}
                     />
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                     {ingredientsList.map((ingredient, idx) => {
                         return (
+                            <>
+                            {ingredientListErrors[idx].map((error, errorIdx) => {
+                                return (
+                                    <div className="form_error" key={errorIdx}>{error}</div>
+                                )
+                            })}
                             <div key={idx} className="ingredients_inputs">
                                 <input
                                     required
@@ -197,8 +272,8 @@ function RecipeForm({ recipe }) {
                                     className="recipe_form_input ingredient_input"
                                     name="amount"
                                     type="number"
-                                    step="0.01"
-                                    min="0.01"
+                                    step="0.001"
+                                    min="0.001"
                                     placeholder="Enter Amount"
                                     value={ingredient.amount}
                                     onChange={e => handleIngredientInputChange(e, idx)}
@@ -221,6 +296,7 @@ function RecipeForm({ recipe }) {
                                     <i className="fa-solid fa-trash" />
                                 </button>
                             </div>
+                            </>
                         )
                     })}
                     <button
@@ -234,6 +310,12 @@ function RecipeForm({ recipe }) {
                     <label className="recipe_form_label">Steps</label>
                     {methodsList.map((method, idx) => {
                         return (
+                            <>
+                            {methodsListErrors[idx].map((error, errorIdx) => {
+                                return (
+                                    <div className="form_error" key={errorIdx}>{error}</div>
+                                )
+                            })}
                             <div key={idx} className="method_div">
                                 <div className="recipe_form_input_div">
                                     <label>Description<span className="required_input">*</span></label>
@@ -243,7 +325,9 @@ function RecipeForm({ recipe }) {
                                         name="details"
                                         value={method.details}
                                         onChange={e => handleMethodInputChange(e, idx)}
-                                        />
+                                        maxLength="1000"
+                                    />
+                                    <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
                                 </div>
                                 <div className="recipe_form_input_div">
                                     <label>Optional Image URL</label>
@@ -262,6 +346,7 @@ function RecipeForm({ recipe }) {
                                         <i className="fa-solid fa-trash" />
                                 </button>
                             </div>
+                            </>
                         )
                     })}
                     <button
@@ -273,7 +358,12 @@ function RecipeForm({ recipe }) {
                     </button>
                 </div>
                 <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Tags</label>
+                    <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
+                    {tagsErrors.map((error, idx) => {
+                        return (
+                            <div className="form_error" key={idx}>{error}</div>
+                        )
+                    })}
                     <input
                         className="recipe_form_input recipe_form_tag_input"
                         type="text"

@@ -19,9 +19,6 @@ function Navigation({ isLoaded }){
 	return (
 		<div className='navbar_div'>
 			<div className='navbar_section navbar_user_container'>
-				<NavLink to="/" >
-					<i className="fa-solid fa-bowl-food" />
-				</NavLink>
 				{isLoaded && !sessionUser ? (
 					<>
 						<NavLink to='/login'>Log in</NavLink>

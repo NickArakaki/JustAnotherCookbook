@@ -43,6 +43,31 @@
     color: #ee5836;
 }
 
+.single_recipe_tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.single_recipe_tags > a {
+    margin: .25em;
+    padding: .25em;
+    background-color: coral;
+    border-radius: .25em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    transition: 350ms ease;
+}
+
+.single_recipe_tags > a:hover {
+    background-color: black;
+}
+
+
 
 /* Recipe Image */
 .single_recipe_image_div {

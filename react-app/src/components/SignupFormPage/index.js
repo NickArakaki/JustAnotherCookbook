@@ -62,8 +62,8 @@ function SignupFormPage() {
               />
             </div>
             <div className="auth_form_input_details">
-              <p className="auth_form_profile_address">The address to your profile will be: <span className="auth_user_url">https://justanothercookbook.onrender.com/users/{username}</span></p>
-              <p className="auth_form_username_constraints">No spaces, alphanumeric characters only. Maximum of 20 characters.</p>
+              {/* <p className="auth_form_profile_address">The address to your profile will be: <span className="auth_user_url">https://justanothercookbook.onrender.com/users/{username}</span></p> */}
+              <div className="auth_form_username_constraints">No spaces, alphanumeric characters only. Maximum of 20 characters.</div>
             </div>
           <div className="auth_form_input_div">
               <div className="auth_form_input_label">
@@ -71,7 +71,7 @@ function SignupFormPage() {
               </div>
               <input
                 className="auth_form_input"
-                type="text"
+                type="email"
                 value={email}
                 placeholder="Enter your email address"
                 onChange={(e) => setEmail(e.target.value)}

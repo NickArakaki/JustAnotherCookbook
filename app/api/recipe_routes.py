@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
+from .recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
 from app.models import db, Recipe, Ingredient, Method, Review, Tag
 from app.forms import RecipeForm, ReviewForm
 import json
@@ -53,7 +54,6 @@ def post_a_recipe():
         ingredient_list = json.loads(data["ingredients"])
         method_list = json.loads(data["methods"])
         tag_list = json.loads(data["tags"])
-        db_tags = Tag.query.all()
 
         new_recipe = Recipe(
             author_id = current_user.id,
@@ -64,31 +64,9 @@ def post_a_recipe():
         )
         db.session.add(new_recipe)
 
-        for ingredient in ingredient_list:
-            new_ingredient = Ingredient(
-                ingredient = ingredient["ingredient"],
-                amount = ingredient["amount"],
-                units = ingredient["units"]
-            )
-            new_recipe.ingredients.append(new_ingredient)
-
-        for idx, method in enumerate(method_list):
-                new_method = Method(
-                    step_number = idx + 1,
-                    details = method["details"],
-                    image_url = method["image_url"]
-                )
-                new_recipe.methods.append(new_method)
-
-        for tag in tag_list:
-            existing_tag = [db_tag for db_tag in db_tags if db_tag.tag == tag]
-
-            if not existing_tag:
-                new_tag = Tag(tag=tag)
-                new_recipe.tags.append(new_tag)
-            else:
-                new_recipe.tags.append(existing_tag[0])
-
+        add_ingredients(new_recipe, ingredient_list)
+        add_methods(new_recipe, method_list)
+        add_tags(new_recipe, tag_list)
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -120,86 +98,15 @@ def update_a_recipe(id):
         ingredients_list = json.loads(data["ingredients"])
         methods_list = json.loads(data["methods"])
         tags_list = json.loads(data["tags"])
-        db_tags_list = Tag.query.all()
 
         recipe.title = data["title"]
         recipe.total_time = data["total_time"]
         recipe.description = data["description"]
         recipe.preview_image_url = data["preview_image_url"]
 
-        # compare lengths of the ingredients on recipe
-        # iterate over ingredients
-        ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
-
-        for new_ingredient, old_ingredient in zip(ingredients_list, recipe.ingredients):
-                    old_ingredient.ingredient = new_ingredient["ingredient"]
-                    old_ingredient.amount = new_ingredient["amount"]
-                    old_ingredient.units = new_ingredient["units"]
-
-        if ingredient_difference > 0: # new ingredients to be added
-            # iterate through, update existing ingredients with new data
-            for ingredient in ingredients_list[(ingredient_difference * -1):]: # get the new ingredients
-                    new_ingredient = Ingredient(
-                        ingredient = ingredient["ingredient"],
-                        amount = ingredient["amount"],
-                        units = ingredient["units"]
-                    )
-                    recipe.ingredients.append(new_ingredient)
-        elif ingredient_difference < 0: # fewer or same number of ingredients
-            # delete the extra recipe ingredients
-            for ingredient in recipe.ingredients[ingredient_difference:]:
-                recipe.ingredients.remove(ingredient)
-
-
-        # compare lengths of the methods on recipe
-        method_difference = len(methods_list) - len(recipe.methods)
-
-        for new_method, old_method in zip(methods_list, recipe.methods):
-                    old_method.details = new_method["details"]
-                    old_method.image_url = new_method["image_url"]
-
-        if method_difference > 0: # new methods to be added
-
-            for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
-                    new_method = Method(
-                        step_number = len(recipe.methods) + 1,
-                        details = method["details"],
-                        image_url = method["image_url"]
-                    )
-                    recipe.methods.append(new_method)
-
-        elif method_difference < 0: # fewer or same number of methods
-        # if there are fewer methods, remove the methods that were removed
-            for method in recipe.methods[method_difference:]:
-                recipe.methods.remove(method)
-
-        # update tags
-        # get list of tags for incoming change (either get existing tag, or create new one)
-        new_tags = []
-        for tag in tags_list:
-            existing_tag = [db_tag for db_tag in db_tags_list if db_tag.tag == tag]
-            if existing_tag:
-                new_tags.append(*existing_tag)
-            if not existing_tag:
-                new_tag = Tag(tag=tag)
-                db.session.add(new_tag)
-                new_tags.append(new_tag)
-
-        print("=================================================================================================",set(new_tags))
-        print("=================================================================================================",set(recipe.tags))
-        tags_to_remove = set(recipe.tags) - set(new_tags)
-        tags_to_add = set(new_tags) - set(recipe.tags)
-        for tag in tags_to_remove:
-            recipe.tags.remove(tag)
-            if not tag.recipes:
-                db.session.delete(tag)
-
-        for tag in tags_to_add:
-            recipe.tags.append(tag)
-        # compare incoming tags and recipe tags as sets
-            # remove the ones that are in recipe tags and not incoming
-            # add the ones that are in incoming and not in recipe tags
-
+        update_ingredients(recipe, ingredients_list)
+        update_methods(recipe, methods_list)
+        update_tags(recipe, tags_list)
 
         db.session.commit()
         return recipe.to_dict_detailed()
