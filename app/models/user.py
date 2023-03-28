@@ -10,7 +10,7 @@ users_liked_recipes = db.Table(
 )
 # Add schema to users_liked_recipes table in production
 if environment == "production":
-    users_liked_recipes = SCHEMA
+    users_liked_recipes.schema = SCHEMA
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
