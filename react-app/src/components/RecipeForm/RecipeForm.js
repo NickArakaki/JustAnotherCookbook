@@ -251,52 +251,52 @@ function RecipeForm({ recipe }) {
                     <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                     {ingredientsList.map((ingredient, idx) => {
                         return (
-                            <>
-                            {ingredientListErrors[idx].map((error, errorIdx) => {
-                                return (
-                                    <div className="form_error" key={errorIdx}>{error}</div>
-                                )
-                            })}
-                            <div key={idx} className="ingredients_inputs">
-                                <input
-                                    required
-                                    className="recipe_form_input ingredient_input"
-                                    name="ingredient"
-                                    type="text"
-                                    placeholder="Enter Name of Ingredient"
-                                    value={ingredient.ingredient}
-                                    onChange={e => handleIngredientInputChange(e, idx)}
-                                />
-                                <input
-                                    required
-                                    className="recipe_form_input ingredient_input"
-                                    name="amount"
-                                    type="number"
-                                    step="0.001"
-                                    min="0.001"
-                                    placeholder="Enter Amount"
-                                    value={ingredient.amount}
-                                    onChange={e => handleIngredientInputChange(e, idx)}
-                                />
-                                <select
-                                    className="recipe_form_input ingredient_input"
-                                    name="units"
-                                    value={ingredient.units}
-                                    onChange={e => handleIngredientInputChange(e, idx)}
-                                >
-                                    {measurementUnits.map((unit, idx) => {
-                                        return <option key={idx} value={unit}>{unit}</option>
-                                    })}
-                                </select>
-                                <button
-                                    type="button"
-                                    className="remove_ingredient_button"
-                                    onClick={() => handleRemoveIngredient(idx)}
-                                >
-                                    <i className="fa-solid fa-trash" />
-                                </button>
+                            <div key={idx}>
+                                {ingredientListErrors[idx].map((error, errorIdx) => {
+                                    return (
+                                        <div className="form_error" key={errorIdx}>{error}</div>
+                                    )
+                                })}
+                                <div className="ingredients_inputs">
+                                    <input
+                                        required
+                                        className="recipe_form_input ingredient_input"
+                                        name="ingredient"
+                                        type="text"
+                                        placeholder="Enter Name of Ingredient"
+                                        value={ingredient.ingredient}
+                                        onChange={e => handleIngredientInputChange(e, idx)}
+                                    />
+                                    <input
+                                        required
+                                        className="recipe_form_input ingredient_input"
+                                        name="amount"
+                                        type="number"
+                                        step="0.001"
+                                        min="0.001"
+                                        placeholder="Enter Amount"
+                                        value={ingredient.amount}
+                                        onChange={e => handleIngredientInputChange(e, idx)}
+                                    />
+                                    <select
+                                        className="recipe_form_input ingredient_input"
+                                        name="units"
+                                        value={ingredient.units}
+                                        onChange={e => handleIngredientInputChange(e, idx)}
+                                    >
+                                        {measurementUnits.map((unit, idx) => {
+                                            return <option key={idx} value={unit}>{unit}</option>
+                                        })}
+                                    </select>
+                                    <button
+                                        type="button"
+                                        className="remove_ingredient_button"
+                                        onClick={() => handleRemoveIngredient(idx)}
+                                    >
+                                        <i className="fa-solid fa-trash" />
+                                    </button>
+                                </div>
                             </div>
-                            </>
                         )
                     })}
                     <button
@@ -310,43 +310,44 @@ function RecipeForm({ recipe }) {
                     <label className="recipe_form_label">Steps</label>
                     {methodsList.map((method, idx) => {
                         return (
-                            <>
-                            {methodsListErrors[idx].map((error, errorIdx) => {
-                                return (
-                                    <div className="form_error" key={errorIdx}>{error}</div>
-                                )
-                            })}
-                            <div key={idx} className="method_div">
-                                <div className="recipe_form_input_div">
-                                    <label>Description<span className="required_input">*</span></label>
-                                    <textarea
-                                        required
-                                        className="recipe_form_input recipe_form_description_input"
-                                        name="details"
-                                        value={method.details}
-                                        onChange={e => handleMethodInputChange(e, idx)}
-                                        maxLength="1000"
-                                    />
-                                    <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
-                                </div>
-                                <div className="recipe_form_input_div">
-                                    <label>Optional Image URL</label>
-                                    <input
-                                        className="recipe_form_input recipe_form_method_image_input"
-                                        type="url"
-                                        name="image_url"
-                                        value={method.image_url}
-                                        onChange={e => handleMethodInputChange(e, idx)}
+                            <div key={idx}>
+                                {methodsListErrors[idx].map((error, errorIdx) => {
+                                    return (
+                                        <div className="form_error" key={errorIdx}>{error}</div>
+                                    )
+                                })}
+                                <div className="method_div">
+                                    <div className="recipe_form_input_div">
+                                        <label>Description<span className="required_input">*</span></label>
+                                        <div className="recipe_form_input_recommendations">(10 character minimum)</div>
+                                        <textarea
+                                            required
+                                            className="recipe_form_input recipe_form_description_input"
+                                            name="details"
+                                            value={method.details}
+                                            onChange={e => handleMethodInputChange(e, idx)}
+                                            maxLength="1000"
                                         />
+                                        <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
+                                    </div>
+                                    <div className="recipe_form_input_div">
+                                        <label>Optional Image URL</label>
+                                        <input
+                                            className="recipe_form_input recipe_form_method_image_input"
+                                            type="url"
+                                            name="image_url"
+                                            value={method.image_url}
+                                            onChange={e => handleMethodInputChange(e, idx)}
+                                            />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="remove_method_button"
+                                        onClick={() => handleRemoveMethod(idx)}>
+                                            <i className="fa-solid fa-trash" />
+                                    </button>
                                 </div>
-                                <button
-                                    type="button"
-                                    className="remove_method_button"
-                                    onClick={() => handleRemoveMethod(idx)}>
-                                        <i className="fa-solid fa-trash" />
-                                </button>
                             </div>
-                            </>
                         )
                     })}
                     <button

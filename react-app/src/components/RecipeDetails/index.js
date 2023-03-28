@@ -90,11 +90,14 @@ function RecipeDetails() {
                     <div className="recipe_instructions_div">
                         <div className="recipe_instruction_title">Instructions</div>
                         {isLoaded && recipe.methods.map((method, idx) => {
+                            console.log(method.image_url)
                             return (
                                 <div key={idx} className="recipe_method_div">
                                     <div className="recipe_method_step_number">Step {method.step_number}</div>
                                     <div className="recipe_method_image_and_details_div">
-                                        <div className="recipe_method_image"></div>
+                                        <div className="recipe_method_image">
+                                            <img src={method.image_url} alt={`${recipe.title} ${method.step_number}`}/>
+                                        </div>
                                         <div className="recipe_method_details">{method.details}</div>
                                     </div>
                                 </div>
