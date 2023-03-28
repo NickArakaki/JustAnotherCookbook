@@ -1,4 +1,4 @@
-# from app.models import Ingredient, Method, Tag, db
+from app.models import Ingredient, Method, Tag, db
 
 # # POST HELPERS
 def add_ingredients(recipe, ingredients_list):
