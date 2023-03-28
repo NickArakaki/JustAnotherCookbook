@@ -87,7 +87,7 @@
 
 
 /* Bottom */
-.auth_form_error{
+.form_error {
     color: white;
     font-size: .75em;
     border-radius: .5em;

@@ -37,7 +37,7 @@ function SignupFormPage() {
       <div className="auth_form_container">
         <h1 className="auth_form_title">Sign up</h1>
         {errors.length > 0 && errors.map((error, idx) => {
-          return <div className="auth_form_error" key={idx}>{error}</div>
+          return <div className="form_error" key={idx}>{error}</div>
         })}
         <form className="auth_form" onSubmit={handleSubmit}>
           <div className="auth_form_input_div">
@@ -47,7 +47,7 @@ function SignupFormPage() {
             <div className="input_errors_div">
               {usernameErrors.length > 0 && (
                 usernameErrors.map((error, idx) => {
-                  return <div className="auth_form_error" key={idx}>{error}</div>
+                  return <div className="form_error" key={idx}>{error}</div>
                 })
               )}
             </div>
@@ -85,7 +85,7 @@ function SignupFormPage() {
             <div className="input_errors_div">
               {passwordErrors.length > 0 && (
                 passwordErrors.map((error, idx) => {
-                  return <div className="auth_form_error" key={idx}>{error}</div>
+                  return <div className="form_error" key={idx}>{error}</div>
                 })
               )}
             </div>
@@ -106,7 +106,7 @@ function SignupFormPage() {
             <div className="input_errors_div">
               {confirmPasswordErrors.length > 0 && (
                 confirmPasswordErrors.map((error, idx) => {
-                  return <div className="auth_form_error" key={idx}>{error}</div>
+                  return <div className="form_error" key={idx}>{error}</div>
                 })
               )}
             </div>

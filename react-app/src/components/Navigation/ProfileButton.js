@@ -48,7 +48,7 @@ function ProfileButton({ user }) {
               <Link onClick={closeMenu} to={`/users/${user.id}`}>My Recipes</Link>
             </div>
             <div className="user_drop_down_div">
-              <Link onClick={closeMenu} to={`/`}>Favorite Recipes</Link>
+              <Link onClick={closeMenu} to={`/my-favorites`}>Favorite Recipes</Link>
             </div>
             <div className="user_drop_down_div">
               <button onClick={handleLogout}>Log Out</button>
