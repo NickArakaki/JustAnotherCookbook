@@ -4,6 +4,7 @@ from flask_login import UserMixin
 
 users_liked_recipes = db.Table(
     "users_liked_recipes",
+    db.Model.metadata,
     db.Column("recipe_id", db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), primary_key=True, nullable=False),
     db.Column("user_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), primary_key=True, nullable=False)
 )
