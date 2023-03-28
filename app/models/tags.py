@@ -4,6 +4,7 @@ from sqlalchemy.sql import func
 
 recipes_tags = db.Table(
     "recipes_tags",
+    db.Model.metadata,
     db.Column("recipe_id", db.Integer, db.ForeignKey(add_prefix_for_prod("recipes.id")), primary_key=True),
     db.Column("tag_id", db.Integer, db.ForeignKey(add_prefix_for_prod("tags.id")), primary_key=True)
 )
