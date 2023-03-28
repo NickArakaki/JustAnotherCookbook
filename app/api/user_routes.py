@@ -38,4 +38,4 @@ def get_users_favorite_recipes():
     """
     Query for logged in users favorite recipes and return as list of recipe dictionaries
     """
-    return { "recipes": [recipe.to_dict() for recipe in current_user.liked_recipes]}
+    return { "recipes": [recipe.to_dict() for recipe in current_user.liked_recipes] }
