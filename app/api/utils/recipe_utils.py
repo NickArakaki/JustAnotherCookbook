@@ -1,6 +1,6 @@
-from app.models import Ingredient, Method, Tag, db
+# from app.models import Ingredient, Method, Tag, db
 
-# POST HELPERS
+# # POST HELPERS
 def add_ingredients(recipe, ingredients_list):
     for ingredient in ingredients_list:
             new_ingredient = Ingredient(
@@ -34,7 +34,7 @@ def add_tags(recipe, tags_list):
                 recipe.tags.append(*existing_tag)
 
 
-# UPDATE HELPERS
+# # UPDATE HELPERS
 def update_ingredients(recipe, ingredients_list):
     ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
 
