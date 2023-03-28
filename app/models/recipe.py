@@ -14,7 +14,7 @@ class Recipe(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     title = db.Column(db.String, nullable=False)
     total_time = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
     preview_image_url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
     updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
