@@ -25,12 +25,13 @@ def add_tags(recipe, tags_list):
     db_tags = Tag.query.all()
     for tag in tags_list:
             existing_tag = [db_tag for db_tag in db_tags if db_tag.tag == tag]
-
             if not existing_tag:
                 new_tag = Tag(tag=tag)
+                db.session.add(new_tag)
+                db.session.commit()
                 recipe.tags.append(new_tag)
             else:
-                recipe.tags.append(existing_tag[0])
+                recipe.tags.append(*existing_tag)
 
 
 # UPDATE HELPERS

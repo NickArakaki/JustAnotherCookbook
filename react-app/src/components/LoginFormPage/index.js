@@ -35,7 +35,7 @@ function LoginFormPage() {
         <h1 className="auth_form_title">Log in</h1>
         <form className="auth_form" onSubmit={handleSubmit}>
             {errors.length > 0 && errors.map((error, idx) => (
-              <div className="auth_form_error" key={idx}>{error}</div>
+              <div className="form_error" key={idx}>{error}</div>
             ))}
           <div className="auth_form_input_div">
             <div className="auth_form_input_label">

@@ -30,3 +30,12 @@ def get_user_recipes(id):
     """
     user = User.query.get(id)
     return { "recipes": [recipe.to_dict() for recipe in user.recipes] }
+
+
+@user_routes.route('/<int:id>/favorites')
+@login_required
+def get_users_favorite_recipes():
+    """
+    Query for logged in users favorite recipes and return as list of recipe dictionaries
+    """
+    return { "recipes": [recipe.to_dict() for recipe in current_user.liked_recipes]}

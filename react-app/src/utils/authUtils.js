@@ -4,7 +4,7 @@ export const validateUsername = username => {
 
     if (!username) errors.push("USERNAME IS REQUIRED")
     if (username.length < 3) errors.push("USERNAME MUST BE AT LEAST 3 CHARACTERS")
-    if (username.length > 20) errors.push("USERNAME CAN'T BE MORE THAN 20 CHARACTERS")
+    if (username.length > 20) errors.push("USERNAME MUST BE FEWER THAN 20 CHARACTERS")
     if (!username.match(regEx)) errors.push("USERNAME MUST BE ALPHANUMERIC CHARACTERS ONLY")
 
     return errors;

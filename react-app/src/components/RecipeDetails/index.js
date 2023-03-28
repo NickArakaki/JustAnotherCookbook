@@ -60,7 +60,7 @@ function RecipeDetails() {
                     </div>
                     <div className="single_recipe_tags">
                             {recipe.tags.map(tag => {
-                                return <Link to={`/tags/${tag.id}`} key={tag.id} className="single_recipe_tag">{tag.tag}</Link>
+                                return <Link to={`/tags/${tag.id}`} key={tag.id} className="single_recipe_tag">{tag.tag.toUpperCase()}</Link>
                             })}
                         </div>
                     <div className="single_recipe_image_div">

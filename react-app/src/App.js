@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import RecipeDetails from "./components/RecipeDetails";
@@ -11,6 +12,7 @@ import RecipeForm from "./components/RecipeForm/RecipeForm";
 import UpdateRecipeForm from "./components/RecipeForm/UpdateRecipeForm";
 import UserPage from "./components/UserPage";
 import TagRecipePage from "./components/TagRecipePage";
+import FavoriteRecipesPage from "./components/FavoriteRecipesPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +50,9 @@ function App() {
           <Route path={`/tags/:tagId`}>
             <TagRecipePage />
           </Route>
+          <ProtectedRoute path={`/my-favorites`}>
+            <FavoriteRecipesPage />
+          </ProtectedRoute>
         </Switch>
       )}
     </>

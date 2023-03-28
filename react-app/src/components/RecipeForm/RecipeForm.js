@@ -359,6 +359,7 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
+                    <div className="recipe_form_input_recommendations">Press [Enter] after every tag, or separate with comma and hit enter (minimumn 5) </div>
                     {tagsErrors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
