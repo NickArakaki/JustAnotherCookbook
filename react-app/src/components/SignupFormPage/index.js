@@ -21,7 +21,19 @@ function SignupFormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!usernameErrors.length && !passwordErrors.length && !confirmPasswordErrors.length) {
+
+    // validate username, password, errors
+    // done this way because useState is asyc
+    const validatedUsernameErrors = validateUsername(username)
+    setUsernameErrors(validatedUsernameErrors)
+
+    const validatePasswordErrors = validatePassword(password)
+    setPasswordErrors(validatePasswordErrors)
+
+    const validateConfirmPasswordErrors = validateConfirmPassword(confirmPassword)
+    setConfrimPasswordErrors(validateConfirmPasswordErrors)
+
+    if (!validatedUsernameErrors.length && !validatePasswordErrors.length && !validateConfirmPasswordErrors.length) {
       const data = await dispatch(signUp(username, email, password))
 
       if (data?.errors) {
@@ -57,7 +69,7 @@ function SignupFormPage() {
               value={username}
               placeholder="Enter a username"
               onChange={(e) => setUsername(e.target.value)}
-              onBlur={(e) => setUsernameErrors(validateUsername(e.target.value))}
+              // onBlur={(e) => setUsernameErrors(validateUsername(e.target.value))}
               required
               />
             </div>
@@ -95,7 +107,6 @@ function SignupFormPage() {
               value={password}
               placeholder="Enter a password here"
               onChange={(e) => setPassword(e.target.value)}
-              onBlur={ e => setPasswordErrors(validatePassword(e.target.value))}
               required
             />
           </div>
@@ -116,7 +127,6 @@ function SignupFormPage() {
               value={confirmPassword}
               placeholder="Re-type your password again here"
               onChange={(e) => setConfirmPassword(e.target.value)}
-              onBlur={e => setConfrimPasswordErrors(validateConfirmPassword(password, e.target.value))}
               required
             />
           </div>
