@@ -72,7 +72,7 @@ function RecipeForm({ recipe }) {
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {description:"", image_url:""}])
+        setMethodsList([...methodsList, {details:"", image_url:""}])
         setMethodsListErrors([...methodsListErrors, []])
     }
 
@@ -120,16 +120,31 @@ function RecipeForm({ recipe }) {
         e.preventDefault();
 
         // validate the form
-        setTitleErrors(validateRecipeTitle(title))
-        setDescriptionErrors(validateRecipeDescription(description))
-        setEstimatedTimeErrors(validateEstimatedTime(estimatedTime))
-        setPreviewImageURLErrors(validateRecipeImageURL(previewImageURL))
-        setIngredientsListErrors(validateIngredients(ingredientsList))
-        setMethodsListErrors(validateMethods(methodsList))
-        setTagsErrors(validateTags(tags))
+        // need to do it this way because of asynchronicity of useState
+        const validatedTitleErrors = validateRecipeTitle(title)
+        setTitleErrors(validatedTitleErrors)
+
+        const validatedDescriptionErrors = validateRecipeDescription(description)
+        setDescriptionErrors(validatedDescriptionErrors)
+
+        const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
+        setEstimatedTimeErrors(validatedEstimatedTimeErrors)
+
+        const validatedPreviewImageURLErrors = validateRecipeImageURL(previewImageURL)
+        setPreviewImageURLErrors(validatedPreviewImageURLErrors)
+
+        const validatedIngredientsErrors = validateIngredients(ingredientsList)
+        setIngredientsListErrors(validatedIngredientsErrors)
+
+        const validatedMethodsErrors = validateMethods(methodsList)
+        setMethodsListErrors(validatedMethodsErrors)
+
+        const validatedTagsErrors = validateTags(tags)
+        setTagsErrors(validatedTagsErrors)
+
 
         // if there are no errors after validating, dispatch appropriate thunk
-        if (!titleErrors.length && !descriptionErrors.length && !estimatedTimeErrors.length && !previewImageURLErrors.length && !ingredientListErrors.flat().length && !methodsListErrors.flat().length && !tagsErrors.length) {
+        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageURLErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
 
             const newRecipe = {
                 title,
@@ -146,7 +161,6 @@ function RecipeForm({ recipe }) {
                 if (data) {
                     setErrors(data)
                 } else {
-                    // redirect to details page for recipes
                     history.push("/")
                 }
             } else { // PUT Recipe
@@ -158,7 +172,6 @@ function RecipeForm({ recipe }) {
                 }
             }
         }
-
     }
 
     if (!sessionUser) return <Redirect to='/' />
@@ -199,8 +212,9 @@ function RecipeForm({ recipe }) {
                         className="recipe_form_input recipe_form_description_input"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        maxLength="200"
                     />
-                    {/* <div className="recipe_form_description_num_chars_remaining">Render number of remaining characters for description</div> */}
+                    <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
@@ -311,7 +325,9 @@ function RecipeForm({ recipe }) {
                                         name="details"
                                         value={method.details}
                                         onChange={e => handleMethodInputChange(e, idx)}
-                                        />
+                                        maxLength="1000"
+                                    />
+                                    <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
                                 </div>
                                 <div className="recipe_form_input_div">
                                     <label>Optional Image URL</label>
