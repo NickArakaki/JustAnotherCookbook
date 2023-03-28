@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom"
-import { favoriteARecipeThunk } from "../../store/recipes";
+import { favoriteARecipeThunk, removeUserFavoriteRecipeThunk } from "../../store/recipes";
 import "./RecipeTiles.css"
 
 function RecipeTiles({ recipes }) {
@@ -15,12 +15,15 @@ function RecipeTiles({ recipes }) {
     const handleFavorite = async (recipeId) => {
         const data = await dispatch(favoriteARecipeThunk(recipeId))
         if (data) {
-            // handle errors?
+            alert(data)
         }
     }
 
-    const handleUnFavorite = (e) => {
-
+    const handleUnFavorite = async (recipeId) => {
+        const data = await dispatch(removeUserFavoriteRecipeThunk(recipeId))
+        if (data) {
+            alert(data)
+        }
     }
 
     return (
