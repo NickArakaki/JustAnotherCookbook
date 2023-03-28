@@ -272,8 +272,8 @@ function RecipeForm({ recipe }) {
                                     className="recipe_form_input ingredient_input"
                                     name="amount"
                                     type="number"
-                                    step="0.01"
-                                    min="0.01"
+                                    step="0.001"
+                                    min="0.001"
                                     placeholder="Enter Amount"
                                     value={ingredient.amount}
                                     onChange={e => handleIngredientInputChange(e, idx)}
