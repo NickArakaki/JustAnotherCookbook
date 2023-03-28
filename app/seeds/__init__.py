@@ -27,25 +27,23 @@ def seed():
     #     undo_methods()
     #     undo_ingredients()
     #     undo_recipes()
-    #     undo_users()
-    # seed_users()
+        undo_users()
+    seed_users()
     # seed_recipes()
     # seed_ingredients()
     # seed_methods()
     # seed_reviews()
     # seed_tags()
-    pass
     # Add other seed functions here
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-    pass
     # undo_tags()
     # undo_reviews()
     # undo_methods()
     # undo_ingredients()
     # undo_recipes()
-    # undo_users()
+    undo_users()
     # Add other undo functions here
