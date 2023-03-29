@@ -12,10 +12,21 @@
     flex-direction: column;
     width: 25%;
     min-width: 600px;
+    min-height: fit-content;
     margin: 0 auto;
     background-color: #ffffffd9;
     padding: 1.5rem;
     border-radius: 1.5rem;
+    position: relative;
+    top: 2em;
+}
+
+.recipe_form {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.recipe_form_container {
+    height: 2000px;
 }
 
 .recipe_form_label {
@@ -85,6 +96,12 @@
     color: white;
     cursor: pointer;
     padding: .5em;
+    transition: 300ms ease;
+}
+
+.add_ingredient_button:hover,
+.add_method_button:hover {
+    background-color: black;
 }
 
 /* Methods */
@@ -126,12 +143,13 @@
     font-size: 8px;;
     justify-self: flex-start;
     cursor: pointer;
-
+    transition: 150ms ease;
 }
 
 .remove_tag_button:hover {
-    font-size: 10px;
+    font-size: .75rem;
     font-weight: bold;
+    color: black;
 }
 
 
@@ -146,6 +164,11 @@
     border: none;
     border-radius: 15px;
     cursor: pointer;
+    transition: 250ms ease;
+}
+
+.recipe_form_submit_button:hover {
+    background-color: black;
 }
 
 .recipe_form_legend {
