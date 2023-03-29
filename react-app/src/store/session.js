@@ -1,3 +1,5 @@
+import { getUserFavoriteRecipes } from "./recipes";
+
 // constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
@@ -11,7 +13,6 @@ const removeUser = () => ({
 	type: REMOVE_USER,
 });
 
-const initialState = { user: null };
 
 export const authenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/", {
@@ -25,7 +26,8 @@ export const authenticate = () => async (dispatch) => {
 			return;
 		}
 
-		dispatch(setUser(data));
+		dispatch(setUser(data.user));
+		dispatch(getUserFavoriteRecipes(data.userFavoriteRecipes))
 	}
 };
 
@@ -43,7 +45,9 @@ export const login = (email, password) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
-		dispatch(setUser(data));
+
+		dispatch(setUser(data.user));
+		dispatch(getUserFavoriteRecipes(data.userFavoriteRecipes))
 		return null;
 	} else if (response.status < 500) {
 		const data = await response.json();
@@ -94,12 +98,14 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
+const initialState = { user: null };
+
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
 			return { user: action.payload };
 		case REMOVE_USER:
-			return { user: null };
+			return initialState;
 		default:
 			return state;
 	}

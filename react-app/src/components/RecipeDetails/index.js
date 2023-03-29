@@ -6,6 +6,7 @@ import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
 import RecipeReviews from "../Reviews";
+import FavoriteButton from "../FavoriteButton"
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -43,6 +44,7 @@ function RecipeDetails() {
                 <div className="recipe_container">
                     <div className="recipe_title_and_buttons_div">
                         <div className="single_recipe_title">{recipe.title}</div>
+                        <FavoriteButton recipe={recipe} />
                         {recipe.author.id === sessionUser?.id ? (
                             <div className="recipe_details_edit_and_delete_button_div">
                                 <Link to={`/recipes/${recipe.id}/edit`}>
@@ -64,7 +66,12 @@ function RecipeDetails() {
                             })}
                         </div>
                     <div className="single_recipe_image_div">
-                        <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
+                        <img
+                            className="recipe_detail_image"
+                            src={recipe.preview_image_url}
+                            alt={`${recipe.title}`}
+                            onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
+                        />
                     </div>
                     <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
@@ -90,14 +97,17 @@ function RecipeDetails() {
                     <div className="recipe_instructions_div">
                         <div className="recipe_instruction_title">Instructions</div>
                         {isLoaded && recipe.methods.map((method, idx) => {
-                            console.log(method.image_url)
                             return (
                                 <div key={idx} className="recipe_method_div">
                                     <div className="recipe_method_step_number">Step {method.step_number}</div>
                                     <div className="recipe_method_image_and_details_div">
                                         {!!method.image_url &&
                                             <div className="recipe_method_image">
-                                                <img src={method.image_url} alt={`${recipe.title} ${method.step_number}`}/>
+                                                <img
+                                                    src={method.image_url}
+                                                    alt={`${recipe.title} ${method.step_number}`}
+                                                    onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
+                                                />
                                             </div>
                                         }
                                         <div className="recipe_method_details">{method.details}</div>

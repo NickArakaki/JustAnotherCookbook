@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllRecipesThunk } from "../../store/recipes";
 import { getAllUsersThunk } from '../../store/users'
 import RecipeTiles from "../RecipeTiles";
@@ -7,6 +7,7 @@ import RecipeTiles from "../RecipeTiles";
 function LandingPage() {
     const dispatch = useDispatch();
     const [isLoaded, setIsLoaded] = useState(false);
+    const recipes = useSelector(state => state.recipes.allRecipes)
 
     useEffect(() => {
         dispatch(getAllRecipesThunk())
@@ -16,7 +17,7 @@ function LandingPage() {
 
     return (
         <>
-            {isLoaded && <RecipeTiles />}
+            {isLoaded && <RecipeTiles recipes={recipes} />}
         </>
     )
 }

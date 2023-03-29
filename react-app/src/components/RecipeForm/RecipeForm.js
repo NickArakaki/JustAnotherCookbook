@@ -178,6 +178,7 @@ function RecipeForm({ recipe }) {
 
     return (
         <div className="recipe_form_background_image">
+            <div className="recipe_form_container">
             <form onSubmit={handleSubmit} className="recipe_form">
                 <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
                 {errors.map((error, idx) => {
@@ -394,6 +395,7 @@ function RecipeForm({ recipe }) {
                     <span className="required_input">*</span> = Required Field
                 </div>
             </form>
+            </div>
         </div>
     )
 }

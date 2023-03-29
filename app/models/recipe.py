@@ -34,7 +34,8 @@ class Recipe(db.Model):
             "total_time": self.total_time,
             "description": self.description,
             "preview_image_url": self.preview_image_url,
-            "tags": [tag.to_dict() for tag in self.tags]
+            "tags": [tag.to_dict() for tag in self.tags],
+            "liked_users_ids": [user.id for user in self.liked_users]
         }
 
 
@@ -51,5 +52,6 @@ class Recipe(db.Model):
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
             "methods": [method.to_dict() for method in self.methods],
             "reviews": [review.to_dict_summary() for review in self.reviews],
-            "tags": [tag.to_dict() for tag in self.tags]
+            "tags": [tag.to_dict() for tag in self.tags],
+            "liked_users_ids": [user.id for user in self.liked_users]
         }

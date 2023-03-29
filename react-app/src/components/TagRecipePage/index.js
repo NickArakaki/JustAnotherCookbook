@@ -11,8 +11,8 @@ function TagRecipePage() {
     const history = useHistory();
     const { tagId } = useParams();
     const tag = useSelector(state => state.tags[tagId])
+    const recipes = useSelector(state => state.recipes.allRecipes)
     const [isLoaded, setIsLoaded] = useState(false);
-    console.log(tagId)
 
     useEffect(() => {
         // hydrate all tags
@@ -34,7 +34,7 @@ function TagRecipePage() {
             {isLoaded ? (
                 <div className="tag_recipe_container">
                     <div className="tag_recipe_header">Recipes for {tag.tag.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")}</div>
-                    <RecipeTiles />
+                    <RecipeTiles recipes={recipes}/>
                 </div>
             ): (
                 <h1>Loading...</h1>
