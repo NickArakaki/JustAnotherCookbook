@@ -66,7 +66,12 @@ function RecipeDetails() {
                             })}
                         </div>
                     <div className="single_recipe_image_div">
-                        <img className="recipe_detail_image" src={recipe.preview_image_url} alt={`${recipe.title}`} />
+                        <img
+                            className="recipe_detail_image"
+                            src={recipe.preview_image_url}
+                            alt={`${recipe.title}`}
+                            onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                        />
                     </div>
                     <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
@@ -99,7 +104,11 @@ function RecipeDetails() {
                                     <div className="recipe_method_image_and_details_div">
                                         {!!method.image_url &&
                                             <div className="recipe_method_image">
-                                                <img src={method.image_url} alt={`${recipe.title} ${method.step_number}`}/>
+                                                <img
+                                                    src={method.image_url}
+                                                    alt={`${recipe.title} ${method.step_number}`}
+                                                    onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                                                />
                                             </div>
                                         }
                                         <div className="recipe_method_details">{method.details}</div>

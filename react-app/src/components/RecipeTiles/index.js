@@ -23,7 +23,12 @@ function RecipeTiles({ recipes }) {
                                 <div className="recipe_tile_favorite_button">
                                     <FavoriteButton recipe={recipe} />
                                 </div>
-                                <img className="recipe_tile_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
+                                <img
+                                    className="recipe_tile_image"
+                                    src={recipe.preview_image_url}
+                                    alt={`${recipe.title} preview`}
+                                    onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                                />
                             </div>
                             <div className="recipe_tile_title">{recipe.title}</div>
                             <div className="recipe_tile_description">{recipe.description}</div>
