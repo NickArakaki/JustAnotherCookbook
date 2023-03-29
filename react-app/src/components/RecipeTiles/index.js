@@ -18,10 +18,10 @@ function RecipeTiles({ recipes }) {
             {Object.values(recipes).map(recipe => {
                 return (
                     <div key={recipe.id} className="recipe_tile">
-                        {!!sessionUser && <FavoriteButton recipe={recipe}/>}
                         <div className="recipe_tile_details_link" onClick={() => goToRecipeDetails(recipe)}>
                             <div className="recipe_tile_image">
                                 <div className="recipe_tile_favorite_button">
+                                    {!!sessionUser && <FavoriteButton recipe={recipe}/>}
                                 </div>
                                 <img className="recipe_tile_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
                             </div>
