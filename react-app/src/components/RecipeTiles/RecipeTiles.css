@@ -11,8 +11,9 @@
 .recipe_tile {
     display: flex;
     flex-direction: column;
+    /* justify-content: space-between; */
     margin: 15px;
-    height: 600px;
+    height: 100%;
     max-width: 250px;
     border-radius: 0 0 15px 15px;
     border: 1px solid #ccc;
@@ -27,8 +28,23 @@
     text-underline-position: under;
 }
 
-.favorited_icon {
+/* .recipe_tile_favorite_button {
+
+} */
+
+.recipe_tile_image .favorited_icon {
     color: coral;
+    position: relative;
+    top: -290px;
+    left: 10px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+    transition: 200ms ease;
+}
+
+.recipe_tile_image .favorited_icon:hover {
+    font-size: 1.25rem;
 }
 
 .recipe_tile_image {
@@ -68,6 +84,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 5px;
+    justify-self: flex-end;
 }
 
 .recipe_tile_tags > a {

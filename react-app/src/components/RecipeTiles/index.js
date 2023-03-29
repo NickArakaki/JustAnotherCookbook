@@ -21,15 +21,13 @@ function RecipeTiles({ recipes }) {
                     <div key={recipe.id} className="recipe_tile">
                         <div className="recipe_tile_details_link" onClick={() => goToRecipeDetails(recipe)}>
                             <div className="recipe_tile_image">
-                                <div className="recipe_tile_favorite_button">
-                                    <FavoriteButton recipe={recipe} />
-                                </div>
                                 <img
                                     className="recipe_tile_image"
                                     src={recipe.preview_image_url}
                                     alt={`${recipe.title} preview`}
                                     onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
                                 />
+                                <FavoriteButton recipe={recipe} />
                             </div>
                             <div className="recipe_tile_title">{recipe.title}</div>
                             <div className="recipe_tile_description">{recipe.description}</div>
