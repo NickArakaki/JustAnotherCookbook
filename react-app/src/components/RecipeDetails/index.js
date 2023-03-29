@@ -70,7 +70,7 @@ function RecipeDetails() {
                             className="recipe_detail_image"
                             src={recipe.preview_image_url}
                             alt={`${recipe.title}`}
-                            onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                            onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
                         />
                     </div>
                     <div className="recipe_details_div">
@@ -107,7 +107,7 @@ function RecipeDetails() {
                                                 <img
                                                     src={method.image_url}
                                                     alt={`${recipe.title} ${method.step_number}`}
-                                                    onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                                                    onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
                                                 />
                                             </div>
                                         }

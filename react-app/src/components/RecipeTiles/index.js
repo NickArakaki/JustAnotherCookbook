@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom"
 import FavoriteButton from "../FavoriteButton";
 import "./RecipeTiles.css"
+import defaultImage from "../../assets/images/wheresthefood.jpg"
 
 function RecipeTiles({ recipes }) {
     const history = useHistory();
@@ -27,7 +28,7 @@ function RecipeTiles({ recipes }) {
                                     className="recipe_tile_image"
                                     src={recipe.preview_image_url}
                                     alt={`${recipe.title} preview`}
-                                    onError={(e) => e.currentTarget.src = "../../assets/images/wheresthefood.jpg"}
+                                    onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
                                 />
                             </div>
                             <div className="recipe_tile_title">{recipe.title}</div>
