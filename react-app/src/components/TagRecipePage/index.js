@@ -12,7 +12,6 @@ function TagRecipePage() {
     const { tagId } = useParams();
     const tag = useSelector(state => state.tags[tagId])
     const [isLoaded, setIsLoaded] = useState(false);
-    console.log(tagId)
 
     useEffect(() => {
         // hydrate all tags
