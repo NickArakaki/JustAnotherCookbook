@@ -21,7 +21,7 @@ function RecipeTiles({ recipes }) {
                         <div className="recipe_tile_details_link" onClick={() => goToRecipeDetails(recipe)}>
                             <div className="recipe_tile_image">
                                 <div className="recipe_tile_favorite_button">
-                                    {!!sessionUser && <FavoriteButton recipe={recipe}/>}
+                                    <FavoriteButton recipe={recipe} />
                                 </div>
                                 <img className="recipe_tile_image" src={recipe.preview_image_url} alt={`${recipe.title} preview`} />
                             </div>

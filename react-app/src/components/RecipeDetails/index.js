@@ -44,7 +44,7 @@ function RecipeDetails() {
                 <div className="recipe_container">
                     <div className="recipe_title_and_buttons_div">
                         <div className="single_recipe_title">{recipe.title}</div>
-                        {sessionUser && <FavoriteButton recipe={recipe} />}
+                        <FavoriteButton recipe={recipe} />
                         {recipe.author.id === sessionUser?.id ? (
                             <div className="recipe_details_edit_and_delete_button_div">
                                 <Link to={`/recipes/${recipe.id}/edit`}>

@@ -1,27 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { favoriteARecipeThunk, removeUserFavoriteRecipeThunk } from "../../store/recipes";
 
 function FavoriteButton({ recipe }) {
+    const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
 
     const handleFavorite = async (recipeId) => {
-        const data = await dispatch(favoriteARecipeThunk(recipeId))
-        if (data) {
-            alert(data)
+        if (!sessionUser) {
+            history.push("/login")
+        } else {
+            dispatch(favoriteARecipeThunk(recipeId))
         }
     }
 
     const handleUnFavorite = async (recipeId) => {
-        const data = await dispatch(removeUserFavoriteRecipeThunk(recipeId))
-        if (data) {
-            alert(data)
+        if (!sessionUser) {
+            history.push("/login")
+        } else {
+            dispatch(removeUserFavoriteRecipeThunk(recipeId))
         }
     }
 
     return (
         <>
-            {(sessionUser && recipe.liked_users_ids.includes(sessionUser.id)) ? (
+            {(recipe.liked_users_ids.includes(sessionUser?.id)) ? (
                 <i onClick={(e) => {
                     e.stopPropagation();
                     handleUnFavorite(recipe.id)
