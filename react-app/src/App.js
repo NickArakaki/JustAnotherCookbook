@@ -35,12 +35,12 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <Route path='/recipes/submit'>
+          <ProtectedRoute path='/recipes/submit'>
             <RecipeForm />
-          </Route>
-          <Route path={`/recipes/:recipeId/edit`}>
+          </ProtectedRoute>
+          <ProtectedRoute path={`/recipes/:recipeId/edit`}>
             <UpdateRecipeForm />
-          </Route>
+          </ProtectedRoute>
           <Route path={`/recipes/:recipeId`}>
             <RecipeDetails />
           </Route>
