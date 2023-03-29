@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom"
-import { favoriteARecipeThunk, removeUserFavoriteRecipeThunk } from "../../store/recipes";
+import FavoriteButton from "../FavoriteButton";
 import "./RecipeTiles.css"
 
 function RecipeTiles({ recipes }) {
-    const dispatch = useDispatch();
     const history = useHistory();
     const sessionUser = useSelector(state => state.session.user)
 
@@ -12,30 +11,14 @@ function RecipeTiles({ recipes }) {
         history.push(`/recipes/${recipe.id}`)
     }
 
-    const handleFavorite = async (recipeId) => {
-        const data = await dispatch(favoriteARecipeThunk(recipeId))
-        if (data) {
-            alert(data)
-        }
-    }
 
-    const handleUnFavorite = async (recipeId) => {
-        const data = await dispatch(removeUserFavoriteRecipeThunk(recipeId))
-        if (data) {
-            alert(data)
-        }
-    }
 
     return (
         <div className="recipe_tiles_div">
             {Object.values(recipes).map(recipe => {
                 return (
                     <div key={recipe.id} className="recipe_tile">
-                        {(sessionUser && recipe.liked_users_ids.includes(sessionUser.id)) ? (
-                                <i onClick={() => handleUnFavorite(recipe.id)} className="favorited_icon fa-solid fa-heart" />
-                            ) : (
-                                <i onClick={() => handleFavorite(recipe.id)} className="favorited_icon fa-sharp fa-regular fa-heart" />
-                        )}
+                        {!!sessionUser && <FavoriteButton recipe={recipe}/>}
                         <div className="recipe_tile_details_link" onClick={() => goToRecipeDetails(recipe)}>
                             <div className="recipe_tile_image">
                                 <div className="recipe_tile_favorite_button">
