@@ -16,27 +16,28 @@ export const validateRecipeDescription = description => {
     return errors;
 }
 
-export const isValidImageURL = imageURL => {
-    const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+export const isValidImageURL = image => {
+    const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+    console.log(image)
+    let isValid = false;
+    // for (const allowedExtension of allowedExtensions) {
+    //     if (image.endsWith(allowedExtension)) {
+    //         isValid = true;
+    //         break
+    //     }
+    // }
+    if (allowedFileTypes.includes(image.type)) isValid = true;
 
-    let isValidURL = false;
-    for (const allowedExtension of allowedExtensions) {
-        if (imageURL.endsWith(allowedExtension)) {
-            isValidURL = true;
-            break
-        }
-    }
-
-    return isValidURL;
+    return isValid;
 }
 
-export const validateRecipeImageURL = imageURL => {
+export const validateRecipeImage = imageURL => {
     // preview_image_url
     const errors = [];
 
     if (!imageURL) errors.push("PREVIEW IMAGE REQUIRED")
 
-    if (!isValidImageURL(imageURL)) errors.push("IMAGE URL MUST END WITH .png, .jpg, or .jpeg")
+    if (!isValidImageURL(imageURL)) errors.push("INVALID FILE TYPE")
 
     return errors;
 }

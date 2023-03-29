@@ -7,7 +7,7 @@ import {
         validateRecipeTitle,
         validateRecipeDescription,
         validateEstimatedTime,
-        validateRecipeImageURL,
+        validateRecipeImage,
         validateIngredients,
         validateMethods,
         validateTags
@@ -27,8 +27,8 @@ function RecipeForm({ recipe }) {
     const [descriptionErrors, setDescriptionErrors] = useState([])
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
     const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
-    const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
-    const [previewImageURLErrors, setPreviewImageURLErrors] = useState([])
+    const [previewImage, setPreviewImage] = useState(null)
+    const [previewImageErrors, setPreviewImageErrors] = useState([])
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
@@ -130,8 +130,8 @@ function RecipeForm({ recipe }) {
         const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
         setEstimatedTimeErrors(validatedEstimatedTimeErrors)
 
-        const validatedPreviewImageURLErrors = validateRecipeImageURL(previewImageURL)
-        setPreviewImageURLErrors(validatedPreviewImageURLErrors)
+        const validatedPreviewImageErrors = validateRecipeImage(previewImage)
+        setPreviewImageErrors(validatedPreviewImageErrors)
 
         const validatedIngredientsErrors = validateIngredients(ingredientsList)
         setIngredientsListErrors(validatedIngredientsErrors)
@@ -144,17 +144,18 @@ function RecipeForm({ recipe }) {
 
 
         // if there are no errors after validating, dispatch appropriate thunk
-        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageURLErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
+        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
 
             const newRecipe = {
                 title,
                 description,
-                "preview_image_url": previewImageURL,
+                "preview_image": previewImage,
                 "total_time": estimatedTime,
                 "ingredients": JSON.stringify(ingredientsList),
                 "methods": JSON.stringify(methodsList),
                 "tags": JSON.stringify(tags)
             }
+
 
             if (!recipe) { // POST Recipe
                 const data = await dispatch(postARecipeThunk(newRecipe))
@@ -219,17 +220,19 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
-                    {previewImageURLErrors.map((error, idx) => {
+                    {previewImageErrors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
                         )
                     })}
+                    {/* conditionally render this input if user selects upload different picture */}
+                    {/* conditionally render img here for input */}
                     <input
                         required
                         className="recipe_form_input recipe_form_preview_image_input"
-                        type="url"
-                        value={previewImageURL}
-                        onChange={e => setPreviewImageURL(e.target.value)}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setPreviewImage(e.target.files[0])}
                     />
                 </div>
                 <div className="recipe_form_input_div recipe_form_time_to_make">
