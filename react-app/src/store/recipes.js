@@ -310,13 +310,21 @@ export default function reducer(state = initialState, action) {
             // need to add current user id to list of favorite user ids
             // if recipe in all recipes
             newState.allRecipes = { ...state.allRecipes }
+            newState.singleRecipe = { ...state.singleRecipe }
+            newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
 
             if (action.payload.id in newState.allRecipes) {
                 newState.allRecipes[action.payload.id] = action.payload
             }
-            // if singlerecipe id is the action.payload.id
-            newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
+
+            if (newState.singleRecipe.id === action.payload.id) {
+                newState.singleRecipe.liked_users_ids = action.payload.liked_users_ids
+            }
+
             newState.userFavoriteRecipes[action.payload.id] = action.payload
+
+
+
             return newState
         }
         case POST_A_RECIPE: {
@@ -340,12 +348,17 @@ export default function reducer(state = initialState, action) {
         }
         case REMOVE_USER_FAVORITE_RECIPE: {
             newState.allRecipes = { ...state.allRecipes }
+            newState.singleRecipe = { ...state.singleRecipe }
+            newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
 
             if (action.payload.id in newState.allRecipes) {
                 newState.allRecipes[action.payload.id] = action.payload
             }
 
-            newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
+            if (newState.singleRecipe.id === action.payload.id) {
+                newState.singleRecipe.liked_users_ids = action.payload.liked_users_ids
+            }
+
             delete newState.userFavoriteRecipes[action.payload.id]
             return newState
         }

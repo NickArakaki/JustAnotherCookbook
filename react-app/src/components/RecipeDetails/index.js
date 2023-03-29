@@ -6,6 +6,7 @@ import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
 import RecipeReviews from "../Reviews";
+import FavoriteButton from "../FavoriteButton"
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -43,6 +44,7 @@ function RecipeDetails() {
                 <div className="recipe_container">
                     <div className="recipe_title_and_buttons_div">
                         <div className="single_recipe_title">{recipe.title}</div>
+                        {sessionUser && <FavoriteButton recipe={recipe} />}
                         {recipe.author.id === sessionUser?.id ? (
                             <div className="recipe_details_edit_and_delete_button_div">
                                 <Link to={`/recipes/${recipe.id}/edit`}>
