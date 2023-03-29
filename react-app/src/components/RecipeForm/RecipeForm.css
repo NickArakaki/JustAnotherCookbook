@@ -26,7 +26,8 @@
 }
 
 .recipe_form_container {
-    height: 2000px;
+    height: 1500px;
+    min-height: 100vh;
 }
 
 .recipe_form_label {

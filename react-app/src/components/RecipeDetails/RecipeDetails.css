@@ -7,8 +7,9 @@
     margin: 0 auto;
 }
 
-.recipe_container > * {
+.recipe_container  * {
     margin: 15px 0px;
+    max-width: 100%;
 }
 
 .recipe_title_and_buttons_div {
@@ -20,6 +21,7 @@
 .single_recipe_title {
     font-size: 3rem;
     font-weight: bold;
+    max-width: 100%;
 }
 
 .recipe_details_edit_and_delete_button_div {
