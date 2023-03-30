@@ -17,6 +17,7 @@ class Method(db.Model):
 
     def to_dict(self):
         return {
+            "id": self.id,
             "step_number": self.step_number,
             "details": self.details,
             "image_url": self.image_url

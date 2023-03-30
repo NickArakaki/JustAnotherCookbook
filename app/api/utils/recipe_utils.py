@@ -19,21 +19,24 @@ def add_methods(recipe, methods_list):
     for idx, method in enumerate(methods_list):
         # implement the aws helpers here
         method_image = method["image"]
-        print("method image================", method_image)
-        method_image.filename = get_unique_filename(method_image.filename)
-        upload = upload_file_to_s3(method_image)
+        method_image_url = ""
+        if method_image:
+            print("method image================", method_image)
+            method_image.filename = get_unique_filename(method_image.filename)
+            upload = upload_file_to_s3(method_image)
 
-        # if error gets thrown by aws return the error
-        if "url" not in upload:
-            # this is where we will eventually delete all the successful aws uploads if one fails
-            return { "errors": [upload] }, 400
+            # if error gets thrown by aws return the error
+            if "url" not in upload:
+                # this is where we will eventually delete all the successful aws uploads if one fails
+                return { "errors": [upload] }, 400
 
-        method_image_urls.append(upload["url"])
+            method_image_url = upload["url"]
+            method_image_urls.append(upload["url"])
 
         new_method = Method(
             step_number = idx + 1,
             details = method["details"],
-            image_url = upload["url"]
+            image_url = method_image_url
         )
         recipe.methods.append(new_method)
 

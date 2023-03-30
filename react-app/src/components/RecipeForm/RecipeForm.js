@@ -15,6 +15,7 @@ import {
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
+    console.log("recipe in update form", recipe)
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function RecipeForm({ recipe }) {
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     // if we pass a recipe, set the values to include the method.id this will be important for comparing them when updating
-    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image: null}])
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -98,7 +99,7 @@ function RecipeForm({ recipe }) {
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {details:"", image: null}])
+        setMethodsList([...methodsList, {id: "", details:"", image: ""}])
         setMethodsListErrors([...methodsListErrors, []])
     }
 
@@ -112,7 +113,7 @@ function RecipeForm({ recipe }) {
             updatedMethodListErrors.splice(idx, 1)
             setMethodsListErrors(updatedMethodListErrors)
         } else {
-            setMethodsList([{details:"", image: null}])
+            setMethodsList([{ id:"", details:"", image: null }])
             setMethodsListErrors([[]])
         }
     }
@@ -186,12 +187,20 @@ function RecipeForm({ recipe }) {
             formData.append("total_time", estimatedTime);
             formData.append("ingredients", JSON.stringify(ingredientsList))
 
+            // this is how we can pass an array to the backend without using JSON.stringify
             for (const method of methodsList) {
-                console.log("method in the loop", method)
+                console.log(method)
                 Object.entries(method).forEach(([key, value]) => {
-                    console.log("key", key)
-                    console.log("value", value)
-                    formData.append(key, value)
+                    // we need to pass an empty file to the backend to keep the order
+                    if (key === "image" && value === "") {
+                        const dummyImage = new Blob([], {
+                            type: "dummy/jpeg",
+                          });
+                        value = dummyImage
+                        formData.append(key, value, "dummy_image.jpeg")
+                    } else {
+                        formData.append(key, value)
+                    }
                 })
             }
 

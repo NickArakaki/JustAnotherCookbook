@@ -47,19 +47,26 @@ def post_a_recipe():
     Create and return a new Recipe
     """
     form = PostRecipeForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
+
         # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
-        method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
+        method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        print(method_images)
         method_details = [{"details": details} for details in request.form.getlist("details")]
+        print(method_details)
         method_list = [image | details for image, details in zip(method_images, method_details)]
-
+        print(method_list)
+        # return {"error": ["testing, do not sub"]},400
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
             return { "errors": ["Invalid methods"] }, 400
+
 
         preview_image = form.data["preview_image"]
         preview_image.filename = get_unique_filename(preview_image.filename)
@@ -80,15 +87,17 @@ def post_a_recipe():
         )
         db.session.add(new_recipe)
 
-        # iterate over methods and upload image files to aws
-        # add the url to the new method and add to recipe
 
         # Get list of ingredients and tags
         ingredient_list = json.loads(form.data["ingredients"])
         tag_list = json.loads(form.data["tags"])
 
-        # append to recipe
+
+        # append ingredients to recipe.ingredients
         add_ingredients(new_recipe, ingredient_list)
+        # append tags to recipe.tags
+        add_tags(new_recipe, tag_list)
+
 
         add_method_errors = add_methods(new_recipe, method_list)
         # if there were any errors when uploading ot aws return the error message
@@ -96,7 +105,6 @@ def post_a_recipe():
             # this is where will remove the recipe image from aws bucket if there is an error thrown
             return add_method_errors
 
-        add_tags(new_recipe, tag_list)
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -124,9 +132,17 @@ def update_a_recipe(id):
 
     # Form validations
     if form.validate_on_submit():
-        ingredients_list = json.loads(form.data["ingredients"])
-        methods_list = json.loads(form.data["methods"])
-        tags_list = json.loads(form.data["tags"])
+
+        method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
+        # method_details = [{"details": details} for details in request.form.getlist("details")]
+        # method_ids = [{"id": id} for id in request.form.getlist("id")]
+        # method_intermediate = [id | details for id, details in zip(method_ids, method_details)]
+        # method_list = [image | info for image, info in zip(method_images, method_intermediate)]
+        # method_list = [image | details for image, details in zip(method_images, method_details)]
+        # method_list = [id | method for id, method in zip(method_ids, method_list)]
+        print("method list ==================================================================", method_images)
+        return { "errors": ["test do not submit"]}, 400
+
 
         recipe.title = form.data["title"]
         recipe.total_time = form.data["total_time"]
@@ -147,9 +163,15 @@ def update_a_recipe(id):
             # going to want to delete the old image from the aws bucket, before reassigning to new image
             recipe.preview_image_url = upload["url"]
 
+        # Get list of ingredients and tags
+        ingredients_list = json.loads(form.data["ingredients"])
+        tags_list = json.loads(form.data["tags"])
+
         update_ingredients(recipe, ingredients_list)
-        update_methods(recipe, methods_list)
         update_tags(recipe, tags_list)
+
+
+        update_methods(recipe, methods_list)
 
         db.session.commit()
         return recipe.to_dict_detailed()

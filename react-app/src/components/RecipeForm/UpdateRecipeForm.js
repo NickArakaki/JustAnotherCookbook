@@ -25,9 +25,6 @@ function UpdateRecipeForm() {
             })
     }, [dispatch, history, recipeId])
 
-    console.log("recipe ===========================================", recipe)
-    // console.log("recipe ===========================================", recipe?.author.id)
-
     if (isLoaded && sessionUser.id !== recipe.author.id) return <Redirect to="/" />
 
     return (

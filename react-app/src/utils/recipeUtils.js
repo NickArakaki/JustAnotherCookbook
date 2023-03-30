@@ -74,7 +74,6 @@ export const validateMethods = methodsList => {
     const errors = []
     // methods
     for (const method of methodsList) {
-        console.log(method.image)
         const methodErrors = []
         // each must have details with a min length of ?
         if (method.details.length < 10) methodErrors.push("DESCRIPTION NEEDS TO BE AT LEAST 10 CHARACTERS")
