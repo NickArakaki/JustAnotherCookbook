@@ -52,9 +52,21 @@ def post_a_recipe():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         ingredient_list = json.loads(form.data["ingredients"])
-        method_list = json.loads(form.data["methods"])
         tag_list = json.loads(form.data["tags"])
 
+        # this is how we can send a list of objects with files from the frontend
+        method_image_urls = request.form.getlist("image_url")
+        method_details = request.form.getlist("details")
+        print(list(zip(method_image_urls, method_details)))
+        # method_list = request.form["methods"]
+        # print(type(method_list))
+        # for method in method_list:
+        #     print(method)
+
+
+
+
+        return {"errors" : ["testing do not submit"] }, 401
 
         preview_image = form.data["preview_image"]
         preview_image.filename = get_unique_filename(preview_image.filename)
@@ -63,7 +75,7 @@ def post_a_recipe():
         if "url" not in upload:
             # if the dictionary doesn't have a url key
             # it means that there was an error when we tried to upload
-            # so we send back that error messate
+            # so we send back that error message
             return { "errors": [upload] }, 400
 
         new_recipe = Recipe(
@@ -78,7 +90,6 @@ def post_a_recipe():
         add_ingredients(new_recipe, ingredient_list)
         add_methods(new_recipe, method_list)
         add_tags(new_recipe, tag_list)
-
         db.session.commit()
         return new_recipe.to_dict_detailed()
     else:
@@ -122,7 +133,7 @@ def update_a_recipe(id):
             if "url" not in upload:
                 # if the dictionary doesn't have a url key
                 # it means that there was an error when we tried to upload
-                # so we send back that error messate
+                # so we send back that error message
                 return { "errors": [upload] }, 400
 
             # going to want to delete the old image from the aws bucket, before reassigning to new image

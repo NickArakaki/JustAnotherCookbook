@@ -163,7 +163,7 @@ function RecipeForm({ recipe }) {
             !validatedIngredientsErrors.flat().length &&
             !validatedMethodsErrors.flat().length &&
             !validatedTagsErrors.length
-            ){
+        ){
 
             const formData = new FormData();
             formData.append("title", title);
@@ -171,8 +171,14 @@ function RecipeForm({ recipe }) {
             formData.append("preview_image", previewImage);
             formData.append("total_time", estimatedTime);
             formData.append("ingredients", JSON.stringify(ingredientsList))
-            formData.append("methods", JSON.stringify(methodsList))
+            for (const method of methodsList) {
+                Object.entries(method).forEach(([key, value]) => {
+                    formData.append(key, value)
+                })
+            }
+            // formData.append("methods", methodsList)
             formData.append("tags", JSON.stringify(tags))
+            // console.log(...formData)
 
 
             if (!recipe) { // POST Recipe
@@ -180,6 +186,7 @@ function RecipeForm({ recipe }) {
                 if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
+                    console.log("data is not an array, but i shouldn't be here....")
                     history.push(`/recipes/${data.id}`)
                 }
             } else { // PUT Recipe

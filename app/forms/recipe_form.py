@@ -51,7 +51,7 @@ class PostRecipeForm(FlaskForm):
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
     ingredients = StringField("ingredients", validators=[ingredient_validation])
-    methods = StringField("methods", validators=[method_validation])
+    # methods = StringField("methods", validators=[method_validation])
     tags = StringField("tags", validators=[tag_validation])
 
 
@@ -61,5 +61,5 @@ class UpdateRecipeForm(FlaskForm):
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
     ingredients = StringField("ingredients", validators=[ingredient_validation])
-    methods = StringField("methods", validators=[method_validation])
+    # methods = StringField("methods", validators=[method_validation])
     tags = StringField("tags", validators=[tag_validation])
