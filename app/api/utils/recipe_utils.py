@@ -1,4 +1,5 @@
 from app.models import Ingredient, Method, Tag, db
+from app.api.utils.aws_utils import allowed_file
 
 ## POST HELPERS
 def add_ingredients(recipe, ingredients_list):
@@ -127,8 +128,15 @@ def is_valid_methods(methods_list):
     is_valid = True
 
     for method in methods_list:
-        pass
+        if not method["details"]:
+            is_valid = False
+            break
+
+        if method["image"]:
+            # validate image file
+            if not allowed_file(method["image"]):
+                is_valid = False
+                break
         # validate
         # if at any point it fails set is_valid to False and break
-
     return is_valid

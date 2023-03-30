@@ -5,13 +5,21 @@ import uuid
 
 BUCKET_NAME = os.environ.get("S3_BUCKET")
 S3_LOCATION = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
-ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
+ALLOWED_EXTENSIONS = { "png", "jpg", "jpeg", "gif" }
 
 s3 = boto3.client(
    "s3",
    aws_access_key_id=os.environ.get("S3_KEY"),
    aws_secret_access_key=os.environ.get("S3_SECRET")
 )
+
+def allowed_file(file):
+    filetype = file.mimetype
+    filename = file.filename
+    if filetype.split('/')[1] not in ALLOWED_EXTENSIONS or filename.split(".")[1] not in ALLOWED_EXTENSIONS:
+        return False
+    else:
+        return True
 
 
 def get_unique_filename(filename):

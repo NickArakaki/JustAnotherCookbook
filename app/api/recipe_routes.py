@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
-from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
+from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags, is_valid_methods
 from .utils.aws_utils import upload_file_to_s3, get_unique_filename
 from app.models import db, Recipe, Ingredient, Method, Review, Tag
 from app.forms import PostRecipeForm, UpdateRecipeForm, ReviewForm
@@ -51,14 +51,18 @@ def post_a_recipe():
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        ingredient_list = json.loads(form.data["ingredients"])
-        tag_list = json.loads(form.data["tags"])
-
         # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
         method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
         method_details = [{"details": details} for details in request.form.getlist("details")]
         method_list = [image | details for image, details in zip(method_images, method_details)]
+        # make sure methods are valid before proceeding
+        if not is_valid_methods(method_list):
+            return { "errors": ["Invalid methods"] }
+
+        # Get list of ingredients and tags
+        ingredient_list = json.loads(form.data["ingredients"])
+        tag_list = json.loads(form.data["tags"])
 
         # validate the methods in method list
         # if pass validation
