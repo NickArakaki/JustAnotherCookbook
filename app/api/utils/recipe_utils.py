@@ -78,32 +78,65 @@ def update_ingredients(recipe, ingredients_list):
             recipe.ingredients.remove(ingredient)
 
 
+# def update_methods(recipe, methods_list):
+#     method_difference = len(methods_list) - len(recipe.methods)
+
+#     for new_method, old_method in zip(methods_list, recipe.methods):
+#         # if new_method has an id and no image, don't do anything
+#             # see if there is a new image
+#             # if there is a new image we need to do aws things
+#             # if not great, just move along
+#         old_method.details = new_method["details"]
+#         old_method.image_url = new_method["image_url"]
+
+#     if method_difference > 0: # new methods to be added
+
+#         for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
+#             # aws implementation will be the same here as in create methods
+#                 new_method = Method(
+#                     step_number = len(recipe.methods) + 1,
+#                     details = method["details"],
+#                     image_url = method["image_url"]
+#                 )
+#                 recipe.methods.append(new_method)
+
+#     elif method_difference < 0: # fewer or same number of methods
+#     # if there are fewer methods, remove the methods that were removed
+#         for method in recipe.methods[method_difference:]:
+#             recipe.methods.remove(method)
+
+
 def update_methods(recipe, methods_list):
-    method_difference = len(methods_list) - len(recipe.methods)
+    methods_to_create = []
+    methods_to_update = {}
 
-    for new_method, old_method in zip(methods_list, recipe.methods):
-        # if  has an id and no image
-            # see if there is a new image
-            # if there is a new image we need to do aws things
-            # if not great, just move along
-        old_method.details = new_method["details"]
-        old_method.image_url = new_method["image_url"]
+    for method in methods_list:
+        if method["id"]:
+            methods_to_update[method["id"]] = method
+        else:
+            methods_to_create.append(method)
 
-    if method_difference > 0: # new methods to be added
+    # print("old methods ======================================================", old_methods)
+    print("methods to create=================================================", methods_to_create)
+    print("methods to update=================================================", methods_to_update)
 
-        for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
-            # aws implementation will be the same here as in create methods
-                new_method = Method(
-                    step_number = len(recipe.methods) + 1,
-                    details = method["details"],
-                    image_url = method["image_url"]
-                )
-                recipe.methods.append(new_method)
+    # for each method in old methods compare to the methods to be updated by id
+    for old_method in recipe.methods:
+        if old_method.id not in methods_to_update:
+            db.session.delete(old_method)
+        else:
+            # get the method to update
+            method_to_update = methods_to_update[old_method.id]
+            print("method to update ============================================",method_to_update)
+            pass
+            # if there is a new image deploy aws
+                # if there is an error return the error
+            # else
+                # update the method
 
-    elif method_difference < 0: # fewer or same number of methods
-    # if there are fewer methods, remove the methods that were removed
-        for method in recipe.methods[method_difference:]:
-            recipe.methods.remove(method)
+    # create the new methods and append to recipe can use the add_methods helper function
+        # if there is an error return the error
+    pass
 
 
 def update_tags(recipe, tags_list):

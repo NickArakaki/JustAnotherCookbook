@@ -20,5 +20,6 @@ class Method(db.Model):
             "id": self.id,
             "step_number": self.step_number,
             "details": self.details,
-            "image_url": self.image_url
+            "image_url": self.image_url,
+            "image": ""
         }
