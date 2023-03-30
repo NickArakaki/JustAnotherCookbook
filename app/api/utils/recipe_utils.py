@@ -103,7 +103,6 @@ def update_methods(recipe, methods_list):
 
             if new_method_image:
                 new_method_image.filename = get_unique_filename(new_method_image.filename)
-                print(new_method_image.filename)
                 upload = upload_file_to_s3(new_method_image)
 
                  # if error gets thrown by aws return the error
