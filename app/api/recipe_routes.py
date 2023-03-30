@@ -61,23 +61,22 @@ def post_a_recipe():
         if not is_valid_methods(method_list):
             return { "errors": ["Invalid methods"] }, 400
 
-        # preview_image = form.data["preview_image"]
-        # preview_image.filename = get_unique_filename(preview_image.filename)
-        # upload = upload_file_to_s3(preview_image)
+        preview_image = form.data["preview_image"]
+        preview_image.filename = get_unique_filename(preview_image.filename)
+        upload = upload_file_to_s3(preview_image)
 
-        # if "url" not in upload:
-        #     # if the dictionary doesn't have a url key
-        #     # it means that there was an error when we tried to upload
-        #     # so we send back that error message
-        #     return { "errors": [upload] }, 400
+        if "url" not in upload:
+            # if the dictionary doesn't have a url key
+            # it means that there was an error when we tried to upload
+            # so we send back that error message
+            return { "errors": [upload] }, 400
 
         new_recipe = Recipe(
             author_id = current_user.id,
             title = form.data["title"],
             total_time = form.data["total_time"],
             description = form.data["description"],
-            # preview_image_url = upload["url"]
-            preview_image_url = "https://www.google.com/"
+            preview_image_url = upload["url"]
         )
         db.session.add(new_recipe)
 
@@ -94,6 +93,7 @@ def post_a_recipe():
         add_method_errors = add_methods(new_recipe, method_list)
         # if there were any errors when uploading ot aws return the error message
         if add_method_errors:
+            # this is where will remove the recipe image from aws bucket if there is an error thrown
             return add_method_errors
 
         add_tags(new_recipe, tag_list)
