@@ -57,12 +57,8 @@ def post_a_recipe():
         # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
         method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
-        print(method_images)
         method_details = [{"details": details} for details in request.form.getlist("details")]
-        print(method_details)
         method_list = [image | details for image, details in zip(method_images, method_details)]
-        print(method_list)
-        # return {"error": ["testing, do not sub"]},400
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
             return { "errors": ["Invalid methods"] }, 400
@@ -133,35 +129,34 @@ def update_a_recipe(id):
     # Form validations
     if form.validate_on_submit():
 
-        method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
-        # method_details = [{"details": details} for details in request.form.getlist("details")]
-        # method_ids = [{"id": id} for id in request.form.getlist("id")]
-        # method_intermediate = [id | details for id, details in zip(method_ids, method_details)]
-        # method_list = [image | info for image, info in zip(method_images, method_intermediate)]
-        # method_list = [image | details for image, details in zip(method_images, method_details)]
-        # method_list = [id | method for id, method in zip(method_ids, method_list)]
-        print("method list ==================================================================", method_images)
-        return { "errors": ["test do not submit"]}, 400
+        method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        method_details = [{"details": details} for details in request.form.getlist("details")]
+        method_ids = [{"id": id} for id in request.form.getlist("id")]
 
+        method_list = [image | details | id for image, details, id in zip(method_images, method_details, method_ids)]
+
+        # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
+        if not is_valid_methods(method_list):
+            return { "errors": ["Invalid methods"] }, 400
 
         recipe.title = form.data["title"]
         recipe.total_time = form.data["total_time"]
         recipe.description = form.data["description"]
 
         # this is where we check to see if there's a new image
-        if form.data["preview_image"]:
-            preview_image = form.data["preview_image"]
-            preview_image.filename = get_unique_filename(preview_image.filename)
-            upload = upload_file_to_s3(preview_image)
+        # if form.data["preview_image"]:
+        #     preview_image = form.data["preview_image"]
+        #     preview_image.filename = get_unique_filename(preview_image.filename)
+        #     upload = upload_file_to_s3(preview_image)
 
-            if "url" not in upload:
-                # if the dictionary doesn't have a url key
-                # it means that there was an error when we tried to upload
-                # so we send back that error message
-                return { "errors": [upload] }, 400
+        #     if "url" not in upload:
+        #         # if the dictionary doesn't have a url key
+        #         # it means that there was an error when we tried to upload
+        #         # so we send back that error message
+        #         return { "errors": [upload] }, 400
 
-            # going to want to delete the old image from the aws bucket, before reassigning to new image
-            recipe.preview_image_url = upload["url"]
+        #     # going to want to delete the old image from the aws bucket, before reassigning to new image
+        #     recipe.preview_image_url = upload["url"]
 
         # Get list of ingredients and tags
         ingredients_list = json.loads(form.data["ingredients"])

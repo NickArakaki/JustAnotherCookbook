@@ -82,7 +82,7 @@ def update_methods(recipe, methods_list):
     method_difference = len(methods_list) - len(recipe.methods)
 
     for new_method, old_method in zip(methods_list, recipe.methods):
-        # if old_method has an id and no
+        # if  has an id and no image
             # see if there is a new image
             # if there is a new image we need to do aws things
             # if not great, just move along
