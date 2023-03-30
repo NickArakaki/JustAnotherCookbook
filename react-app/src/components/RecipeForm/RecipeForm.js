@@ -405,11 +405,10 @@ function RecipeForm({ recipe }) {
 
                     {/*********************************************************************** Methods ***********************************************************/}
                     <div className="recipe_form_input_div">
-                        <label className="recipe_form_label">Steps</label>
                         {methodsList.map((method, idx) => {
                             return (
                                 <div key={idx}>
-                                    <div className="step_number_div">Step {idx + 1}</div>
+                                    <label className="recipe_form_label">Step {idx + 1}</label>
                                     {methodsListErrors[idx].map((error, errorIdx) => {
                                         return (
                                             <div className="form_error" key={errorIdx}>{error}</div>
