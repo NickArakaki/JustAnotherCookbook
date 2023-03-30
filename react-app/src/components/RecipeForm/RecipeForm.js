@@ -32,7 +32,6 @@ function RecipeForm({ recipe }) {
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
     const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [])
-    console.log("asldkfa;lskdfj ===============================================",methodPreviewImageURLs)
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -230,6 +229,8 @@ function RecipeForm({ recipe }) {
                         <div className="form_error" key={idx}>{error}</div>
                     )
                     })}
+
+                {/*********************************************************************** Title ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
                     {titleErrors.map((error, idx) => {
@@ -245,6 +246,8 @@ function RecipeForm({ recipe }) {
                         onChange={e => setTitle(e.target.value)}
                     />
                 </div>
+
+                {/*********************************************************************** Description ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Description<span className="required_input">*</span></label>
                     {descriptionErrors.map((error, idx) => {
@@ -261,6 +264,8 @@ function RecipeForm({ recipe }) {
                     />
                     <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
                 </div>
+
+                {/*********************************************************************** Recipe Image ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
                     {previewImageErrors.map((error, idx) => {
@@ -309,6 +314,8 @@ function RecipeForm({ recipe }) {
                     )}
                     <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                 </div>
+
+                {/*********************************************************************** Estimated Time to Make ***********************************************************/}
                 <div className="recipe_form_input_div recipe_form_time_to_make">
                     {estimatedTimeErrors.map((error, idx) => {
                         return (
@@ -325,6 +332,8 @@ function RecipeForm({ recipe }) {
                         onChange={e => setEstimatedTime(Math.round(e.target.value))}
                     />
                 </div>
+
+                {/*********************************************************************** Ingredients ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                     {ingredientsList.map((ingredient, idx) => {
@@ -384,6 +393,8 @@ function RecipeForm({ recipe }) {
                             Add Ingredient
                     </button>
                 </div>
+
+                {/*********************************************************************** Methods ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Steps</label>
                     {methodsList.map((method, idx) => {
@@ -448,6 +459,8 @@ function RecipeForm({ recipe }) {
                         Add Step
                     </button>
                 </div>
+
+                {/*********************************************************************** Tags ***********************************************************/}
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
                     <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
@@ -479,7 +492,11 @@ function RecipeForm({ recipe }) {
                         Other relevant tags could be seasons or holidays, event types, or cooking techniques.
                     </p>
                 </div>
+
+                {/*********************************************************************** Submit Button ***********************************************************/}
                 <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
+
+                {/*********************************************************************** Legend ***********************************************************/}
                 <div className="recipe_form_legend">
                     <span className="required_input">*</span> = Required Field
                 </div>
