@@ -128,14 +128,18 @@ def update_a_recipe(id):
 
     # Form validations
     if form.validate_on_submit():
-
+        print("recipe before update =============================================================", recipe.to_dict_detailed())
         method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        # print("method_images==============================================", method_images)
         method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
+        # print("method_details", method_details)
         method_ids = [{"id": id} for id in request.form.getlist("id")]
+        # print("method_ids", method_ids)
 
         method_list = [image | details | id for image, details, id in zip(method_images, method_details, method_ids)]
-        update_methods(recipe, method_list)
-
+        update_method_errors = update_methods(recipe, method_list)
+        if update_method_errors:
+            return update_method_errors
 
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
@@ -167,6 +171,7 @@ def update_a_recipe(id):
         update_methods(recipe, method_list)
 
         db.session.commit()
+        print("recipe after update ======================================================", recipe.to_dict_detailed())
         return recipe.to_dict_detailed()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401

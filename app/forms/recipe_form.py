@@ -27,14 +27,6 @@ def ingredient_validation(form, field):
             raise ValidationError("Invalid Ingredient Amount")
 
 
-def method_validation(form, field):
-    methods = json.loads(field.data)
-
-    for method in methods:
-        if not method["details"]:
-            raise ValidationError("Method Details Required")
-
-
 
 class PostRecipeForm(FlaskForm):
     title = StringField("title", validators=[DataRequired(message="Title Required")])
