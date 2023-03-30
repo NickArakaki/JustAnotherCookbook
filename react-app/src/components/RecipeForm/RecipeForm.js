@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
@@ -8,6 +8,7 @@ import {
         validateRecipeDescription,
         validateEstimatedTime,
         validateRecipeImage,
+        validateUpdateRecipeImage,
         validateIngredients,
         validateMethods,
         validateTags
@@ -19,7 +20,6 @@ function RecipeForm({ recipe }) {
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
-    const initialRender = useRef(true)
 
     /*************************************  controlled inputs      ******************************************************/
 
@@ -30,8 +30,9 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe? recipe.preview_image_url : "")
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    // if we pass a recipe, set the values to include the method.id this will be important for comparing them when updating
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
+    const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [])
+    console.log("asldkfa;lskdfj ===============================================",methodPreviewImageURLs)
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -44,15 +45,6 @@ function RecipeForm({ recipe }) {
     const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
     const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
     const [tagsErrors, setTagsErrors] = useState([])
-
-    // useEffect to validate on changes?
-    useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false
-        } else {
-            setPreviewImageErrors(validateRecipeImage(previewImage)) // only validate image file when there's a change
-        }
-    }, [previewImage])
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -85,16 +77,17 @@ function RecipeForm({ recipe }) {
 
     /********************************************** Method Helpers *****************************************************/
     const handleMethodInputChange = (e, idx) => {
-        console.log("this is the files in the helper function",e.target.files)
         const { name, value, files } = e.target
         const updatedMethodsList = [...methodsList]
         if (name === "image") {
             updatedMethodsList[idx][name] = files[0]
+            const updatedMethodPreviews = [...methodPreviewImageURLs]
+            updatedMethodPreviews[idx] = URL.createObjectURL(files[0])
+            setMethodPreviewImageURLs(updatedMethodPreviews)
         } else {
             updatedMethodsList[idx][name] = value
         }
 
-        console.log(updatedMethodsList)
         setMethodsList(updatedMethodsList)
     }
 
@@ -150,6 +143,9 @@ function RecipeForm({ recipe }) {
         e.preventDefault();
         // validate the form
         // need to do it this way because of asynchronicity of useState
+        const validatePreviewImageErrors = recipe ? validateUpdateRecipeImage(previewImage) : validateRecipeImage(previewImage)
+        setPreviewImageErrors(validatePreviewImageErrors)
+
         const validatedTitleErrors = validateRecipeTitle(title)
         setTitleErrors(validatedTitleErrors)
 
@@ -171,7 +167,7 @@ function RecipeForm({ recipe }) {
 
         // if there are no errors after validating, dispatch appropriate thunk
         if (
-            !previewImageErrors.length &&
+            !validatePreviewImageErrors.length &&
             !validatedTitleErrors.length &&
             !validatedDescriptionErrors.length &&
             !validatedEstimatedTimeErrors.length &&
@@ -293,8 +289,6 @@ function RecipeForm({ recipe }) {
                                 if (file) {
                                     setPreviewImage(file)
                                     setPreviewImageURL(URL.createObjectURL(file))
-                                } else {
-                                    setPreviewImageURL("")
                                 }
                             }}
                         />
@@ -309,8 +303,6 @@ function RecipeForm({ recipe }) {
                                 if (file) {
                                     setPreviewImage(file)
                                     setPreviewImageURL(URL.createObjectURL(file))
-                                } else {
-                                    setPreviewImageURL(recipe.preview_image_url)
                                 }
                             }}
                         />
@@ -405,6 +397,26 @@ function RecipeForm({ recipe }) {
                                 })}
                                 <div className="method_div">
                                     <div className="recipe_form_input_div">
+                                        <label>Optional Image URL</label>
+                                        <div className="preview_recipe_image_div">
+                                            {!!methodPreviewImageURLs[idx] ? (
+                                                // if there is a preview image url, either from the recipe, or from the user's input
+                                                // render img tag with the recipe image
+                                                    <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
+                                                ) : (
+                                                // else render an empty div with the same styling
+                                                    <div className="empty_preview recipe_preview">Please Upload a File</div>
+                                            )}
+                                        </div>
+                                        <input
+                                            className="recipe_form_input recipe_form_method_image_input"
+                                            type="file"
+                                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                                            name="image"
+                                            onChange={e => handleMethodInputChange(e, idx)}
+                                        />
+                                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                                    <div className="recipe_form_input_div">
                                         <label>Description<span className="required_input">*</span></label>
                                         <div className="recipe_form_input_recommendations">(10 character minimum)</div>
                                         <textarea
@@ -417,16 +429,6 @@ function RecipeForm({ recipe }) {
                                         />
                                         <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
                                     </div>
-                                    <div className="recipe_form_input_div">
-                                        <label>Optional Image URL</label>
-                                        <input
-                                            className="recipe_form_input recipe_form_method_image_input"
-                                            type="file"
-                                            accept="image/jpg, image/jpeg, image/png, image/gif"
-                                            name="image"
-                                            onChange={e => handleMethodInputChange(e, idx)}
-                                        />
-                                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                                     </div>
                                     <button
                                         type="button"

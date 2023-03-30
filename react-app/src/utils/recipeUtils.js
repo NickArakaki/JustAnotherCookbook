@@ -48,6 +48,12 @@ export const validateRecipeImage = image => {
     return errors;
 }
 
+export const validateUpdateRecipeImage = image => {
+    const errors = []
+    if (image && !isValidImage(image)) errors.push("INVALID FILE TYPE")
+    return errors;
+}
+
 export const validateEstimatedTime = estimatedTime => {
     const errors = [];
     if (estimatedTime <= 0) errors.push("ESTIMATED TIME MUST BE LONGER THAN 0 MINUTES")
