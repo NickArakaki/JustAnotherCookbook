@@ -9,7 +9,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import RecipeDetails from "./components/RecipeDetails";
 import RecipeForm from "./components/RecipeForm/RecipeForm";
-import UpdateRecipeForm from "./components/RecipeForm/UpdateRecipeForm";
+import UpdateRecipe from "./components/RecipeForm/UpdateRecipe";
 import UserPage from "./components/UserPage";
 import TagRecipePage from "./components/TagRecipePage";
 import FavoriteRecipesPage from "./components/FavoriteRecipesPage";
@@ -39,7 +39,7 @@ function App() {
             <RecipeForm />
           </ProtectedRoute>
           <ProtectedRoute path={`/recipes/:recipeId/edit`}>
-            <UpdateRecipeForm />
+            <UpdateRecipe />
           </ProtectedRoute>
           <Route path={`/recipes/:recipeId`}>
             <RecipeDetails />

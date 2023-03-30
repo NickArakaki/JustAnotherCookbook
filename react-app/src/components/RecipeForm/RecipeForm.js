@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
@@ -8,6 +8,7 @@ import {
         validateRecipeDescription,
         validateEstimatedTime,
         validateRecipeImage,
+        validateUpdateRecipeImage,
         validateIngredients,
         validateMethods,
         validateTags
@@ -19,7 +20,6 @@ function RecipeForm({ recipe }) {
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
-    const initialRender = useRef(true)
 
     /*************************************  controlled inputs      ******************************************************/
 
@@ -32,6 +32,7 @@ function RecipeForm({ recipe }) {
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
     const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [])
+    console.log("asldkfa;lskdfj ===============================================",methodPreviewImageURLs)
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -44,15 +45,6 @@ function RecipeForm({ recipe }) {
     const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
     const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
     const [tagsErrors, setTagsErrors] = useState([])
-
-    // useEffect to validate on changes?
-    useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false
-        } else {
-            setPreviewImageErrors(validateRecipeImage(previewImage)) // only validate image file when there's a change
-        }
-    }, [previewImage])
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -85,11 +77,15 @@ function RecipeForm({ recipe }) {
 
     /********************************************** Method Helpers *****************************************************/
     const handleMethodInputChange = (e, idx) => {
-        console.log("this is the files in the helper function",e.target.files)
         const { name, value, files } = e.target
         const updatedMethodsList = [...methodsList]
         if (name === "image") {
             updatedMethodsList[idx][name] = files[0]
+            // get the new image url
+            const updatedMethodPreviews = [...methodPreviewImageURLs]
+            updatedMethodPreviews[idx] = URL.createObjectURL(files[0])
+            setMethodPreviewImageURLs(updatedMethodPreviews)
+            // also update the image url
         } else {
             updatedMethodsList[idx][name] = value
         }
@@ -150,6 +146,9 @@ function RecipeForm({ recipe }) {
         e.preventDefault();
         // validate the form
         // need to do it this way because of asynchronicity of useState
+        const validatePreviewImageErrors = recipe ? validateUpdateRecipeImage(previewImage) : validateRecipeImage(previewImage)
+        setPreviewImageErrors(validatePreviewImageErrors)
+
         const validatedTitleErrors = validateRecipeTitle(title)
         setTitleErrors(validatedTitleErrors)
 
@@ -171,7 +170,7 @@ function RecipeForm({ recipe }) {
 
         // if there are no errors after validating, dispatch appropriate thunk
         if (
-            !previewImageErrors.length &&
+            !validatePreviewImageErrors.length &&
             !validatedTitleErrors.length &&
             !validatedDescriptionErrors.length &&
             !validatedEstimatedTimeErrors.length &&
@@ -293,8 +292,6 @@ function RecipeForm({ recipe }) {
                                 if (file) {
                                     setPreviewImage(file)
                                     setPreviewImageURL(URL.createObjectURL(file))
-                                } else {
-                                    setPreviewImageURL("")
                                 }
                             }}
                         />
@@ -309,8 +306,6 @@ function RecipeForm({ recipe }) {
                                 if (file) {
                                     setPreviewImage(file)
                                     setPreviewImageURL(URL.createObjectURL(file))
-                                } else {
-                                    setPreviewImageURL(recipe.preview_image_url)
                                 }
                             }}
                         />
@@ -419,7 +414,16 @@ function RecipeForm({ recipe }) {
                                     </div>
                                     <div className="recipe_form_input_div">
                                         <label>Optional Image URL</label>
-                                        {/* render preview image here */}
+                                        <div className="preview_recipe_image_div">
+                                            {!!methodPreviewImageURLs[idx] ? (
+                                                // if there is a preview image url, either from the recipe, or from the user's input
+                                                // render img tag with the recipe image
+                                                    <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
+                                                ) : (
+                                                // else render an empty div with the same styling
+                                                    <div className="empty_preview recipe_preview">Please Upload a File</div>
+                                            )}
+                                        </div>
                                         <input
                                             className="recipe_form_input recipe_form_method_image_input"
                                             type="file"
