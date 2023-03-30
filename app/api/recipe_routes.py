@@ -56,47 +56,46 @@ def post_a_recipe():
         method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
         method_details = [{"details": details} for details in request.form.getlist("details")]
         method_list = [image | details for image, details in zip(method_images, method_details)]
-        # make sure methods are valid before proceeding
+
+        # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
-            return { "errors": ["Invalid methods"] }
-
-        # Get list of ingredients and tags
-        ingredient_list = json.loads(form.data["ingredients"])
-        tag_list = json.loads(form.data["tags"])
-
-        # validate the methods in method list
-        # if pass validation
-        print("methods list",method_list)
-
-        return {"errors" : ["testing do not submit"] }, 401
+            return { "errors": ["Invalid methods"] }, 400
 
 
-        preview_image = form.data["preview_image"]
-        preview_image.filename = get_unique_filename(preview_image.filename)
-        upload = upload_file_to_s3(preview_image)
 
-        if "url" not in upload:
-            # if the dictionary doesn't have a url key
-            # it means that there was an error when we tried to upload
-            # so we send back that error message
-            return { "errors": [upload] }, 400
+
+        # preview_image = form.data["preview_image"]
+        # preview_image.filename = get_unique_filename(preview_image.filename)
+        # upload = upload_file_to_s3(preview_image)
+
+        # if "url" not in upload:
+        #     # if the dictionary doesn't have a url key
+        #     # it means that there was an error when we tried to upload
+        #     # so we send back that error message
+        #     return { "errors": [upload] }, 400
 
         new_recipe = Recipe(
             author_id = current_user.id,
             title = form.data["title"],
             total_time = form.data["total_time"],
             description = form.data["description"],
-            preview_image_url = upload["url"]
+            # preview_image_url = upload["url"]
+            preview_image_url = "https://www.google.com/"
         )
         db.session.add(new_recipe)
 
         # iterate over methods and upload image files to aws
         # add the url to the new method and add to recipe
 
-
+        # Get list of ingredients and tags
+        ingredient_list = json.loads(form.data["ingredients"])
+        tag_list = json.loads(form.data["tags"])
+        # append to recipe
         add_ingredients(new_recipe, ingredient_list)
         add_methods(new_recipe, method_list)
         add_tags(new_recipe, tag_list)
+        print("new recipe after everything has been added  ===============================================================", new_recipe.to_dict_detailed())
+        # return {"errors" : ["testing do not submit"] }, 401
         db.session.commit()
         return new_recipe.to_dict_detailed()
     else:

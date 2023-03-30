@@ -1,5 +1,5 @@
 from app.models import Ingredient, Method, Tag, db
-from app.api.utils.aws_utils import allowed_file
+from app.api.utils.aws_utils import allowed_file, get_unique_filename, upload_file_to_s3
 
 ## POST HELPERS
 def add_ingredients(recipe, ingredients_list):
@@ -13,16 +13,24 @@ def add_ingredients(recipe, ingredients_list):
 
 
 def add_methods(recipe, methods_list):
-    # this will be different with aws implementation
+    # use later to delete if there's an error, will not be implemented for MVP
+    method_image_urls = []
 
     for idx, method in enumerate(methods_list):
         # implement the aws helpers here
+        method_image = method["image"]
+        print("method image================", method_image)
+        method_image.filename = get_unique_filename(method_image.filename)
+        upload = upload_file_to_s3(method_image)
 
         # if error gets thrown by aws return the error
+        if "url" not in upload:
+            return { "errors": [upload] }, 400
+
         new_method = Method(
             step_number = idx + 1,
             details = method["details"],
-            image_url = method["image_url"]
+            image_url = upload["url"]
         )
         recipe.methods.append(new_method)
 
