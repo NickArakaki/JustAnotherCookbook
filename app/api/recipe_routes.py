@@ -64,7 +64,7 @@ def post_a_recipe():
             # if the dictionary doesn't have a url key
             # it means that there was an error when we tried to upload
             # so we send back that error messate
-            return { "errors": [upload] }, 401
+            return { "errors": [upload] }, 400
 
         new_recipe = Recipe(
             author_id = current_user.id,
@@ -91,7 +91,6 @@ def update_a_recipe(id):
     """
     Update and return a new Recipe using Recipe id
     """
-    data = request.get_json()
     form = UpdateRecipeForm()
     recipe = Recipe.query.get(id)
     # Get the csrf_token from the request cookie and put it into the
@@ -106,14 +105,14 @@ def update_a_recipe(id):
 
     # Form validations
     if form.validate_on_submit():
-        ingredients_list = json.loads(data["ingredients"])
-        methods_list = json.loads(data["methods"])
-        tags_list = json.loads(data["tags"])
+        ingredients_list = json.loads(form.data["ingredients"])
+        methods_list = json.loads(form.data["methods"])
+        tags_list = json.loads(form.data["tags"])
 
-        recipe.title = data["title"]
-        recipe.total_time = data["total_time"]
-        recipe.description = data["description"]
-        recipe.preview_image_url = data["preview_image_url"]
+        recipe.title = form.data["title"]
+        recipe.total_time = form.data["total_time"]
+        recipe.description = form.data["description"]
+        # recipe.preview_image_url = form.data["preview_image_url"]
 
         update_ingredients(recipe, ingredients_list)
         update_methods(recipe, methods_list)

@@ -165,18 +165,18 @@ function RecipeForm({ recipe }) {
             formData.append("ingredients", JSON.stringify(ingredientsList))
             formData.append("methods", JSON.stringify(methodsList))
             formData.append("tags", JSON.stringify(tags))
-            // console.log("form data after appending", formData)
+
 
             if (!recipe) { // POST Recipe
                 const data = await dispatch(postARecipeThunk(formData))
                 // if data is array set as errors else get the id and redirect users that way
-                if (data) {
+                if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
-                    history.push("/")
+                    history.push(`/recipes/${data.id}`)
                 }
             } else { // PUT Recipe
-                const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
+                const data = await dispatch(updateRecipeThunk(recipe.id, formData))
                 // if data is array set as errors else get the id and redirect users that way
                 if (data) {
                     setErrors(data)
