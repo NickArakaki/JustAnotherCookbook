@@ -25,7 +25,10 @@ def add_methods(recipe, methods_list):
 
         # if error gets thrown by aws return the error
         if "url" not in upload:
+            # this is where we will eventually delete all the successful aws uploads if one fails
             return { "errors": [upload] }, 400
+
+        method_image_urls.append(upload["url"])
 
         new_method = Method(
             step_number = idx + 1,
@@ -33,8 +36,6 @@ def add_methods(recipe, methods_list):
             image_url = upload["url"]
         )
         recipe.methods.append(new_method)
-
-    # on the route make sure that no errors were returned before db.commit()
 
 
 def add_tags(recipe, tags_list):

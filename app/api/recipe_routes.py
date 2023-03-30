@@ -61,9 +61,6 @@ def post_a_recipe():
         if not is_valid_methods(method_list):
             return { "errors": ["Invalid methods"] }, 400
 
-
-
-
         # preview_image = form.data["preview_image"]
         # preview_image.filename = get_unique_filename(preview_image.filename)
         # upload = upload_file_to_s3(preview_image)
@@ -90,12 +87,17 @@ def post_a_recipe():
         # Get list of ingredients and tags
         ingredient_list = json.loads(form.data["ingredients"])
         tag_list = json.loads(form.data["tags"])
+
         # append to recipe
         add_ingredients(new_recipe, ingredient_list)
-        add_methods(new_recipe, method_list)
+
+        add_method_errors = add_methods(new_recipe, method_list)
+        # if there were any errors when uploading ot aws return the error message
+        if add_method_errors:
+            return add_method_errors
+
         add_tags(new_recipe, tag_list)
-        print("new recipe after everything has been added  ===============================================================", new_recipe.to_dict_detailed())
-        # return {"errors" : ["testing do not submit"] }, 401
+
         db.session.commit()
         return new_recipe.to_dict_detailed()
     else:
