@@ -69,7 +69,22 @@
     resize: none;
 }
 
-/* Ingredients */
+.recipe_preview {
+    height: 250px;
+    width: 250px;
+    object-fit: scale-down;
+    border: 1px solid #666;
+    border-radius: 1em;
+    background-color: rgba(245, 245, 220, 0.428);
+}
+
+.empty_preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/************************************************************************************ Ingredients **************************************************************************/
 
 .ingredients_inputs {
     display: inline-flex;
@@ -105,7 +120,7 @@
     background-color: black;
 }
 
-/* Methods */
+/************************************************************************************ Methods **************************************************************************/
 .remove_method_button,
 .remove_ingredient_button {
     background-color: transparent;
@@ -114,7 +129,7 @@
     cursor: pointer;
 }
 
-/* Tags */
+/************************************************************************************ Tags **************************************************************************/
 .recipe_form_display_tag_div {
     display: flex;
     flex-direction: row;
@@ -154,7 +169,7 @@
 }
 
 
-/* Bottom */
+/************************************************************************************ Bottom **************************************************************************/
 .recipe_form_submit_button {
     width: 50%;
     padding: 10px 0px;

@@ -1,5 +1,6 @@
 export const measurementUnits = ["", "tsp", "tbsp", "oz", "fl. oz", "C", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
 
+// validations
 export const validateRecipeTitle = title => {
     const errors = []
     if (!title.trim()) errors.push("TITLE REQUIRED")
@@ -17,18 +18,23 @@ export const validateRecipeDescription = description => {
 }
 
 export const isValidImageURL = image => {
-    const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
-    console.log(image)
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.gif'];
+
     let isValid = false;
-    // for (const allowedExtension of allowedExtensions) {
-    //     if (image.endsWith(allowedExtension)) {
-    //         isValid = true;
-    //         break
-    //     }
-    // }
-    if (allowedFileTypes.includes(image.type)) isValid = true;
+    for (const allowedExtension of allowedExtensions) {
+        if (image.endsWith(allowedExtension)) {
+            isValid = true;
+            break
+        }
+    }
+
 
     return isValid;
+}
+
+export const isValidImage = image => {
+    const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+    return allowedFileTypes.includes(image.type)
 }
 
 export const validateRecipeImage = imageURL => {
@@ -37,7 +43,7 @@ export const validateRecipeImage = imageURL => {
 
     if (!imageURL) errors.push("PREVIEW IMAGE REQUIRED")
 
-    if (!isValidImageURL(imageURL)) errors.push("INVALID FILE TYPE")
+    if (!isValidImage(imageURL)) errors.push("INVALID FILE TYPE")
 
     return errors;
 }

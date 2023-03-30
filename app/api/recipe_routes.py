@@ -2,8 +2,9 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
 from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
+from .utils.aws_utils import upload_file_to_s3, get_unique_filename
 from app.models import db, Recipe, Ingredient, Method, Review, Tag
-from app.forms import RecipeForm, ReviewForm
+from app.forms import PostRecipeForm, UpdateRecipeForm, ReviewForm
 import json
 
 recipe_routes = Blueprint('recipes', __name__)
@@ -45,22 +46,32 @@ def post_a_recipe():
     """
     Create and return a new Recipe
     """
-    data = request.get_json()
-    form = RecipeForm()
+    form = PostRecipeForm()
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        ingredient_list = json.loads(data["ingredients"])
-        method_list = json.loads(data["methods"])
-        tag_list = json.loads(data["tags"])
+        ingredient_list = json.loads(form.data["ingredients"])
+        method_list = json.loads(form.data["methods"])
+        tag_list = json.loads(form.data["tags"])
+
+
+        preview_image = form.data["preview_image"]
+        preview_image.filename = get_unique_filename(preview_image.filename)
+        upload = upload_file_to_s3(preview_image)
+
+        if "url" not in upload:
+            # if the dictionary doesn't have a url key
+            # it means that there was an error when we tried to upload
+            # so we send back that error messate
+            return { "errors": [upload] }, 401
 
         new_recipe = Recipe(
             author_id = current_user.id,
-            title = data["title"],
-            total_time = data["total_time"],
-            description = data["description"],
-            preview_image_url = data["preview_image_url"]
+            title = form.data["title"],
+            total_time = form.data["total_time"],
+            description = form.data["description"],
+            preview_image_url = upload["url"]
         )
         db.session.add(new_recipe)
 
@@ -81,7 +92,7 @@ def update_a_recipe(id):
     Update and return a new Recipe using Recipe id
     """
     data = request.get_json()
-    form = RecipeForm()
+    form = UpdateRecipeForm()
     recipe = Recipe.query.get(id)
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
