@@ -46,7 +46,8 @@
     padding: .25rem;
 }
 
-.recipe_form_input::placeholder{
+.recipe_form_input::placeholder,
+.default_option_ingredient_unit {
     font-style: italic;
 }
 

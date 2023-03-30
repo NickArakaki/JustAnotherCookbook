@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router-dom";
 import { getSingleRecipeThunk } from "../../store/recipes";
+import LoadingComponent from "../Loading";
 import RecipeForm from "./RecipeForm";
 
 function UpdateRecipe() {
@@ -35,7 +36,7 @@ function UpdateRecipe() {
                     return <div>{error}</div>
                 })
             )}
-            {isLoaded ? <RecipeForm recipe={recipe} /> : <h1>Loading...</h1>}
+            {isLoaded ? <RecipeForm recipe={recipe} /> : <LoadingComponent />}
         </>
     )
 }

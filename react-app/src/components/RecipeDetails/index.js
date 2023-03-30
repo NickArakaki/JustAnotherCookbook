@@ -7,6 +7,7 @@ import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
 import RecipeReviews from "../Reviews";
 import FavoriteButton from "../FavoriteButton"
+import LoadingComponent from "../Loading";
 import "./RecipeDetails.css"
 
 function RecipeDetails() {
@@ -121,7 +122,7 @@ function RecipeDetails() {
                     </div>
                 </div>
             ) : (
-                <h2>Loading...</h2>
+                <LoadingComponent />
             )}
         </>
     )

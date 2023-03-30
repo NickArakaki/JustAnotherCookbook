@@ -13,6 +13,7 @@ import {
         validateMethods,
         validateTags
 } from "../../utils/recipeUtils"
+import LoadingComponent from "../Loading"
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
@@ -24,6 +25,7 @@ function RecipeForm({ recipe }) {
     /*************************************  controlled inputs      ******************************************************/
 
     // inputs
+    const [isLoaded, setIsLoaded] = useState(true)
     const [title, setTitle] = useState(recipe ? recipe.title : "")
     const [description, setDescription] = useState(recipe ? recipe.description : "")
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
@@ -31,8 +33,7 @@ function RecipeForm({ recipe }) {
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
-    const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [])
-    console.log("asldkfa;lskdfj ===============================================",methodPreviewImageURLs)
+    const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [""])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -94,6 +95,7 @@ function RecipeForm({ recipe }) {
     const handleAddMethod = () => {
         setMethodsList([...methodsList, {id: "", details:"", image: ""}])
         setMethodsListErrors([...methodsListErrors, []])
+        setMethodPreviewImageURLs([...methodPreviewImageURLs, ""])
     }
 
     const handleRemoveMethod = (idx) => {
@@ -105,9 +107,14 @@ function RecipeForm({ recipe }) {
             const updatedMethodListErrors = [...methodsListErrors]
             updatedMethodListErrors.splice(idx, 1)
             setMethodsListErrors(updatedMethodListErrors)
+
+            const updatedMethodPreviewImageURLs = [...methodPreviewImageURLs]
+            updatedMethodPreviewImageURLs.splice(idx, 1)
+            setMethodsListErrors(updatedMethodListErrors)
         } else {
             setMethodsList([{ id:"", details:"", image: null }])
             setMethodsListErrors([[]])
+            setMethodPreviewImageURLs([""])
         }
     }
 
@@ -201,19 +208,23 @@ function RecipeForm({ recipe }) {
                 })
             }
 
-
+            setIsLoaded(false)
             if (!recipe) { // POST Recipe
                 const data = await dispatch(postARecipeThunk(formData))
                 if (Array.isArray(data)) {
+                    setIsLoaded(true)
                     setErrors(data)
                 } else {
+                    setIsLoaded(true)
                     history.push(`/recipes/${data.id}`)
                 }
             } else { // PUT Recipe
                 const data = await dispatch(updateRecipeThunk(recipe.id, formData))
                 if (Array.isArray(data)) {
+                    setIsLoaded(true)
                     setErrors(data)
                 } else {
+                    setIsLoaded(true)
                     history.push(`/recipes/${recipe.id}`)
                 }
             }
@@ -221,271 +232,295 @@ function RecipeForm({ recipe }) {
     }
 
     return (
-        <div className="recipe_form_background_image">
-            <div className="recipe_form_container">
-            <form onSubmit={handleSubmit} className="recipe_form" encType="multipart/form-data">
-                <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
-                {errors.map((error, idx) => {
-                    return (
-                        <div className="form_error" key={idx}>{error}</div>
-                    )
-                    })}
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
-                    {titleErrors.map((error, idx) => {
+        <>
+        {isLoaded ? (
+            <div className="recipe_form_background_image">
+                <div className="recipe_form_container">
+                <form onSubmit={handleSubmit} className="recipe_form" encType="multipart/form-data">
+                    <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
+                    {errors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
                         )
-                    })}
-                    <input
-                        required
-                        className="recipe_form_input recipe_form_title_input"
-                        type="text"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                    />
-                </div>
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Recipe Description<span className="required_input">*</span></label>
-                    {descriptionErrors.map((error, idx) => {
-                        return (
-                            <div className="form_error" key={idx}>{error}</div>
-                        )
-                    })}
-                    <textarea
-                        required
-                        className="recipe_form_input recipe_form_description_input"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        maxLength="200"
-                    />
-                    <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
-                </div>
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
-                    {previewImageErrors.map((error, idx) => {
-                        return (
-                            <div className="form_error" key={idx}>{error}</div>
-                        )
-                    })}
-                    <div className="preview_recipe_image_div">
-                        {!!previewImageURL ? (
-                            // if there is a preview image url, either from the recipe, or from the user's input
-                            // render img tag with the recipe image
-                                <img className="recipe_preview" src={previewImageURL} alt={`preview of final product`} />
-                            ) : (
-                            // else render an empty div with the same styling
-                                <div className="empty_preview recipe_preview">Please Upload a File</div>
-                        )}
-                    </div>
-                    {!recipe ? (
+                        })}
+
+                    {/*********************************************************************** Title ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
+                        {titleErrors.map((error, idx) => {
+                            return (
+                                <div className="form_error" key={idx}>{error}</div>
+                            )
+                        })}
                         <input
                             required
-                            className="recipe_form_input recipe_form_preview_image_input"
-                            type="file"
-                            accept="image/jpg, image/jpeg, image/png, image/gif"
-                            onChange={(e) => {
-                                const file = e.target.files[0]
-                                if (file) {
-                                    setPreviewImage(file)
-                                    setPreviewImageURL(URL.createObjectURL(file))
-                                }
-                            }}
+                            className="recipe_form_input recipe_form_title_input"
+                            type="text"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
                         />
-                    ) : (
-                        // if there is already a recipe there's no need to require this input
-                        <input
-                            className="recipe_form_input recipe_form_preview_image_input"
-                            type="file"
-                            accept="image/jpg, image/jpeg, image/png, image/gif"
-                            onChange={(e) => {
-                                const file = e.target.files[0]
-                                if (file) {
-                                    setPreviewImage(file)
-                                    setPreviewImageURL(URL.createObjectURL(file))
-                                }
-                            }}
-                        />
-                    )}
-                    <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
-                </div>
-                <div className="recipe_form_input_div recipe_form_time_to_make">
-                    {estimatedTimeErrors.map((error, idx) => {
-                        return (
-                            <div className="form_error" key={idx}>{error}</div>
-                        )
-                    })}
-                    <label className="recipe_form_label">Estimated Time to Make (min)<span className="required_input">*</span></label>
-                    <input
-                        required
-                        className="recipe_form_input recipe_form_time_input"
-                        type="number"
-                        min="1"
-                        value={estimatedTime}
-                        onChange={e => setEstimatedTime(Math.round(e.target.value))}
-                    />
-                </div>
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
-                    {ingredientsList.map((ingredient, idx) => {
-                        return (
-                            <div key={idx}>
-                                {ingredientListErrors[idx].map((error, errorIdx) => {
-                                    return (
-                                        <div className="form_error" key={errorIdx}>{error}</div>
-                                    )
-                                })}
-                                <div className="ingredients_inputs">
-                                    <input
-                                        required
-                                        className="recipe_form_input ingredient_input"
-                                        name="ingredient"
-                                        type="text"
-                                        placeholder="Enter Name of Ingredient"
-                                        value={ingredient.ingredient}
-                                        onChange={e => handleIngredientInputChange(e, idx)}
-                                    />
-                                    <input
-                                        required
-                                        className="recipe_form_input ingredient_input"
-                                        name="amount"
-                                        type="number"
-                                        step="0.001"
-                                        min="0.001"
-                                        placeholder="Enter Amount"
-                                        value={ingredient.amount}
-                                        onChange={e => handleIngredientInputChange(e, idx)}
-                                    />
-                                    <select
-                                        className="recipe_form_input ingredient_input"
-                                        name="units"
-                                        value={ingredient.units}
-                                        onChange={e => handleIngredientInputChange(e, idx)}
-                                    >
-                                        {measurementUnits.map((unit, idx) => {
-                                            return <option key={idx} value={unit}>{unit}</option>
-                                        })}
-                                    </select>
-                                    <button
-                                        type="button"
-                                        className="remove_ingredient_button"
-                                        onClick={() => handleRemoveIngredient(idx)}
-                                    >
-                                        <i className="fa-solid fa-trash" />
-                                    </button>
-                                </div>
-                            </div>
-                        )
-                    })}
-                    <button
-                        type="button"
-                        className="add_ingredient_button"
-                        onClick={handleAddIngredient}>
-                            Add Ingredient
-                    </button>
-                </div>
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Steps</label>
-                    {methodsList.map((method, idx) => {
-                        return (
-                            <div key={idx}>
-                                <div className="step_number_div">Step {idx + 1}</div>
-                                {methodsListErrors[idx].map((error, errorIdx) => {
-                                    return (
-                                        <div className="form_error" key={errorIdx}>{error}</div>
-                                    )
-                                })}
-                                <div className="method_div">
-                                    <div className="recipe_form_input_div">
-                                        <label>Optional Image URL</label>
-                                        <div className="preview_recipe_image_div">
-                                            {!!methodPreviewImageURLs[idx] ? (
-                                                // if there is a preview image url, either from the recipe, or from the user's input
-                                                // render img tag with the recipe image
-                                                    <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
-                                                ) : (
-                                                // else render an empty div with the same styling
-                                                    <div className="empty_preview recipe_preview">Please Upload a File</div>
-                                            )}
-                                        </div>
-                                        <input
-                                            className="recipe_form_input recipe_form_method_image_input"
-                                            type="file"
-                                            accept="image/jpg, image/jpeg, image/png, image/gif"
-                                            name="image"
-                                            onChange={e => handleMethodInputChange(e, idx)}
-                                        />
-                                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
-                                    <div className="recipe_form_input_div">
-                                        <label>Description<span className="required_input">*</span></label>
-                                        <div className="recipe_form_input_recommendations">(10 character minimum)</div>
-                                        <textarea
-                                            required
-                                            className="recipe_form_input recipe_form_description_input"
-                                            name="details"
-                                            value={method.details}
-                                            onChange={e => handleMethodInputChange(e, idx)}
-                                            maxLength="1000"
-                                        />
-                                        <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
-                                    </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="remove_method_button"
-                                        onClick={() => handleRemoveMethod(idx)}>
-                                            <i className="fa-solid fa-trash" />
-                                    </button>
-                                </div>
-                            </div>
-                        )
-                    })}
-                    <button
-                        type="button"
-                        className="add_method_button"
-                        onClick={handleAddMethod}
-                    >
-                        Add Step
-                    </button>
-                </div>
-                <div className="recipe_form_input_div">
-                    <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
-                    <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
-                    {tagsErrors.map((error, idx) => {
-                        return (
-                            <div className="form_error" key={idx}>{error}</div>
-                        )
-                    })}
-                    <input
-                        className="recipe_form_input recipe_form_tag_input"
-                        type="text"
-                        placeholder="Press [Enter] after each tag"
-                        value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
-                        onKeyDown={(e) => handleAddTag(e)}
-                    />
-                    <div className="recipe_form_display_tag_div">
-                        {tags.map((tag, idx) => {
+                    </div>
+
+                    {/*********************************************************************** Description ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        <label className="recipe_form_label">Recipe Description<span className="required_input">*</span></label>
+                        {descriptionErrors.map((error, idx) => {
                             return (
-                                <div className="tag" key={idx}>
-                                    <span className="tag_name">{tag.toUpperCase()}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
+                                <div className="form_error" key={idx}>{error}</div>
+                            )
+                        })}
+                        <textarea
+                            required
+                            className="recipe_form_input recipe_form_description_input"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                            maxLength="200"
+                        />
+                        <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
+                    </div>
+
+                    {/*********************************************************************** Recipe Image ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
+                        {previewImageErrors.map((error, idx) => {
+                            return (
+                                <div className="form_error" key={idx}>{error}</div>
+                            )
+                        })}
+                        <div className="preview_recipe_image_div">
+                            {!!previewImageURL ? (
+                                // if there is a preview image url, either from the recipe, or from the user's input
+                                // render img tag with the recipe image
+                                    <img className="recipe_preview" src={previewImageURL} alt={`preview of final product`} />
+                                ) : (
+                                // else render an empty div with the same styling
+                                    <div className="empty_preview recipe_preview">Please Upload a File</div>
+                            )}
+                        </div>
+                        {!recipe ? (
+                            <input
+                                required
+                                className="recipe_form_input recipe_form_preview_image_input"
+                                type="file"
+                                accept="image/jpg, image/jpeg, image/png, image/gif"
+                                onChange={(e) => {
+                                    const file = e.target.files[0]
+                                    if (file) {
+                                        setPreviewImage(file)
+                                        setPreviewImageURL(URL.createObjectURL(file))
+                                    }
+                                }}
+                            />
+                        ) : (
+                            // if there is already a recipe there's no need to require this input
+                            <input
+                                className="recipe_form_input recipe_form_preview_image_input"
+                                type="file"
+                                accept="image/jpg, image/jpeg, image/png, image/gif"
+                                onChange={(e) => {
+                                    const file = e.target.files[0]
+                                    if (file) {
+                                        setPreviewImage(file)
+                                        setPreviewImageURL(URL.createObjectURL(file))
+                                    }
+                                }}
+                            />
+                        )}
+                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                    </div>
+
+                    {/*********************************************************************** Estimated Time to Make ***********************************************************/}
+                    <div className="recipe_form_input_div recipe_form_time_to_make">
+                        {estimatedTimeErrors.map((error, idx) => {
+                            return (
+                                <div className="form_error" key={idx}>{error}</div>
+                            )
+                        })}
+                        <label className="recipe_form_label">Estimated Time to Make (min)<span className="required_input">*</span></label>
+                        <input
+                            required
+                            className="recipe_form_input recipe_form_time_input"
+                            type="number"
+                            min="1"
+                            value={estimatedTime}
+                            onChange={e => setEstimatedTime(Math.round(e.target.value))}
+                        />
+                    </div>
+
+                    {/*********************************************************************** Ingredients ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
+                        {ingredientsList.map((ingredient, idx) => {
+                            return (
+                                <div key={idx}>
+                                    {ingredientListErrors[idx].map((error, errorIdx) => {
+                                        return (
+                                            <div className="form_error" key={errorIdx}>{error}</div>
+                                        )
+                                    })}
+                                    <div className="ingredients_inputs">
+                                        <input
+                                            required
+                                            className="recipe_form_input ingredient_input"
+                                            name="ingredient"
+                                            type="text"
+                                            placeholder="Enter Name of Ingredient"
+                                            value={ingredient.ingredient}
+                                            onChange={e => handleIngredientInputChange(e, idx)}
+                                        />
+                                        <input
+                                            required
+                                            className="recipe_form_input ingredient_input"
+                                            name="amount"
+                                            type="number"
+                                            step="0.001"
+                                            min="0.001"
+                                            placeholder="Enter Amount"
+                                            value={ingredient.amount}
+                                            onChange={e => handleIngredientInputChange(e, idx)}
+                                        />
+                                        <select
+                                            className="recipe_form_input ingredient_input"
+                                            name="units"
+                                            value={ingredient.units}
+                                            onChange={e => handleIngredientInputChange(e, idx)}
+                                        >
+                                            <option className="default_option_ingredient_unit" value="" selected>Select Units (if any)</option>
+                                            {measurementUnits.map((unit, idx) => {
+                                                return <option key={idx} value={unit}>{unit}</option>
+                                            })}
+                                        </select>
+                                        <button
+                                            type="button"
+                                            className="remove_ingredient_button"
+                                            onClick={() => handleRemoveIngredient(idx)}
+                                        >
+                                            <i className="fa-solid fa-trash" />
+                                        </button>
+                                    </div>
                                 </div>
                             )
                         })}
+                        <button
+                            type="button"
+                            className="add_ingredient_button"
+                            onClick={handleAddIngredient}>
+                                Add Ingredient
+                        </button>
                     </div>
-                    <p className="recipe_form_input_constraints">
-                        To give your recipe the best opportunity to be found please use at least 5 tags,
-                        making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
-                        Other relevant tags could be seasons or holidays, event types, or cooking techniques.
-                    </p>
+
+                    {/*********************************************************************** Methods ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        {methodsList.map((method, idx) => {
+                            return (
+                                <div key={idx}>
+                                    <label className="recipe_form_label">Step {idx + 1}</label>
+                                    {methodsListErrors[idx].map((error, errorIdx) => {
+                                        return (
+                                            <div className="form_error" key={errorIdx}>{error}</div>
+                                        )
+                                    })}
+                                    <div className="method_div">
+                                        <div className="recipe_form_input_div">
+                                            <label>Optional Image</label>
+                                            <div className="preview_recipe_image_div">
+                                                {!!methodPreviewImageURLs[idx] ? (
+                                                    // if there is a preview image url, either from the recipe, or from the user's input
+                                                    // render img tag with the recipe image
+                                                        <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
+                                                    ) : (
+                                                    // else render an empty div with the same styling
+                                                        <div className="empty_preview recipe_preview">Please Upload a File</div>
+                                                )}
+                                            </div>
+                                            <input
+                                                className="recipe_form_input recipe_form_method_image_input"
+                                                type="file"
+                                                accept="image/jpg, image/jpeg, image/png, image/gif"
+                                                name="image"
+                                                onChange={e => handleMethodInputChange(e, idx)}
+                                            />
+                                            <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                                        <div className="recipe_form_input_div">
+                                            <label>Description<span className="required_input">*</span></label>
+                                            <div className="recipe_form_input_recommendations">(10 character minimum)</div>
+                                            <textarea
+                                                required
+                                                className="recipe_form_input recipe_form_description_input"
+                                                name="details"
+                                                value={method.details}
+                                                onChange={e => handleMethodInputChange(e, idx)}
+                                                maxLength="1000"
+                                            />
+                                            <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
+                                        </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            className="remove_method_button"
+                                            onClick={() => handleRemoveMethod(idx)}>
+                                                <i className="fa-solid fa-trash" />
+                                        </button>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                        <button
+                            type="button"
+                            className="add_method_button"
+                            onClick={handleAddMethod}
+                        >
+                            Add Step
+                        </button>
+                    </div>
+
+                    {/*********************************************************************** Tags ***********************************************************/}
+                    <div className="recipe_form_input_div">
+                        <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
+                        <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
+                        {tagsErrors.map((error, idx) => {
+                            return (
+                                <div className="form_error" key={idx}>{error}</div>
+                            )
+                        })}
+                        <input
+                            className="recipe_form_input recipe_form_tag_input"
+                            type="text"
+                            placeholder="Press [Enter] after each tag"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={(e) => handleAddTag(e)}
+                        />
+                        <div className="recipe_form_display_tag_div">
+                            {tags.map((tag, idx) => {
+                                return (
+                                    <div className="tag" key={idx}>
+                                        <span className="tag_name">{tag.toUpperCase()}</span><span onClick={() => handleRemoveTag(idx)} className="remove_tag_button">&#10006;</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <p className="recipe_form_input_constraints">
+                            To give your recipe the best opportunity to be found please use at least 5 tags,
+                            making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
+                            Other relevant tags could be seasons or holidays, event types, or cooking techniques.
+                        </p>
+                    </div>
+
+                    {/*********************************************************************** Submit Button ***********************************************************/}
+                    <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
+
+                    {/*********************************************************************** Legend ***********************************************************/}
+                    <div className="recipe_form_legend">
+                        <span className="required_input">*</span> = Required Field
+                    </div>
+                </form>
                 </div>
-                <button className="recipe_form_submit_button" type="submit">{!recipe ? "Submit" : "Update"}</button>
-                <div className="recipe_form_legend">
-                    <span className="required_input">*</span> = Required Field
-                </div>
-            </form>
             </div>
-        </div>
+            ) : (
+                <LoadingComponent />
+            )}
+        </>
     )
 }
 

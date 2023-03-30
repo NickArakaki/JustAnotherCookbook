@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRecipesThunk } from "../../store/recipes";
 import { getAllUsersThunk } from '../../store/users'
+import LoadingComponent from "../Loading";
 import RecipeTiles from "../RecipeTiles";
 
 function LandingPage() {
@@ -17,7 +18,7 @@ function LandingPage() {
 
     return (
         <>
-            {isLoaded && <RecipeTiles recipes={recipes} />}
+            {isLoaded ? <RecipeTiles recipes={recipes} /> : <LoadingComponent />}
         </>
     )
 }
