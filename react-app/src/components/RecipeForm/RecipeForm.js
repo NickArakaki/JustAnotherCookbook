@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
@@ -18,6 +18,7 @@ function RecipeForm({ recipe }) {
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
+    const initialRender = useRef(true)
 
     /*************************************  controlled inputs      ******************************************************/
 
@@ -44,14 +45,12 @@ function RecipeForm({ recipe }) {
 
     // useEffect to validate on changes?
     useEffect(() => {
-        setTitleErrors(validateRecipeTitle(title))
-        setDescriptionErrors(validateRecipeDescription(description))
-        setEstimatedTimeErrors(validateEstimatedTime(estimatedTime))
-        setPreviewImageErrors(validateRecipeImage(previewImage))
-        setIngredientsListErrors(validateIngredients(ingredientsList))
-        setMethodsListErrors(validateMethods(methodsList))
-        setTagsErrors(validateTags(tags))
-    }, [title, description, estimatedTime, previewImage, ingredientsList, methodsList, tags])
+        if (initialRender.current) {
+            initialRender.current = false
+        } else {
+            setPreviewImageErrors(validateRecipeImage(previewImage)) // only validate image file when there's a change
+        }
+    }, [previewImage])
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -136,37 +135,34 @@ function RecipeForm({ recipe }) {
         e.preventDefault();
         // validate the form
         // need to do it this way because of asynchronicity of useState
-        // const validatedTitleErrors = validateRecipeTitle(title)
-        // setTitleErrors(validatedTitleErrors)
+        const validatedTitleErrors = validateRecipeTitle(title)
+        setTitleErrors(validatedTitleErrors)
 
-        // const validatedDescriptionErrors = validateRecipeDescription(description)
-        // setDescriptionErrors(validatedDescriptionErrors)
+        const validatedDescriptionErrors = validateRecipeDescription(description)
+        setDescriptionErrors(validatedDescriptionErrors)
 
-        // const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
-        // setEstimatedTimeErrors(validatedEstimatedTimeErrors)
+        const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
+        setEstimatedTimeErrors(validatedEstimatedTimeErrors)
 
-        // const validatedPreviewImageErrors = validateRecipeImage(previewImage)
-        // setPreviewImageErrors(validatedPreviewImageErrors)
+        const validatedIngredientsErrors = validateIngredients(ingredientsList)
+        setIngredientsListErrors(validatedIngredientsErrors)
 
-        // const validatedIngredientsErrors = validateIngredients(ingredientsList)
-        // setIngredientsListErrors(validatedIngredientsErrors)
+        const validatedMethodsErrors = validateMethods(methodsList)
+        setMethodsListErrors(validatedMethodsErrors)
 
-        // const validatedMethodsErrors = validateMethods(methodsList)
-        // setMethodsListErrors(validatedMethodsErrors)
-
-        // const validatedTagsErrors = validateTags(tags)
-        // setTagsErrors(validatedTagsErrors)
+        const validatedTagsErrors = validateTags(tags)
+        setTagsErrors(validatedTagsErrors)
 
 
         // if there are no errors after validating, dispatch appropriate thunk
         if (
-            !titleErrors.length &&
-            !descriptionErrors.length &&
-            !estimatedTimeErrors.length &&
             !previewImageErrors.length &&
-            !ingredientListErrors.flat().length &&
-            !methodsListErrors.flat().length &&
-            !tagsErrors.length
+            !validatedTitleErrors.length &&
+            !validatedDescriptionErrors.length &&
+            !validatedEstimatedTimeErrors.length &&
+            !validatedIngredientsErrors.flat().length &&
+            !validatedMethodsErrors.flat().length &&
+            !validatedTagsErrors.length
             ){
 
             const formData = new FormData();

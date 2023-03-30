@@ -9,25 +9,35 @@ function UpdateRecipeForm() {
     const dispatch = useDispatch();
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
+    const [errors, setErrors] = useState([])
     const sessionUser = useSelector(state => state.session.user)
     const recipe = useSelector(state => state.recipes.singleRecipe)
 
     useEffect(() => {
         dispatch(getSingleRecipeThunk(recipeId))
             .then((data) => {
-                if (data) {
+                if (Array.isArray(data)) {
                     history.push("/") // if there is data probably means 404?
+                    setIsLoaded(true)
                 } else {
                     setIsLoaded(true)
                 }
             })
     }, [dispatch, history, recipeId])
 
+    console.log("recipe ===========================================", recipe)
+    // console.log("recipe ===========================================", recipe?.author.id)
+
     if (isLoaded && sessionUser.id !== recipe.author.id) return <Redirect to="/" />
 
     return (
         // instead of making a whole new form, pass the recipe down as a prop to the recipe form
         <>
+            { isLoaded && errors.length > 0 && (
+                errors.map(error => {
+                    return <div>{error}</div>
+                })
+            )}
             {isLoaded ? <RecipeForm recipe={recipe} /> : <h1>Loading...</h1>}
         </>
     )

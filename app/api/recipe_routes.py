@@ -103,6 +103,7 @@ def update_a_recipe(id):
     elif recipe.author.id != current_user.id:
         return { "errors": ["User is not authorized to edit this Recipe"] }, 403
 
+
     # Form validations
     if form.validate_on_submit():
         ingredients_list = json.loads(form.data["ingredients"])
@@ -112,7 +113,25 @@ def update_a_recipe(id):
         recipe.title = form.data["title"]
         recipe.total_time = form.data["total_time"]
         recipe.description = form.data["description"]
-        # recipe.preview_image_url = form.data["preview_image_url"]
+        print("form data =========================================================", recipe.preview_image_url)
+
+        # this is where we check to see if there's a new image
+        if form.data["preview_image"]:
+            print("we should not be getting here ============================================================================================")
+            preview_image = form.data["preview_image"]
+            preview_image.filename = get_unique_filename(preview_image.filename)
+            upload = upload_file_to_s3(preview_image)
+
+            if "url" not in upload:
+                # if the dictionary doesn't have a url key
+                # it means that there was an error when we tried to upload
+                # so we send back that error messate
+                return { "errors": [upload] }, 400
+
+            recipe.preview_image_url = upload["url"]
+
+        # going to want to delete the old image from the aws bucket
+        print("form data =========================================================", recipe.preview_image_url)
 
         update_ingredients(recipe, ingredients_list)
         update_methods(recipe, methods_list)

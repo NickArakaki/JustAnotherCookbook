@@ -26,7 +26,7 @@
     font-weight: bold;
 }
 
-.recipe_form * {
+.recipe_form textarea {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 

@@ -7,7 +7,6 @@ import json
 
 def tag_validation(form, field):
     tags = json.loads(field.data)
-    print("tags in validation ===============================================================", type(tags))
 
     if len(tags) < 5:
         raise ValidationError("Must have at least 5 tags")
