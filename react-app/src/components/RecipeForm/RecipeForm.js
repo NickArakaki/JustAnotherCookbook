@@ -81,16 +81,13 @@ function RecipeForm({ recipe }) {
         const updatedMethodsList = [...methodsList]
         if (name === "image") {
             updatedMethodsList[idx][name] = files[0]
-            // get the new image url
             const updatedMethodPreviews = [...methodPreviewImageURLs]
             updatedMethodPreviews[idx] = URL.createObjectURL(files[0])
             setMethodPreviewImageURLs(updatedMethodPreviews)
-            // also update the image url
         } else {
             updatedMethodsList[idx][name] = value
         }
 
-        console.log(updatedMethodsList)
         setMethodsList(updatedMethodsList)
     }
 
@@ -400,19 +397,6 @@ function RecipeForm({ recipe }) {
                                 })}
                                 <div className="method_div">
                                     <div className="recipe_form_input_div">
-                                        <label>Description<span className="required_input">*</span></label>
-                                        <div className="recipe_form_input_recommendations">(10 character minimum)</div>
-                                        <textarea
-                                            required
-                                            className="recipe_form_input recipe_form_description_input"
-                                            name="details"
-                                            value={method.details}
-                                            onChange={e => handleMethodInputChange(e, idx)}
-                                            maxLength="1000"
-                                        />
-                                        <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
-                                    </div>
-                                    <div className="recipe_form_input_div">
                                         <label>Optional Image URL</label>
                                         <div className="preview_recipe_image_div">
                                             {!!methodPreviewImageURLs[idx] ? (
@@ -432,6 +416,19 @@ function RecipeForm({ recipe }) {
                                             onChange={e => handleMethodInputChange(e, idx)}
                                         />
                                         <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                                    <div className="recipe_form_input_div">
+                                        <label>Description<span className="required_input">*</span></label>
+                                        <div className="recipe_form_input_recommendations">(10 character minimum)</div>
+                                        <textarea
+                                            required
+                                            className="recipe_form_input recipe_form_description_input"
+                                            name="details"
+                                            value={method.details}
+                                            onChange={e => handleMethodInputChange(e, idx)}
+                                            maxLength="1000"
+                                        />
+                                        <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
+                                    </div>
                                     </div>
                                     <button
                                         type="button"
