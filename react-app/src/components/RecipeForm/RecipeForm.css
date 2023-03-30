@@ -21,7 +21,12 @@
     top: 2em;
 }
 
-.recipe_form {
+.recipe_form_input_constraints {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.recipe_form * {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 

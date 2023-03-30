@@ -18,7 +18,6 @@ function RecipeForm({ recipe }) {
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
-    const sessionUser = useSelector(state => state.session.user)
 
     /*************************************  controlled inputs      ******************************************************/
 
@@ -413,7 +412,7 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
-                    <div className="recipe_form_input_recommendations">Press [Enter] after every tag, or separate with comma and hit enter (minimumn 5) </div>
+                    <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
                     {tagsErrors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
@@ -436,7 +435,7 @@ function RecipeForm({ recipe }) {
                             )
                         })}
                     </div>
-                    <p className="recipe_form_input_recommendations">
+                    <p className="recipe_form_input_constraints">
                         To give your recipe the best opportunity to be found please use at least 5 tags,
                         making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
                         Other relevant tags could be seasons or holidays, event types, or cooking techniques.
