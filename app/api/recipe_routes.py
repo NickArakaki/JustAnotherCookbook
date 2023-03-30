@@ -58,7 +58,7 @@ def post_a_recipe():
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
         method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
         method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
-        method_list = [image | details for image, details in zip(method_images, method_details)]
+        method_list = [{**image, **details} for image, details in zip(method_images, method_details)]
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
             return { "errors": ["Invalid methods"] }, 400
@@ -136,7 +136,7 @@ def update_a_recipe(id):
         method_ids = [{"id": id} for id in request.form.getlist("id")]
         # print("method_ids", method_ids)
 
-        method_list = [image | details | id for image, details, id in zip(method_images, method_details, method_ids)]
+        method_list = [{**image, **details, **id} for image, details, id in zip(method_images, method_details, method_ids)]
         update_method_errors = update_methods(recipe, method_list)
         if update_method_errors:
             return update_method_errors
