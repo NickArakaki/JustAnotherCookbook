@@ -1,6 +1,6 @@
 from app.models import Ingredient, Method, Tag, db
 
-# # POST HELPERS
+## POST HELPERS
 def add_ingredients(recipe, ingredients_list):
     for ingredient in ingredients_list:
             new_ingredient = Ingredient(
@@ -12,13 +12,20 @@ def add_ingredients(recipe, ingredients_list):
 
 
 def add_methods(recipe, methods_list):
+    # this will be different with aws implementation
+
     for idx, method in enumerate(methods_list):
-                new_method = Method(
-                    step_number = idx + 1,
-                    details = method["details"],
-                    image_url = method["image_url"]
-                )
-                recipe.methods.append(new_method)
+        # implement the aws helpers here
+
+        # if error gets thrown by aws return the error
+        new_method = Method(
+            step_number = idx + 1,
+            details = method["details"],
+            image_url = method["image_url"]
+        )
+        recipe.methods.append(new_method)
+
+    # on the route make sure that no errors were returned before db.commit()
 
 
 def add_tags(recipe, tags_list):
@@ -34,7 +41,7 @@ def add_tags(recipe, tags_list):
                 recipe.tags.append(*existing_tag)
 
 
-# # UPDATE HELPERS
+## UPDATE HELPERS
 def update_ingredients(recipe, ingredients_list):
     ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
 
@@ -62,12 +69,17 @@ def update_methods(recipe, methods_list):
     method_difference = len(methods_list) - len(recipe.methods)
 
     for new_method, old_method in zip(methods_list, recipe.methods):
-                old_method.details = new_method["details"]
-                old_method.image_url = new_method["image_url"]
+        # if old_method has an id and no
+            # see if there is a new image
+            # if there is a new image we need to do aws things
+            # if not great, just move along
+        old_method.details = new_method["details"]
+        old_method.image_url = new_method["image_url"]
 
     if method_difference > 0: # new methods to be added
 
         for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
+            # aws implementation will be the same here as in create methods
                 new_method = Method(
                     step_number = len(recipe.methods) + 1,
                     details = method["details"],
@@ -108,3 +120,15 @@ def update_tags(recipe, tags_list):
 
     for tag in tags_to_add:
         recipe.tags.append(tag)
+
+
+## VALIDATORS
+def is_valid_methods(methods_list):
+    is_valid = True
+
+    for method in methods_list:
+        pass
+        # validate
+        # if at any point it fails set is_valid to False and break
+
+    return is_valid

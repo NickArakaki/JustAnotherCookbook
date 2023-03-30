@@ -29,6 +29,7 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe? recipe.preview_image_url : "")
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
+    // if we pass a recipe, set the values to include the method.id this will be important for comparing them when updating
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image: null}])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
@@ -110,6 +111,9 @@ function RecipeForm({ recipe }) {
             const updatedMethodListErrors = [...methodsListErrors]
             updatedMethodListErrors.splice(idx, 1)
             setMethodsListErrors(updatedMethodListErrors)
+        } else {
+            setMethodsList([{details:"", image: null}])
+            setMethodsListErrors([[]])
         }
     }
 
@@ -280,8 +284,12 @@ function RecipeForm({ recipe }) {
                             accept="image/jpg, image/jpeg, image/png, image/gif"
                             onChange={(e) => {
                                 const file = e.target.files[0]
-                                setPreviewImage(file)
-                                setPreviewImageURL(URL.createObjectURL(file))
+                                if (file) {
+                                    setPreviewImage(file)
+                                    setPreviewImageURL(URL.createObjectURL(file))
+                                } else {
+                                    setPreviewImageURL("")
+                                }
                             }}
                         />
                     ) : (
@@ -406,13 +414,9 @@ function RecipeForm({ recipe }) {
                                             type="file"
                                             accept="image/jpg, image/jpeg, image/png, image/gif"
                                             name="image"
-                                            onChange={e => {
-                                                const file = e.target.files[0]
-                                                console.log(e)
-                                                console.log(file.type)
-                                                handleMethodInputChange(e, idx)
-                                            }}
+                                            onChange={e => handleMethodInputChange(e, idx)}
                                         />
+                                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                                     </div>
                                     <button
                                         type="button"
