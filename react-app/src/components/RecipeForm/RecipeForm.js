@@ -107,9 +107,14 @@ function RecipeForm({ recipe }) {
             const updatedMethodListErrors = [...methodsListErrors]
             updatedMethodListErrors.splice(idx, 1)
             setMethodsListErrors(updatedMethodListErrors)
+
+            const updatedMethodPreviewImageURLs = [...methodPreviewImageURLs]
+            updatedMethodPreviewImageURLs.splice(idx, 1)
+            setMethodsListErrors(updatedMethodListErrors)
         } else {
             setMethodsList([{ id:"", details:"", image: null }])
             setMethodsListErrors([[]])
+            setMethodPreviewImageURLs([""])
         }
     }
 
@@ -380,6 +385,7 @@ function RecipeForm({ recipe }) {
                                             value={ingredient.units}
                                             onChange={e => handleIngredientInputChange(e, idx)}
                                         >
+                                            <option className="default_option_ingredient_unit" value="" selected>Select Units (if any)</option>
                                             {measurementUnits.map((unit, idx) => {
                                                 return <option key={idx} value={unit}>{unit}</option>
                                             })}
