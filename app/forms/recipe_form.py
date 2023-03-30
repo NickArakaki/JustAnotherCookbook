@@ -21,7 +21,6 @@ def tag_validation(form, field):
 def ingredient_validation(form, field):
     ingredients = json.loads(field.data)
     for ingredient in ingredients:
-        print(ingredient)
         if not ingredient["ingredient"]:
             raise ValidationError("Ingredient Name Required")
         if not float(ingredient["amount"]) > 0:
@@ -36,14 +35,6 @@ def method_validation(form, field):
             raise ValidationError("Method Details Required")
 
 
-def check_data(form, field):
-    data = field.data
-
-    print("data===============================", data)
-    print("a;lskdfja;lksdjf;alskdjf", type(data))
-    raise ValidationError("don't do anything")
-
-
 
 class PostRecipeForm(FlaskForm):
     title = StringField("title", validators=[DataRequired(message="Title Required")])
@@ -51,7 +42,6 @@ class PostRecipeForm(FlaskForm):
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
     ingredients = StringField("ingredients", validators=[ingredient_validation])
-    # methods = StringField("methods", validators=[method_validation])
     tags = StringField("tags", validators=[tag_validation])
 
 
@@ -61,5 +51,4 @@ class UpdateRecipeForm(FlaskForm):
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
     ingredients = StringField("ingredients", validators=[ingredient_validation])
-    # methods = StringField("methods", validators=[method_validation])
     tags = StringField("tags", validators=[tag_validation])
