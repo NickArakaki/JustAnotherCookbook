@@ -300,8 +300,12 @@ function RecipeForm({ recipe }) {
                             accept="image/jpg, image/jpeg, image/png, image/gif"
                             onChange={(e) => {
                                 const file = e.target.files[0]
-                                setPreviewImage(file)
-                                setPreviewImageURL(URL.createObjectURL(file))
+                                if (file) {
+                                    setPreviewImage(file)
+                                    setPreviewImageURL(URL.createObjectURL(file))
+                                } else {
+                                    setPreviewImageURL(recipe.preview_image_url)
+                                }
                             }}
                         />
                     )}
