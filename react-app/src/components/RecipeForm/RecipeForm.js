@@ -186,12 +186,13 @@ function RecipeForm({ recipe }) {
             formData.append("preview_image", previewImage);
             formData.append("total_time", estimatedTime);
             formData.append("ingredients", JSON.stringify(ingredientsList))
+            formData.append("tags", JSON.stringify(tags))
 
             // this is how we can pass an array to the backend without using JSON.stringify
             for (const method of methodsList) {
                 console.log("method in recipe form", method)
                 Object.entries(method).forEach(([key, value]) => {
-                    // we need to pass an empty file to the backend to keep the order
+                    // we need to pass an empty file to the backend to keep the order of files/details
                     if (key === "image" && value === "") {
                         const dummyImage = new Blob([], {
                             type: "dummy/jpeg",
@@ -203,10 +204,6 @@ function RecipeForm({ recipe }) {
                     }
                 })
             }
-
-            console.log(...formData)
-
-            formData.append("tags", JSON.stringify(tags))
 
 
             if (!recipe) { // POST Recipe

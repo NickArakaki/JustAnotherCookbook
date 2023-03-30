@@ -116,23 +116,34 @@ def update_methods(recipe, methods_list):
         else:
             methods_to_create.append(method)
 
-    # print("old methods ======================================================", old_methods)
-    print("methods to create=================================================", methods_to_create)
-    print("methods to update=================================================", methods_to_update)
-
     # for each method in old methods compare to the methods to be updated by id
     for old_method in recipe.methods:
-        if old_method.id not in methods_to_update:
+        print("old method before ==========================================", old_method.to_dict())
+        id = str(old_method.id)
+
+        if id not in methods_to_update:
             db.session.delete(old_method)
         else:
-            # get the method to update
-            method_to_update = methods_to_update[old_method.id]
-            print("method to update ============================================",method_to_update)
-            pass
+            method_to_update = methods_to_update[id]
             # if there is a new image deploy aws
                 # if there is an error return the error
-            # else
-                # update the method
+            new_method_image = method_to_update["image"]
+
+            if new_method_image:
+                new_method_image.filename = get_unique_filename(new_method_image.filename)
+                print(new_method_image.filename)
+                upload = upload_file_to_s3(new_method_image)
+
+                 # if error gets thrown by aws return the error
+                if "url" not in upload:
+                    return { "errors": [upload] }, 400
+
+                old_method.image_url = upload["url"]
+
+            old_method.details = method_to_update["details"]
+            old_method.step_number = method_to_update["step_number"]
+            # update the method
+            print("old method after =====================================================================", old_method.to_dict())
 
     # create the new methods and append to recipe can use the add_methods helper function
         # if there is an error return the error
