@@ -1,6 +1,7 @@
 from app.models import Ingredient, Method, Tag, db
+from app.api.utils.aws_utils import allowed_file, get_unique_filename, upload_file_to_s3
 
-# # POST HELPERS
+## POST HELPERS
 def add_ingredients(recipe, ingredients_list):
     for ingredient in ingredients_list:
             new_ingredient = Ingredient(
@@ -12,13 +13,31 @@ def add_ingredients(recipe, ingredients_list):
 
 
 def add_methods(recipe, methods_list):
-    for idx, method in enumerate(methods_list):
-                new_method = Method(
-                    step_number = idx + 1,
-                    details = method["details"],
-                    image_url = method["image_url"]
-                )
-                recipe.methods.append(new_method)
+    # use later to delete if there's an error, will not be implemented for MVP
+    method_image_urls = []
+
+    for method in methods_list:
+        # implement the aws helpers here
+        method_image = method["image"]
+        method_image_url = ""
+        if method_image:
+            method_image.filename = get_unique_filename(method_image.filename)
+            upload = upload_file_to_s3(method_image)
+
+            # if error gets thrown by aws return the error
+            if "url" not in upload:
+                # this is where we will eventually delete all the successful aws uploads if one fails
+                return { "errors": [upload] }, 400
+
+            method_image_url = upload["url"]
+            method_image_urls.append(upload["url"])
+
+        new_method = Method(
+            step_number = method["step_number"],
+            details = method["details"],
+            image_url = method_image_url
+        )
+        recipe.methods.append(new_method)
 
 
 def add_tags(recipe, tags_list):
@@ -34,7 +53,7 @@ def add_tags(recipe, tags_list):
                 recipe.tags.append(*existing_tag)
 
 
-# # UPDATE HELPERS
+## UPDATE HELPERS
 def update_ingredients(recipe, ingredients_list):
     ingredient_difference = len(ingredients_list) - len(recipe.ingredients)
 
@@ -59,26 +78,49 @@ def update_ingredients(recipe, ingredients_list):
 
 
 def update_methods(recipe, methods_list):
-    method_difference = len(methods_list) - len(recipe.methods)
+    methods_to_create = []
+    methods_to_update = {}
 
-    for new_method, old_method in zip(methods_list, recipe.methods):
-                old_method.details = new_method["details"]
-                old_method.image_url = new_method["image_url"]
+    for method in methods_list:
+        if method["id"]:
+            # type casting to string to make sure it is consistent
+            methods_to_update[str(method["id"])] = method
+        else:
+            methods_to_create.append(method)
 
-    if method_difference > 0: # new methods to be added
+    # for each method in old methods compare to the methods to be updated by id
+    for old_method in recipe.methods:
+        # type cast to string for consistency
+        id = str(old_method.id)
 
-        for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
-                new_method = Method(
-                    step_number = len(recipe.methods) + 1,
-                    details = method["details"],
-                    image_url = method["image_url"]
-                )
-                recipe.methods.append(new_method)
+        if id not in methods_to_update:
+            db.session.delete(old_method)
+        else:
+            method_to_update = methods_to_update[id]
+            # if there is a new image deploy aws
+                # if there is an error return the error
+            new_method_image = method_to_update["image"]
 
-    elif method_difference < 0: # fewer or same number of methods
-    # if there are fewer methods, remove the methods that were removed
-        for method in recipe.methods[method_difference:]:
-            recipe.methods.remove(method)
+            if new_method_image:
+                new_method_image.filename = get_unique_filename(new_method_image.filename)
+                print(new_method_image.filename)
+                upload = upload_file_to_s3(new_method_image)
+
+                 # if error gets thrown by aws return the error
+                if "url" not in upload:
+                    return { "errors": [upload] }, 400
+
+                old_method.image_url = upload["url"]
+
+            # update the method
+            old_method.details = method_to_update["details"]
+            old_method.step_number = method_to_update["step_number"]
+
+    # create the new methods and append to recipe can use the add_methods helper function
+    # if there is an error return the error
+    add_method_error = add_methods(recipe, methods_to_create)
+    if add_method_error:
+        return add_method_error
 
 
 def update_tags(recipe, tags_list):
@@ -108,3 +150,22 @@ def update_tags(recipe, tags_list):
 
     for tag in tags_to_add:
         recipe.tags.append(tag)
+
+
+## VALIDATORS
+def is_valid_methods(methods_list):
+    is_valid = True
+
+    for method in methods_list:
+        if not method["details"]:
+            is_valid = False
+            break
+
+        if method["image"]:
+            # validate image file
+            if not allowed_file(method["image"]):
+                is_valid = False
+                break
+        # validate
+        # if at any point it fails set is_valid to False and break
+    return is_valid

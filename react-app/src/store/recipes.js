@@ -181,14 +181,13 @@ export const favoriteARecipeThunk = recipeId => async (dispatch) => {
 export const postARecipeThunk = recipe => async (dispatch) => {
     const res = await fetch(`/api/recipes/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(recipe)
+        body: recipe
     })
 
     if (res.ok) {
         const data = await res.json();
         dispatch(postARecipe(data))
-        return null
+        return data;
     } else if (res.status < 500) {
         const data = await res.json();
         if (data.errors) {
@@ -202,8 +201,7 @@ export const postARecipeThunk = recipe => async (dispatch) => {
 export const updateRecipeThunk = (recipeId, recipe) => async (dispatch) => {
     const res = await fetch(`/api/recipes/${recipeId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(recipe)
+        body: recipe
     })
 
     if (res.ok) {

@@ -1,9 +1,10 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from .auth_routes import validation_errors_to_error_messages
-from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags
+from .utils.recipe_utils import add_ingredients, add_methods, add_tags, update_ingredients, update_methods, update_tags, is_valid_methods
+from .utils.aws_utils import upload_file_to_s3, get_unique_filename
 from app.models import db, Recipe, Ingredient, Method, Review, Tag
-from app.forms import RecipeForm, ReviewForm
+from app.forms import PostRecipeForm, UpdateRecipeForm, ReviewForm
 import json
 
 recipe_routes = Blueprint('recipes', __name__)
@@ -45,28 +46,61 @@ def post_a_recipe():
     """
     Create and return a new Recipe
     """
-    data = request.get_json()
-    form = RecipeForm()
+    form = PostRecipeForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
-        ingredient_list = json.loads(data["ingredients"])
-        method_list = json.loads(data["methods"])
-        tag_list = json.loads(data["tags"])
+
+        # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
+        # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
+        method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
+        method_list = [image | details for image, details in zip(method_images, method_details)]
+        # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
+        if not is_valid_methods(method_list):
+            return { "errors": ["Invalid methods"] }, 400
+
+
+        preview_image = form.data["preview_image"]
+        preview_image.filename = get_unique_filename(preview_image.filename)
+        upload = upload_file_to_s3(preview_image)
+
+        if "url" not in upload:
+            # if the dictionary doesn't have a url key
+            # it means that there was an error when we tried to upload
+            # so we send back that error message
+            return { "errors": [upload] }, 400
 
         new_recipe = Recipe(
             author_id = current_user.id,
-            title = data["title"],
-            total_time = data["total_time"],
-            description = data["description"],
-            preview_image_url = data["preview_image_url"]
+            title = form.data["title"],
+            total_time = form.data["total_time"],
+            description = form.data["description"],
+            preview_image_url = upload["url"]
         )
         db.session.add(new_recipe)
 
+
+        # Get list of ingredients and tags
+        ingredient_list = json.loads(form.data["ingredients"])
+        tag_list = json.loads(form.data["tags"])
+
+
+        # append ingredients to recipe.ingredients
         add_ingredients(new_recipe, ingredient_list)
-        add_methods(new_recipe, method_list)
+        # append tags to recipe.tags
         add_tags(new_recipe, tag_list)
+
+
+        add_method_errors = add_methods(new_recipe, method_list)
+        # if there were any errors when uploading ot aws return the error message
+        if add_method_errors:
+            # this is where will remove the recipe image from aws bucket if there is an error thrown
+            return add_method_errors
+
 
         db.session.commit()
         return new_recipe.to_dict_detailed()
@@ -80,8 +114,7 @@ def update_a_recipe(id):
     """
     Update and return a new Recipe using Recipe id
     """
-    data = request.get_json()
-    form = RecipeForm()
+    form = UpdateRecipeForm()
     recipe = Recipe.query.get(id)
     # Get the csrf_token from the request cookie and put it into the
     # form manually to validate_on_submit can be used
@@ -95,18 +128,44 @@ def update_a_recipe(id):
 
     # Form validations
     if form.validate_on_submit():
-        ingredients_list = json.loads(data["ingredients"])
-        methods_list = json.loads(data["methods"])
-        tags_list = json.loads(data["tags"])
 
-        recipe.title = data["title"]
-        recipe.total_time = data["total_time"]
-        recipe.description = data["description"]
-        recipe.preview_image_url = data["preview_image_url"]
+        method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
+        method_ids = [{"id": id} for id in request.form.getlist("id")]
+
+        method_list = [image | details | id for image, details, id in zip(method_images, method_details, method_ids)]
+        print("method list from route", method_list)
+        update_methods(recipe, method_list)
+
+
+        # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
+        if not is_valid_methods(method_list):
+            return { "errors": ["Invalid methods"] }, 400
+
+        recipe.title = form.data["title"]
+        recipe.total_time = form.data["total_time"]
+        recipe.description = form.data["description"]
+
+        # this is where we check to see if there's a new image
+        if form.data["preview_image"]:
+            preview_image = form.data["preview_image"]
+            preview_image.filename = get_unique_filename(preview_image.filename)
+            upload = upload_file_to_s3(preview_image)
+
+            if "url" not in upload:
+                return { "errors": [upload] }, 400
+
+            # going to want to delete the old image from the aws bucket, before reassigning to new image, will implement after MVP
+            recipe.preview_image_url = upload["url"]
+
+        # Get list of ingredients and tags
+        ingredients_list = json.loads(form.data["ingredients"])
+        tags_list = json.loads(form.data["tags"])
 
         update_ingredients(recipe, ingredients_list)
-        update_methods(recipe, methods_list)
         update_tags(recipe, tags_list)
+
+        update_methods(recipe, method_list)
 
         db.session.commit()
         return recipe.to_dict_detailed()

@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Redirect, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import {
         validateRecipeTitle,
         validateRecipeDescription,
         validateEstimatedTime,
-        validateRecipeImageURL,
+        validateRecipeImage,
         validateIngredients,
         validateMethods,
         validateTags
@@ -15,27 +15,44 @@ import {
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
+    console.log("recipe in update form", recipe)
+    // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
-    const sessionUser = useSelector(state => state.session.user)
+    const initialRender = useRef(true)
 
     /*************************************  controlled inputs      ******************************************************/
-    const [errors, setErrors] = useState([]);
+
+    // inputs
     const [title, setTitle] = useState(recipe ? recipe.title : "")
-    const [titleErrors, setTitleErrors] = useState([])
     const [description, setDescription] = useState(recipe ? recipe.description : "")
-    const [descriptionErrors, setDescriptionErrors] = useState([])
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
-    const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
-    const [previewImageURL, setPreviewImageURL] = useState(recipe ? recipe.preview_image_url : "")
-    const [previewImageURLErrors, setPreviewImageURLErrors] = useState([])
+    const [previewImageURL, setPreviewImageURL] = useState(recipe? recipe.preview_image_url : "")
+    const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
-    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
-    const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
+    // if we pass a recipe, set the values to include the method.id this will be important for comparing them when updating
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
-    const [tagsErrors, setTagsErrors] = useState([])
     const [tagInput, setTagInput] = useState("")
+
+    // errors
+    const [errors, setErrors] = useState([]);
+    const [titleErrors, setTitleErrors] = useState([])
+    const [descriptionErrors, setDescriptionErrors] = useState([])
+    const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
+    const [previewImageErrors, setPreviewImageErrors] = useState([])
+    const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
+    const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
+    const [tagsErrors, setTagsErrors] = useState([])
+
+    // useEffect to validate on changes?
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        } else {
+            setPreviewImageErrors(validateRecipeImage(previewImage)) // only validate image file when there's a change
+        }
+    }, [previewImage])
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -60,19 +77,29 @@ function RecipeForm({ recipe }) {
             const updatedIngredientListErrors = [...ingredientListErrors]
             updatedIngredientListErrors.splice(idx, 1)
             setIngredientsListErrors(updatedIngredientListErrors)
+        } else {
+            setIngredientsList([{ingredient:"", amount:"", units:""}])
+            setIngredientsListErrors([[]])
         }
     }
 
     /********************************************** Method Helpers *****************************************************/
     const handleMethodInputChange = (e, idx) => {
-        const { name, value } = e.target
+        console.log("this is the files in the helper function",e.target.files)
+        const { name, value, files } = e.target
         const updatedMethodsList = [...methodsList]
-        updatedMethodsList[idx][name] = value
+        if (name === "image") {
+            updatedMethodsList[idx][name] = files[0]
+        } else {
+            updatedMethodsList[idx][name] = value
+        }
+
+        console.log(updatedMethodsList)
         setMethodsList(updatedMethodsList)
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {details:"", image_url:""}])
+        setMethodsList([...methodsList, {id: "", details:"", image: ""}])
         setMethodsListErrors([...methodsListErrors, []])
     }
 
@@ -85,6 +112,9 @@ function RecipeForm({ recipe }) {
             const updatedMethodListErrors = [...methodsListErrors]
             updatedMethodListErrors.splice(idx, 1)
             setMethodsListErrors(updatedMethodListErrors)
+        } else {
+            setMethodsList([{ id:"", details:"", image: null }])
+            setMethodsListErrors([[]])
         }
     }
 
@@ -118,7 +148,6 @@ function RecipeForm({ recipe }) {
     /********************************************** Submit *****************************************************/
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // validate the form
         // need to do it this way because of asynchronicity of useState
         const validatedTitleErrors = validateRecipeTitle(title)
@@ -129,9 +158,6 @@ function RecipeForm({ recipe }) {
 
         const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
         setEstimatedTimeErrors(validatedEstimatedTimeErrors)
-
-        const validatedPreviewImageURLErrors = validateRecipeImageURL(previewImageURL)
-        setPreviewImageURLErrors(validatedPreviewImageURLErrors)
 
         const validatedIngredientsErrors = validateIngredients(ingredientsList)
         setIngredientsListErrors(validatedIngredientsErrors)
@@ -144,28 +170,52 @@ function RecipeForm({ recipe }) {
 
 
         // if there are no errors after validating, dispatch appropriate thunk
-        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageURLErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
+        if (
+            !previewImageErrors.length &&
+            !validatedTitleErrors.length &&
+            !validatedDescriptionErrors.length &&
+            !validatedEstimatedTimeErrors.length &&
+            !validatedIngredientsErrors.flat().length &&
+            !validatedMethodsErrors.flat().length &&
+            !validatedTagsErrors.length
+        ){
 
-            const newRecipe = {
-                title,
-                description,
-                "preview_image_url": previewImageURL,
-                "total_time": estimatedTime,
-                "ingredients": JSON.stringify(ingredientsList),
-                "methods": JSON.stringify(methodsList),
-                "tags": JSON.stringify(tags)
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("preview_image", previewImage);
+            formData.append("total_time", estimatedTime);
+            formData.append("ingredients", JSON.stringify(ingredientsList))
+            formData.append("tags", JSON.stringify(tags))
+
+            // this is how we can pass an array to the backend without using JSON.stringify
+            for (const method of methodsList) {
+                console.log("method in recipe form", method)
+                Object.entries(method).forEach(([key, value]) => {
+                    // we need to pass an empty file to the backend to keep the order of files/details
+                    if (key === "image" && value === "") {
+                        const dummyImage = new Blob([], {
+                            type: "dummy/jpeg",
+                          });
+                        value = dummyImage
+                        formData.append(key, value, "dummy_image.jpeg")
+                    } else {
+                        formData.append(key, value)
+                    }
+                })
             }
 
+
             if (!recipe) { // POST Recipe
-                const data = await dispatch(postARecipeThunk(newRecipe))
-                if (data) {
+                const data = await dispatch(postARecipeThunk(formData))
+                if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
-                    history.push("/")
+                    history.push(`/recipes/${data.id}`)
                 }
             } else { // PUT Recipe
-                const data = await dispatch(updateRecipeThunk(recipe.id, newRecipe))
-                if (data) {
+                const data = await dispatch(updateRecipeThunk(recipe.id, formData))
+                if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
                     history.push(`/recipes/${recipe.id}`)
@@ -174,12 +224,10 @@ function RecipeForm({ recipe }) {
         }
     }
 
-    if (!sessionUser) return <Redirect to='/' />
-
     return (
         <div className="recipe_form_background_image">
             <div className="recipe_form_container">
-            <form onSubmit={handleSubmit} className="recipe_form">
+            <form onSubmit={handleSubmit} className="recipe_form" encType="multipart/form-data">
                 <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
                 {errors.map((error, idx) => {
                     return (
@@ -219,18 +267,55 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
-                    {previewImageURLErrors.map((error, idx) => {
+                    {previewImageErrors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
                         )
                     })}
-                    <input
-                        required
-                        className="recipe_form_input recipe_form_preview_image_input"
-                        type="url"
-                        value={previewImageURL}
-                        onChange={e => setPreviewImageURL(e.target.value)}
-                    />
+                    <div className="preview_recipe_image_div">
+                        {!!previewImageURL ? (
+                            // if there is a preview image url, either from the recipe, or from the user's input
+                            // render img tag with the recipe image
+                                <img className="recipe_preview" src={previewImageURL} alt={`preview of final product`} />
+                            ) : (
+                            // else render an empty div with the same styling
+                                <div className="empty_preview recipe_preview">Please Upload a File</div>
+                        )}
+                    </div>
+                    {!recipe ? (
+                        <input
+                            required
+                            className="recipe_form_input recipe_form_preview_image_input"
+                            type="file"
+                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                            onChange={(e) => {
+                                const file = e.target.files[0]
+                                if (file) {
+                                    setPreviewImage(file)
+                                    setPreviewImageURL(URL.createObjectURL(file))
+                                } else {
+                                    setPreviewImageURL("")
+                                }
+                            }}
+                        />
+                    ) : (
+                        // if there is already a recipe there's no need to require this input
+                        <input
+                            className="recipe_form_input recipe_form_preview_image_input"
+                            type="file"
+                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                            onChange={(e) => {
+                                const file = e.target.files[0]
+                                if (file) {
+                                    setPreviewImage(file)
+                                    setPreviewImageURL(URL.createObjectURL(file))
+                                } else {
+                                    setPreviewImageURL(recipe.preview_image_url)
+                                }
+                            }}
+                        />
+                    )}
+                    <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                 </div>
                 <div className="recipe_form_input_div recipe_form_time_to_make">
                     {estimatedTimeErrors.map((error, idx) => {
@@ -312,6 +397,7 @@ function RecipeForm({ recipe }) {
                     {methodsList.map((method, idx) => {
                         return (
                             <div key={idx}>
+                                <div className="step_number_div">Step {idx + 1}</div>
                                 {methodsListErrors[idx].map((error, errorIdx) => {
                                     return (
                                         <div className="form_error" key={errorIdx}>{error}</div>
@@ -335,11 +421,12 @@ function RecipeForm({ recipe }) {
                                         <label>Optional Image URL</label>
                                         <input
                                             className="recipe_form_input recipe_form_method_image_input"
-                                            type="url"
-                                            name="image_url"
-                                            value={method.image_url}
+                                            type="file"
+                                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                                            name="image"
                                             onChange={e => handleMethodInputChange(e, idx)}
-                                            />
+                                        />
+                                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                                     </div>
                                     <button
                                         type="button"
@@ -361,7 +448,7 @@ function RecipeForm({ recipe }) {
                 </div>
                 <div className="recipe_form_input_div">
                     <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
-                    <div className="recipe_form_input_recommendations">Press [Enter] after every tag, or separate with comma and hit enter (minimumn 5) </div>
+                    <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
                     {tagsErrors.map((error, idx) => {
                         return (
                             <div className="form_error" key={idx}>{error}</div>
@@ -384,7 +471,7 @@ function RecipeForm({ recipe }) {
                             )
                         })}
                     </div>
-                    <p className="recipe_form_input_recommendations">
+                    <p className="recipe_form_input_constraints">
                         To give your recipe the best opportunity to be found please use at least 5 tags,
                         making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
                         Other relevant tags could be seasons or holidays, event types, or cooking techniques.

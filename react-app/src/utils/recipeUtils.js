@@ -1,5 +1,6 @@
 export const measurementUnits = ["", "tsp", "tbsp", "oz", "fl. oz", "C", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
 
+// validations
 export const validateRecipeTitle = title => {
     const errors = []
     if (!title.trim()) errors.push("TITLE REQUIRED")
@@ -16,27 +17,33 @@ export const validateRecipeDescription = description => {
     return errors;
 }
 
-export const isValidImageURL = imageURL => {
-    const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+export const isValidImageURL = image => {
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.gif'];
 
-    let isValidURL = false;
+    let isValid = false;
     for (const allowedExtension of allowedExtensions) {
-        if (imageURL.endsWith(allowedExtension)) {
-            isValidURL = true;
+        if (image.endsWith(allowedExtension)) {
+            isValid = true;
             break
         }
     }
 
-    return isValidURL;
+
+    return isValid;
 }
 
-export const validateRecipeImageURL = imageURL => {
+export const isValidImage = image => {
+    const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+    return allowedFileTypes.includes(image?.type)
+}
+
+export const validateRecipeImage = image => {
     // preview_image_url
     const errors = [];
 
-    if (!imageURL) errors.push("PREVIEW IMAGE REQUIRED")
+    if (!image) errors.push("PREVIEW IMAGE REQUIRED")
 
-    if (!isValidImageURL(imageURL)) errors.push("IMAGE URL MUST END WITH .png, .jpg, or .jpeg")
+    if (!isValidImage(image)) errors.push("INVALID FILE TYPE")
 
     return errors;
 }
@@ -71,9 +78,9 @@ export const validateMethods = methodsList => {
         // each must have details with a min length of ?
         if (method.details.length < 10) methodErrors.push("DESCRIPTION NEEDS TO BE AT LEAST 10 CHARACTERS")
         if (method.details.length > 1000) methodErrors.push("DESCRIPTION MUST BE LESS THAN 1000 CHARACTERS")
-        // max length ?
+
         // if there is an image url, validate using same metric as preview_image
-        if (method.image_url && !isValidImageURL(method.image_url)) methodErrors.push("IMAGE URL MUST END WITH .png, .jpg, or .jpeg")
+        if (method.image && !isValidImage(method.image)) methodErrors.push("INVALID FILE TYPE")
         errors.push(methodErrors)
     }
     return errors;
