@@ -16,7 +16,7 @@ def add_methods(recipe, methods_list):
     # use later to delete if there's an error, will not be implemented for MVP
     method_image_urls = []
 
-    for idx, method in enumerate(methods_list):
+    for idx, method in methods_list:
         # implement the aws helpers here
         method_image = method["image"]
         method_image_url = ""
@@ -34,7 +34,7 @@ def add_methods(recipe, methods_list):
             method_image_urls.append(upload["url"])
 
         new_method = Method(
-            step_number = idx + 1,
+            step_number = method["step_number"],
             details = method["details"],
             image_url = method_image_url
         )
@@ -78,34 +78,6 @@ def update_ingredients(recipe, ingredients_list):
             recipe.ingredients.remove(ingredient)
 
 
-# def update_methods(recipe, methods_list):
-#     method_difference = len(methods_list) - len(recipe.methods)
-
-#     for new_method, old_method in zip(methods_list, recipe.methods):
-#         # if new_method has an id and no image, don't do anything
-#             # see if there is a new image
-#             # if there is a new image we need to do aws things
-#             # if not great, just move along
-#         old_method.details = new_method["details"]
-#         old_method.image_url = new_method["image_url"]
-
-#     if method_difference > 0: # new methods to be added
-
-#         for idx, method in enumerate(methods_list[(method_difference * -1):]): # iterate over the new methods
-#             # aws implementation will be the same here as in create methods
-#                 new_method = Method(
-#                     step_number = len(recipe.methods) + 1,
-#                     details = method["details"],
-#                     image_url = method["image_url"]
-#                 )
-#                 recipe.methods.append(new_method)
-
-#     elif method_difference < 0: # fewer or same number of methods
-#     # if there are fewer methods, remove the methods that were removed
-#         for method in recipe.methods[method_difference:]:
-#             recipe.methods.remove(method)
-
-
 def update_methods(recipe, methods_list):
     methods_to_create = []
     methods_to_update = {}
@@ -140,14 +112,15 @@ def update_methods(recipe, methods_list):
 
                 old_method.image_url = upload["url"]
 
+            # update the method
             old_method.details = method_to_update["details"]
             old_method.step_number = method_to_update["step_number"]
-            # update the method
-            print("old method after =====================================================================", old_method.to_dict())
 
     # create the new methods and append to recipe can use the add_methods helper function
-        # if there is an error return the error
-    pass
+    # if there is an error return the error
+    add_method_error = add_methods(recipe, methods_to_create)
+    if add_method_error:
+        return add_method_error
 
 
 def update_tags(recipe, tags_list):

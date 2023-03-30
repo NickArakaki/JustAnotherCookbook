@@ -57,7 +57,7 @@ def post_a_recipe():
         # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
         method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
-        method_details = [{"details": details} for details in request.form.getlist("details")]
+        method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
         method_list = [image | details for image, details in zip(method_images, method_details)]
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
