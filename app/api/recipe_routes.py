@@ -137,7 +137,6 @@ def update_a_recipe(id):
         print("method list from route", method_list)
         update_methods(recipe, method_list)
 
-        return {"errors" : ["testing"]} , 401
 
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
@@ -148,19 +147,16 @@ def update_a_recipe(id):
         recipe.description = form.data["description"]
 
         # this is where we check to see if there's a new image
-        # if form.data["preview_image"]:
-        #     preview_image = form.data["preview_image"]
-        #     preview_image.filename = get_unique_filename(preview_image.filename)
-        #     upload = upload_file_to_s3(preview_image)
+        if form.data["preview_image"]:
+            preview_image = form.data["preview_image"]
+            preview_image.filename = get_unique_filename(preview_image.filename)
+            upload = upload_file_to_s3(preview_image)
 
-        #     if "url" not in upload:
-        #         # if the dictionary doesn't have a url key
-        #         # it means that there was an error when we tried to upload
-        #         # so we send back that error message
-        #         return { "errors": [upload] }, 400
+            if "url" not in upload:
+                return { "errors": [upload] }, 400
 
-        #     # going to want to delete the old image from the aws bucket, before reassigning to new image
-        #     recipe.preview_image_url = upload["url"]
+            # going to want to delete the old image from the aws bucket, before reassigning to new image, will implement after MVP
+            recipe.preview_image_url = upload["url"]
 
         # Get list of ingredients and tags
         ingredients_list = json.loads(form.data["ingredients"])
@@ -169,8 +165,7 @@ def update_a_recipe(id):
         update_ingredients(recipe, ingredients_list)
         update_tags(recipe, tags_list)
 
-
-        update_methods(recipe, methods_list)
+        update_methods(recipe, method_list)
 
         db.session.commit()
         return recipe.to_dict_detailed()

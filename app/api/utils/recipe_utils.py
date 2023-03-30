@@ -16,12 +16,11 @@ def add_methods(recipe, methods_list):
     # use later to delete if there's an error, will not be implemented for MVP
     method_image_urls = []
 
-    for idx, method in methods_list:
+    for method in methods_list:
         # implement the aws helpers here
         method_image = method["image"]
         method_image_url = ""
         if method_image:
-            print("method image================", method_image)
             method_image.filename = get_unique_filename(method_image.filename)
             upload = upload_file_to_s3(method_image)
 
@@ -84,13 +83,14 @@ def update_methods(recipe, methods_list):
 
     for method in methods_list:
         if method["id"]:
-            methods_to_update[method["id"]] = method
+            # type casting to string to make sure it is consistent
+            methods_to_update[str(method["id"])] = method
         else:
             methods_to_create.append(method)
 
     # for each method in old methods compare to the methods to be updated by id
     for old_method in recipe.methods:
-        print("old method before ==========================================", old_method.to_dict())
+        # type cast to string for consistency
         id = str(old_method.id)
 
         if id not in methods_to_update:
