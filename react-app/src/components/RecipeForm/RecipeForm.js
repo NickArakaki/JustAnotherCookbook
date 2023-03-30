@@ -171,14 +171,14 @@ function RecipeForm({ recipe }) {
             formData.append("preview_image", previewImage);
             formData.append("total_time", estimatedTime);
             formData.append("ingredients", JSON.stringify(ingredientsList))
+
             for (const method of methodsList) {
                 Object.entries(method).forEach(([key, value]) => {
                     formData.append(key, value)
                 })
             }
-            // formData.append("methods", methodsList)
+
             formData.append("tags", JSON.stringify(tags))
-            // console.log(...formData)
 
 
             if (!recipe) { // POST Recipe
