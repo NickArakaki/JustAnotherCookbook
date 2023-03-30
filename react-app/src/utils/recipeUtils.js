@@ -34,7 +34,7 @@ export const isValidImageURL = image => {
 
 export const isValidImage = image => {
     const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
-    return allowedFileTypes.includes(image.type)
+    return allowedFileTypes.includes(image?.type)
 }
 
 export const validateRecipeImage = imageURL => {

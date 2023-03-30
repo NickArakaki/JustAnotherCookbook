@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Redirect, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
 import { measurementUnits } from "../../utils/recipeUtils"
 import {
@@ -15,28 +15,44 @@ import {
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
+    // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user)
 
     /*************************************  controlled inputs      ******************************************************/
-    const [errors, setErrors] = useState([]);
+
+    // inputs
     const [title, setTitle] = useState(recipe ? recipe.title : "")
-    const [titleErrors, setTitleErrors] = useState([])
     const [description, setDescription] = useState(recipe ? recipe.description : "")
-    const [descriptionErrors, setDescriptionErrors] = useState([])
     const [estimatedTime, setEstimatedTime] = useState(recipe ? recipe.total_time : null)
-    const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
     const [previewImageURL, setPreviewImageURL] = useState(recipe? recipe.preview_image_url : "")
     const [previewImage, setPreviewImage] = useState(null)
-    const [previewImageErrors, setPreviewImageErrors] = useState([])
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
-    const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
-    const [tagsErrors, setTagsErrors] = useState([])
     const [tagInput, setTagInput] = useState("")
+
+    // errors
+    const [errors, setErrors] = useState([]);
+    const [titleErrors, setTitleErrors] = useState([])
+    const [descriptionErrors, setDescriptionErrors] = useState([])
+    const [estimatedTimeErrors, setEstimatedTimeErrors] = useState([])
+    const [previewImageErrors, setPreviewImageErrors] = useState([])
+    const [ingredientListErrors, setIngredientsListErrors] = useState(recipe ? new Array(recipe.ingredients.length).fill([]) : [[]])
+    const [methodsListErrors, setMethodsListErrors] = useState(recipe ? new Array(recipe.methods.length).fill([]) : [[]])
+    const [tagsErrors, setTagsErrors] = useState([])
+
+    // useEffect to validate on changes?
+    useEffect(() => {
+        setTitleErrors(validateRecipeTitle(title))
+        setDescriptionErrors(validateRecipeDescription(description))
+        setEstimatedTimeErrors(validateEstimatedTime(estimatedTime))
+        setPreviewImageErrors(validateRecipeImage(previewImage))
+        setIngredientsListErrors(validateIngredients(ingredientsList))
+        setMethodsListErrors(validateMethods(methodsList))
+        setTagsErrors(validateTags(tags))
+    }, [title, description, estimatedTime, previewImage, ingredientsList, methodsList, tags])
 
 
     /********************************************** Ingredient Helpers *****************************************************/
@@ -121,41 +137,38 @@ function RecipeForm({ recipe }) {
         e.preventDefault();
         // validate the form
         // need to do it this way because of asynchronicity of useState
-        const validatedTitleErrors = validateRecipeTitle(title)
-        setTitleErrors(validatedTitleErrors)
+        // const validatedTitleErrors = validateRecipeTitle(title)
+        // setTitleErrors(validatedTitleErrors)
 
-        const validatedDescriptionErrors = validateRecipeDescription(description)
-        setDescriptionErrors(validatedDescriptionErrors)
+        // const validatedDescriptionErrors = validateRecipeDescription(description)
+        // setDescriptionErrors(validatedDescriptionErrors)
 
-        const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
-        setEstimatedTimeErrors(validatedEstimatedTimeErrors)
+        // const validatedEstimatedTimeErrors = validateEstimatedTime(estimatedTime)
+        // setEstimatedTimeErrors(validatedEstimatedTimeErrors)
 
-        const validatedPreviewImageErrors = validateRecipeImage(previewImage)
-        setPreviewImageErrors(validatedPreviewImageErrors)
+        // const validatedPreviewImageErrors = validateRecipeImage(previewImage)
+        // setPreviewImageErrors(validatedPreviewImageErrors)
 
-        const validatedIngredientsErrors = validateIngredients(ingredientsList)
-        setIngredientsListErrors(validatedIngredientsErrors)
+        // const validatedIngredientsErrors = validateIngredients(ingredientsList)
+        // setIngredientsListErrors(validatedIngredientsErrors)
 
-        const validatedMethodsErrors = validateMethods(methodsList)
-        setMethodsListErrors(validatedMethodsErrors)
+        // const validatedMethodsErrors = validateMethods(methodsList)
+        // setMethodsListErrors(validatedMethodsErrors)
 
-        const validatedTagsErrors = validateTags(tags)
-        setTagsErrors(validatedTagsErrors)
+        // const validatedTagsErrors = validateTags(tags)
+        // setTagsErrors(validatedTagsErrors)
 
 
         // if there are no errors after validating, dispatch appropriate thunk
-        if (!validatedTitleErrors.length && !validatedDescriptionErrors.length && !validatedEstimatedTimeErrors.length && !validatedPreviewImageErrors.length && !validatedIngredientsErrors.flat().length && !validatedMethodsErrors.flat().length && !validatedTagsErrors.length) {
-
-            const newRecipe = {
-                title,
-                description,
-                "preview_image": previewImage,
-                "total_time": estimatedTime,
-                "ingredients": JSON.stringify(ingredientsList),
-                "methods": JSON.stringify(methodsList),
-                "tags": JSON.stringify(tags)
-            }
-            // console.log(newRecipe);
+        if (
+            !titleErrors.length &&
+            !descriptionErrors.length &&
+            !estimatedTimeErrors.length &&
+            !previewImageErrors.length &&
+            !ingredientListErrors.flat().length &&
+            !methodsListErrors.flat().length &&
+            !tagsErrors.length
+            ){
 
             const formData = new FormData();
             formData.append("title", title);
@@ -169,7 +182,6 @@ function RecipeForm({ recipe }) {
 
             if (!recipe) { // POST Recipe
                 const data = await dispatch(postARecipeThunk(formData))
-                // if data is array set as errors else get the id and redirect users that way
                 if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
@@ -177,8 +189,7 @@ function RecipeForm({ recipe }) {
                 }
             } else { // PUT Recipe
                 const data = await dispatch(updateRecipeThunk(recipe.id, formData))
-                // if data is array set as errors else get the id and redirect users that way
-                if (data) {
+                if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
                     history.push(`/recipes/${recipe.id}`)
@@ -186,8 +197,6 @@ function RecipeForm({ recipe }) {
             }
         }
     }
-
-    if (!sessionUser) return <Redirect to='/' />
 
     return (
         <div className="recipe_form_background_image">
@@ -247,17 +256,31 @@ function RecipeForm({ recipe }) {
                                 <div className="empty_preview recipe_preview">Please Upload a File</div>
                         )}
                     </div>
-                    <input
-                        required
-                        className="recipe_form_input recipe_form_preview_image_input"
-                        type="file"
-                        accept="image/jpg, image/jpeg, image/png, image/gif"
-                        onChange={(e) => {
-                            const file = e.target.files[0]
-                            setPreviewImage(file)
-                            setPreviewImageURL(URL.createObjectURL(file))
-                        }}
-                    />
+                    {!recipe ? (
+                        <input
+                            required
+                            className="recipe_form_input recipe_form_preview_image_input"
+                            type="file"
+                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                            onChange={(e) => {
+                                const file = e.target.files[0]
+                                setPreviewImage(file)
+                                setPreviewImageURL(URL.createObjectURL(file))
+                            }}
+                        />
+                    ) : (
+                        // if there is already a recipe there's no need to require this input
+                        <input
+                            className="recipe_form_input recipe_form_preview_image_input"
+                            type="file"
+                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                            onChange={(e) => {
+                                const file = e.target.files[0]
+                                setPreviewImage(file)
+                                setPreviewImageURL(URL.createObjectURL(file))
+                            }}
+                        />
+                    )}
                     <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                 </div>
                 <div className="recipe_form_input_div recipe_form_time_to_make">
@@ -340,6 +363,7 @@ function RecipeForm({ recipe }) {
                     {methodsList.map((method, idx) => {
                         return (
                             <div key={idx}>
+                                <div className="step_number_div">Step {idx + 1}</div>
                                 {methodsListErrors[idx].map((error, errorIdx) => {
                                     return (
                                         <div className="form_error" key={errorIdx}>{error}</div>
