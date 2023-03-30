@@ -56,13 +56,15 @@ def post_a_recipe():
 
         # this is how we can send a list of objects with files from the frontend (Refer to lines 175-179 in /react-app/src/components/RecipeForm/RecipeForm.js)
         # idk if this is the "correct" way to do this, but it's 12:30am and I'm just trying to get this to work
-        method_image_urls = [{"image_url": image_url} for image_url in request.form.getlist("image_url")]
+        method_images = [{"image": image_url} for image_url in request.files.getlist("image")]
         method_details = [{"details": details} for details in request.form.getlist("details")]
-        method_list = (list(zip(method_image_urls, method_details)))
+        method_list = [image | details for image, details in zip(method_images, method_details)]
 
         # validate the methods in method list
         # if pass validation
+        print("methods list",method_list)
 
+        return {"errors" : ["testing do not submit"] }, 401
 
 
         preview_image = form.data["preview_image"]
@@ -87,7 +89,7 @@ def post_a_recipe():
         # iterate over methods and upload image files to aws
         # add the url to the new method and add to recipe
 
-        return {"errors" : ["testing do not submit"] }, 401
+
         add_ingredients(new_recipe, ingredient_list)
         add_methods(new_recipe, method_list)
         add_tags(new_recipe, tag_list)

@@ -34,16 +34,16 @@ export const isValidImageURL = image => {
 
 export const isValidImage = image => {
     const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
-    return allowedFileTypes.includes(image?.type)
+    return allowedFileTypes.includes(image.type)
 }
 
-export const validateRecipeImage = imageURL => {
+export const validateRecipeImage = image => {
     // preview_image_url
     const errors = [];
 
-    if (!imageURL) errors.push("PREVIEW IMAGE REQUIRED")
+    if (!image) errors.push("PREVIEW IMAGE REQUIRED")
 
-    if (!isValidImage(imageURL)) errors.push("INVALID FILE TYPE")
+    if (!isValidImage(image)) errors.push("INVALID FILE TYPE")
 
     return errors;
 }
@@ -74,13 +74,14 @@ export const validateMethods = methodsList => {
     const errors = []
     // methods
     for (const method of methodsList) {
+        console.log(method.image)
         const methodErrors = []
         // each must have details with a min length of ?
         if (method.details.length < 10) methodErrors.push("DESCRIPTION NEEDS TO BE AT LEAST 10 CHARACTERS")
         if (method.details.length > 1000) methodErrors.push("DESCRIPTION MUST BE LESS THAN 1000 CHARACTERS")
-        // max length ?
+
         // if there is an image url, validate using same metric as preview_image
-        if (method.image_url && !isValidImageURL(method.image_url)) methodErrors.push("IMAGE URL MUST END WITH .png, .jpg, or .jpeg")
+        if (method.image && !isValidImage(method.image)) methodErrors.push("INVALID FILE TYPE")
         errors.push(methodErrors)
     }
     return errors;

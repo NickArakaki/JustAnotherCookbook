@@ -29,7 +29,7 @@ function RecipeForm({ recipe }) {
     const [previewImageURL, setPreviewImageURL] = useState(recipe? recipe.preview_image_url : "")
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
-    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image_url:""}])
+    const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{details:"", image: null}])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
 
@@ -75,19 +75,29 @@ function RecipeForm({ recipe }) {
             const updatedIngredientListErrors = [...ingredientListErrors]
             updatedIngredientListErrors.splice(idx, 1)
             setIngredientsListErrors(updatedIngredientListErrors)
+        } else {
+            setIngredientsList([{ingredient:"", amount:"", units:""}])
+            setIngredientsListErrors([[]])
         }
     }
 
     /********************************************** Method Helpers *****************************************************/
     const handleMethodInputChange = (e, idx) => {
-        const { name, value } = e.target
+        console.log("this is the files in the helper function",e.target.files)
+        const { name, value, files } = e.target
         const updatedMethodsList = [...methodsList]
-        updatedMethodsList[idx][name] = value
+        if (name === "image") {
+            updatedMethodsList[idx][name] = files[0]
+        } else {
+            updatedMethodsList[idx][name] = value
+        }
+
+        console.log(updatedMethodsList)
         setMethodsList(updatedMethodsList)
     }
 
     const handleAddMethod = () => {
-        setMethodsList([...methodsList, {details:"", image_url:""}])
+        setMethodsList([...methodsList, {details:"", image: null}])
         setMethodsListErrors([...methodsListErrors, []])
     }
 
@@ -173,10 +183,15 @@ function RecipeForm({ recipe }) {
             formData.append("ingredients", JSON.stringify(ingredientsList))
 
             for (const method of methodsList) {
+                console.log("method in the loop", method)
                 Object.entries(method).forEach(([key, value]) => {
+                    console.log("key", key)
+                    console.log("value", value)
                     formData.append(key, value)
                 })
             }
+
+            console.log(...formData)
 
             formData.append("tags", JSON.stringify(tags))
 
@@ -186,7 +201,6 @@ function RecipeForm({ recipe }) {
                 if (Array.isArray(data)) {
                     setErrors(data)
                 } else {
-                    console.log("data is not an array, but i shouldn't be here....")
                     history.push(`/recipes/${data.id}`)
                 }
             } else { // PUT Recipe
@@ -389,11 +403,16 @@ function RecipeForm({ recipe }) {
                                         <label>Optional Image URL</label>
                                         <input
                                             className="recipe_form_input recipe_form_method_image_input"
-                                            type="url"
-                                            name="image_url"
-                                            value={method.image_url}
-                                            onChange={e => handleMethodInputChange(e, idx)}
-                                            />
+                                            type="file"
+                                            accept="image/jpg, image/jpeg, image/png, image/gif"
+                                            name="image"
+                                            onChange={e => {
+                                                const file = e.target.files[0]
+                                                console.log(e)
+                                                console.log(file.type)
+                                                handleMethodInputChange(e, idx)
+                                            }}
+                                        />
                                     </div>
                                     <button
                                         type="button"

@@ -179,7 +179,6 @@ export const favoriteARecipeThunk = recipeId => async (dispatch) => {
 }
 
 export const postARecipeThunk = recipe => async (dispatch) => {
-    console.log("this is in the thunk", recipe)
     const res = await fetch(`/api/recipes/`, {
         method: "POST",
         body: recipe
