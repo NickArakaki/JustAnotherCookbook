@@ -190,10 +190,10 @@ function RecipeForm({ recipe }) {
 
             // this is how we can pass an array to the backend without using JSON.stringify
             for (const method of methodsList) {
-                console.log("method in recipe form", method)
                 Object.entries(method).forEach(([key, value]) => {
                     // we need to pass an empty file to the backend to keep the order of files/details
                     if (key === "image" && value === "") {
+                        // blob necessary to keep array length the same on the backend
                         const dummyImage = new Blob([], {
                             type: "dummy/jpeg",
                           });

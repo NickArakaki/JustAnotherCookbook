@@ -94,11 +94,11 @@ def update_methods(recipe, methods_list):
         id = str(old_method.id)
 
         if id not in methods_to_update:
+            recipe.methods.remove(old_method)
             db.session.delete(old_method)
         else:
             method_to_update = methods_to_update[id]
-            # if there is a new image deploy aws
-                # if there is an error return the error
+            # if there is a new image upload to aws
             new_method_image = method_to_update["image"]
 
             if new_method_image:
