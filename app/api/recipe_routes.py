@@ -133,10 +133,9 @@ def update_a_recipe(id):
         method_ids = [{"id": id} for id in request.form.getlist("id")]
 
         method_list = [{**image, **details, **id} for image, details, id in zip(method_images, method_details, method_ids)]
-        update_method_errors = update_methods(recipe, method_list)
 
-        if update_method_errors:
-            return update_method_errors
+        if not is_valid_methods(method_list):
+            return { "errors": ["Invalid methods"] }, 400
 
         # make sure methods are valid before proceeding, don't want to start sending aws uploads until all data has been validated
         if not is_valid_methods(method_list):
@@ -164,6 +163,11 @@ def update_a_recipe(id):
 
         update_ingredients(recipe, ingredients_list)
         update_tags(recipe, tags_list)
+
+        update_method_errors = update_methods(recipe, method_list)
+
+        if update_method_errors:
+            return update_method_errors
 
         db.session.commit()
         return recipe.to_dict_detailed()

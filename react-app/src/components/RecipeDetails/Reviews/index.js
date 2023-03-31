@@ -31,23 +31,24 @@ function RecipeReviews() {
             <div className="review_heading_div">
                 <div className="review_heading_left_div">
                     <div className="review_title">Reviews</div>
-                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"} <i className="star_rating fa-sharp fa-solid fa-star" /></div>
                 </div>
                 <div className="review_heading_right_div">
-                    {renderReviewButton &&
+                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"} <i className="star_rating fa-sharp fa-solid fa-star" /></div>
+                    <div className="review_number_reviews">({reviews.length} {reviews.length === 1 ? "Review" : "Reviews"})</div>
+                </div>
+            </div>
+            {renderReviewButton &&
                         <OpenModalButton
                             buttonText="Leave a Review"
                             modalComponent={<ReviewModal recipeId={recipe.id}/>}
                         />
-                    }
-                </div>
-            </div>
+            }
             {reviews.map(review => {
                 return (
-                    <div key={review.id} className="review">
-                        <div className="review_upper_div">
-                            <div className="review_author_rating_div">
-                                <div className="review_author">{review.author.username}</div>
+                    <div key={review.id} className="review_wrapper">
+                        <div className="review_section review_top_div">
+                            <div className="review_user_and_rating_div">
+                                <div className="review_username">{review.author.username}</div>
                                 <div className="review_rating">
                                     {Array(review.rating).fill(undefined).map((filledStar, idx) => {
                                         return <i key={idx} className="star_rating fa-solid fa-star filled_star" />
@@ -58,8 +59,17 @@ function RecipeReviews() {
                                 </div>
                             </div>
                             <div className="review_timestamp_div">
+                                {review.created_at === review.updated_at ? (
+                                        <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
+                                    ) : (
+                                        <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="review_section review_details">{review.review}</div>
+                        <div className="review_section review_modal_buttons_div">
                                 {sessionUser?.id === review.author.id && (
-                                    <div className="review_modal_buttons">
+                                    <>
                                         <OpenModalButton
                                             buttonText={<i className="fa-solid fa-pen-to-square" />}
                                             modalComponent={<ReviewModal reviewToUpdate={review} />}
@@ -68,16 +78,9 @@ function RecipeReviews() {
                                             buttonText={<i className="fa-solid fa-trash" />}
                                             modalComponent={<DeleteReviewConfirmationModal review={review} />}
                                         />
-                                    </ div>
-                                )}
-                                {review.created_at === review.updated_at ? (
-                                    <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
-                                ) : (
-                                    <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
+                                    </>
                                 )}
                             </div>
-                        </div>
-                        <div className="review_lower_div">{review.review}</div>
                     </div>
                 )
             })}

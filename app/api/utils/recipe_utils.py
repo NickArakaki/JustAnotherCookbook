@@ -92,6 +92,10 @@ def update_methods(recipe, methods_list):
 
     # create the new methods and append to recipe can use the add_methods helper function
     # if there is an error return the error
+    add_method_error = add_methods(recipe, methods_to_create)
+
+    if add_method_error:
+        return add_method_error
 
     # for each method in old methods compare to the methods to be updated by id
     for old_method in old_methods:
@@ -119,11 +123,7 @@ def update_methods(recipe, methods_list):
             old_method.details = method_to_update["details"]
             old_method.step_number = method_to_update["step_number"]
 
-    # Need to add after removing and updating to prevent mem ref conflicts
-    add_method_error = add_methods(recipe, methods_to_create)
 
-    if add_method_error:
-        return add_method_error
 
 
 def update_tags(recipe, tags_list):

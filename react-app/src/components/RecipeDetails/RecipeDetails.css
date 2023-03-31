@@ -210,22 +210,31 @@
 .reviews_div {
     display: flex;
     flex-direction: column;
+    min-height: 25em;
 }
 
 .review_heading_div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
-.review {
-    margin: 15px 0px;
+.review_average_rating,
+.review_heading_left_div {
+    font-size: 1.5rem;
 }
 
-.review_upper_div {
+.review_heading_right_div {
+    align-self: flex-end;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.review_heading_right_div *{
+    margin: 0;
+    padding: 0
 }
 
 .review_author_rating_div {
@@ -236,33 +245,84 @@
     min-width: fit-content;
 }
 
-.review_author {
-    margin-right: .5rem;
-}
+/* Individual Review */
 
-.review_rating_div {
+.review_wrapper {
     display: flex;
     flex-direction: column;
+    border: 1px solid #999;
+    border-radius: 1rem;
+    padding: .5rem 1.5rem;
+    background-color: #fef9f8;
 }
 
-.review_modal_buttons > * {
+.review_section,
+.review_user_and_rating_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-size: 1.25rem;
-    background-color: transparent;
-    border: none;
-    transition: 250ms ease;
-    cursor: pointer;
 }
 
+.review_timestamp,
+.review_details {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.review_timestamp {
+    font-size: 1rem;
+}
+
+.review_details {
+    line-height: 1.5rem;
+}
+
+.review_username {
+    margin-right: 5px;
+    font-family: 'Lora', serif;
+    font-weight: bold
+}
+
+.review_section {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review_section * {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.star_rating,
 .review_modal_buttons > *:hover {
     color: coral;
 }
 
-.review_timetamp_div {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+.review_modal_buttons_div *{
+    background-color: transparent;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: 200ms ease;
+    margin: 0 .15rem;
 }
 
-.star_rating {
+.review_modal_buttons_div *:hover {
     color: coral;
+}
+
+.review_section.review_top_div {
+    margin-bottom: 0;
+}
+
+.review_section.review_modal_buttons_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 0;
+}
+
+.review_section.review_details {
+    margin-bottom: 0;
 }
