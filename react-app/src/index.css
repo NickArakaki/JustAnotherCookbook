@@ -1,4 +1,7 @@
 /* TODO Add site wide styles */
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+
 * {
     box-sizing: border-box;
     overflow-wrap: break-word;

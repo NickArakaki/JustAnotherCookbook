@@ -5,7 +5,7 @@ function FavoriteRecipesPage() {
     const favoriteRecipes = useSelector(state => Object.values(state.recipes.userFavoriteRecipes))
     return (
         <>
-            <h1>Your Favorite Recipes</h1>
+            <div className="recipe_page_tile">Your Favorite Recipes</div>
             {favoriteRecipes.length > 0 ? <RecipeTiles recipes={favoriteRecipes} /> : <h2>You don't have any favorite recipes</h2>}
         </>
     )

@@ -16,34 +16,43 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
 .single_recipe_title {
     font-size: 3rem;
     font-weight: bold;
     max-width: 100%;
+    font-family: 'Lora', serif;
 }
 
-.recipe_details_edit_and_delete_button_div {
+
+
+.recipe_details_buttons {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 100px;
+    min-width: fit-content;
 }
 
-.recipe_details_edit_and_delete_button_div > * {
+.recipe_details_buttons > * {
     border: none;
-    font-size: 1.5rem;
+    font-size: 2rem;
     padding: .25rem;
     background-color: transparent;
     text-decoration: none;
     color: black;
+    cursor: pointer;
+    transition: 250ms ease;
 }
 
-.recipe_details_edit_and_delete_button_div > *:hover {
+
+.recipe_details_buttons > *:hover {
     cursor: pointer;
-    color: #ee5836;
+    color: coral;
 }
+
+
 
 .single_recipe_tags {
     display: flex;
@@ -85,15 +94,175 @@
     border-radius: 1rem;
 }
 
+/************************ Recipe Details ****************************/
+
 .recipe_details_div {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
 }
 
 .recipe_details_title_author_div,
 .recipe_details_reviews_summary_div {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    font-family: 'Lora', serif;
+}
+
+.recipe_details_title {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.recipe_details_author {
+    font-size: 1.5rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.recipe_details_author > a {
+    color: black;
+    text-decoration: none;
+    font-style: italic;
+    font-weight: bold;
+    transition: 250ms ease;
+    font-family: 'Lora', serif;
+}
+
+.recipe_details_author > a:hover {
+    color: coral;
+}
+
+.recipe_details_reviews_summary_div {
+    font-size: 1.5rem;
+    align-items: flex-end;
+}
+
+.recipe_avg_rating {
+    margin: 0;
+}
+
+/***************** Description *******************/
+.single_recipe_description {
+    font-size: 1.25rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+}
+
+
+.recipe_instruction_title,
+.recipe_ingredients_title,
+.review_title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Lora', serif;
+    text-decoration: underline;
+}
+
+.recipe_method_step_number,
+.recipe_ingredient {
+    font-size: 1.25rem;
+    font-weight: bold;
+    font-family: 'Lora', serif;
+}
+
+.recipe_method_details {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 2rem;
+}
+
+.recipe_ingredient {
+    list-style: none;
+}
+
+.ingredient_checkbox {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+
+/************************** Steps ***************************/
+.recipe_method_div {
+    margin-left: 1rem;
+}
+
+.recipe_method_image_and_details_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.recipe_method_image {
+    max-height: 100%;
+    width: 50%;
+    border-radius: 1rem;
+    margin-right: 1rem;
+}
+
+.recipe_method_details {
+    font-size: 1.25rem;
+    padding: 1rem;
+}
+
+
+/***************************** Reviews ******************************/
+.reviews_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_heading_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review {
+    margin: 15px 0px;
+}
+
+.review_upper_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review_author_rating_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-width: fit-content;
+}
+
+.review_author {
+    margin-right: .5rem;
+}
+
+.review_rating_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_modal_buttons > * {
+    font-size: 1.25rem;
+    background-color: transparent;
+    border: none;
+    transition: 250ms ease;
+    cursor: pointer;
+}
+
+.review_modal_buttons > *:hover {
+    color: coral;
+}
+
+.review_timetamp_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.star_rating {
+    color: coral;
 }

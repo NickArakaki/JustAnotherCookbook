@@ -24,10 +24,7 @@ function UserPage() {
         <>
             {isLoaded ? (
                 <>
-                    <div className="user_page_title_div">
-                        <div className="user_page_icon"><i className="fa-solid fa-user" /></div>
-                        <div className="user_page_title">{user.username}'s Recipes</div>
-                    </div>
+                    <div className="recipe_page_tile">{user.username}'s Recipes</div>
                     {Object.values(userRecipes).length > 0 ? <RecipeTiles recipes={userRecipes}/> : <h2>{user.username} has not posted any recipes yet.</h2>}
                 </>
             ) : (

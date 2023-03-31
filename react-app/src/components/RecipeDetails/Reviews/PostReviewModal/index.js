@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../../../context/Modal";
-import { postRecipeReviewThunk, updateRecipeReviewThunk } from "../../../store/reviews";
+import { useModal } from "../../../../context/Modal";
+import { postRecipeReviewThunk, updateRecipeReviewThunk } from "../../../../store/reviews";
 
 import "./ReviewModal.css";
 
