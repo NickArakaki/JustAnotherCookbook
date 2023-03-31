@@ -30,6 +30,7 @@
 
 .auth_form_title {
     margin: 15px;
+    font-family: 'Lora', serif;
 }
 
 .auth_form {
@@ -47,19 +48,24 @@
     margin: 15px;
 }
 
+.auth_form_constraints {
+    margin: 0 15px;
+}
+
 .auth_form_input_label{
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 14px;
+    font-family: 'Lora', serif;
+    font-size: 1.25rem;
 }
 
 .auth_form_input {
     margin-top: 5px;
-    padding: 5px;
+    font-size: 1.25rem;
+    padding: .5rem;
 }
 
 .auth_form_input::placeholder {
     font-style: italic;
-    font-family: serif;
+    font-family: 'Lora', serif;
 }
 
 
@@ -73,28 +79,31 @@
 
 .auth_form_button {
     width: fit-content;
-    background-color: #ee5836;
+    background-color: coral;
     border: none;
+    border-radius: 1rem;
     padding: 0.75rem;
     color: #fff;
     cursor: pointer;
     margin: 15px;
+    transition: 250ms ease;
 }
 
 .auth_form_button:hover {
-    background-color: #ee7936;
+    background-color: black;
 }
 
 
 /* Bottom */
 .form_error {
     color: white;
-    font-size: .75em;
-    border-radius: .5em;
+    font-size: .75rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 1em;
     background-color: rgba(255, 0, 0, 0.723);
     width: fit-content;
-    padding: .5em;
-    margin: .25em 15px;
+    padding: .5rem;
+    margin: .5rem 0;
 }
 
 
@@ -106,11 +115,12 @@
 }
 
 .auth_form_signup_link {
-    text-decoration: underline yellow solid;
+    text-decoration: underline coral solid;
     text-underline-position: under;
     text-underline-offset: .1em;
 }
 
 .auth_form_signup_link:hover {
-    text-decoration: underline 4px #e6ec31;
+    text-decoration: underline 4px coral;
+    font-weight: bold;
 }

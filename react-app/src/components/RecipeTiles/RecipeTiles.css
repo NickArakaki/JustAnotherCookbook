@@ -82,6 +82,7 @@
 .recipe_tile_author > a {
     text-decoration: underline coral;
     font-family: 'Lora', serif;;
+    font-weight: bold;
 }
 
 .recipe_tile_author > a,
