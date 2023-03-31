@@ -61,7 +61,7 @@ def seed_methods():
     db.session.add_all([m1,m2,m3,m4,m5,m6,m7,m8,m9])
     db.session.add(m10)
 
-    recipes = Recipe.query.filter(Recipe.id != 1 and Recipe.id != 2)
+    recipes = [recipe for recipe in Recipe.query.all() if recipe.id not in [1,2]]
 
     for recipe in recipes:
         for i in range(randint(3, 8)):
