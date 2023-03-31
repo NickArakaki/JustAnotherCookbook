@@ -37,7 +37,6 @@ def add_methods(recipe, methods_list):
             details = method["details"],
             image_url = method_image_url
         )
-        print("method in add_methods =====================================", new_method)
         recipe.methods.append(new_method)
 
 

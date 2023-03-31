@@ -133,7 +133,6 @@ def update_a_recipe(id):
         method_ids = [{"id": id} for id in request.form.getlist("id")]
 
         method_list = [{**image, **details, **id} for image, details, id in zip(method_images, method_details, method_ids)]
-        print("method list ====================================================", method_list)
         update_method_errors = update_methods(recipe, method_list)
 
         if update_method_errors:

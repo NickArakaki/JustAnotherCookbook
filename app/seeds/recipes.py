@@ -1,5 +1,6 @@
 from app.models import db, Recipe, environment, SCHEMA
 from sqlalchemy.sql import text
+# from faker import Faker
 
 def seed_recipes():
     r1 = Recipe(
@@ -16,6 +17,18 @@ def seed_recipes():
         preview_image_url = "https://npr.brightspotcdn.com/dims4/default/8a456cf/2147483647/strip/true/crop/1000x667+0+0/resize/880x587!/quality/90/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Flegacy%2Fsites%2Fkera%2Ffiles%2F201811%2Fcereal___milk.jpg",
         description = "Cereal with milk. Perfect for mornings when you're running late.",
     )
+
+    # for i in range(5):
+    #     for r in range(6):
+    #         recipe = Recipe(
+    #             author_id = i,
+    #             total_time = "", #Random number,
+    #             title = "Faker",
+    #             preview_image_url = "",# Random choice from list,
+    #             description = ""#Faker,
+    #         )
+    #         pass
+    #     pass
     db.session.add(r1)
     db.session.add(r2)
     db.session.commit()
