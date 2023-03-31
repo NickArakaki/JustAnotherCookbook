@@ -153,7 +153,8 @@
 
 
 .recipe_instruction_title,
-.recipe_ingredients_title {
+.recipe_ingredients_title,
+.review_title {
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Lora', serif;
@@ -202,4 +203,66 @@
 .recipe_method_details {
     font-size: 1.25rem;
     padding: 1rem;
+}
+
+
+/***************************** Reviews ******************************/
+.reviews_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_heading_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review {
+    margin: 15px 0px;
+}
+
+.review_upper_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review_author_rating_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-width: fit-content;
+}
+
+.review_author {
+    margin-right: .5rem;
+}
+
+.review_rating_div {
+    display: flex;
+    flex-direction: column;
+}
+
+.review_modal_buttons > * {
+    font-size: 1.25rem;
+    background-color: transparent;
+    border: none;
+    transition: 250ms ease;
+    cursor: pointer;
+}
+
+.review_modal_buttons > *:hover {
+    color: coral;
+}
+
+.review_timetamp_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.star_rating {
+    color: coral;
 }

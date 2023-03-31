@@ -3,7 +3,7 @@ import ReviewModal from "./PostReviewModal";
 import DeleteReviewConfirmationModal from "./DeleteReviewConfirmationModal";
 import OpenModalButton from "../../OpenModalButton";
 import { formatDateMonthDateYear } from "../../../utils/dateUtils";
-import "./Reviews.css"
+import "../RecipeDetails.css"
 
 function RecipeReviews() {
     const sessionUser = useSelector(state => state.session.user)
@@ -31,7 +31,7 @@ function RecipeReviews() {
             <div className="review_heading_div">
                 <div className="review_heading_left_div">
                     <div className="review_title">Reviews</div>
-                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"} <i className="fa-sharp fa-solid fa-star" /></div>
+                    <div className="review_average_rating">{averageRating > 0 ? averageRating.toFixed(1) : "new"} <i className="star_rating fa-sharp fa-solid fa-star" /></div>
                 </div>
                 <div className="review_heading_right_div">
                     {renderReviewButton &&
@@ -50,30 +50,30 @@ function RecipeReviews() {
                                 <div className="review_author">{review.author.username}</div>
                                 <div className="review_rating">
                                     {Array(review.rating).fill(undefined).map((filledStar, idx) => {
-                                        return <i key={idx} className="fa-solid fa-star filled_star" />
+                                        return <i key={idx} className="star_rating fa-solid fa-star filled_star" />
                                     })}
                                     {Array(5 - Number(review.rating)).fill(undefined).map((unfilledStar, idx) => {
-                                        return <i key={idx} className="fa-regular fa-star" />
+                                        return <i key={idx} className="star_rating fa-regular fa-star" />
                                     })}
                                 </div>
                             </div>
                             <div className="review_timestamp_div">
+                                {sessionUser?.id === review.author.id && (
+                                    <div className="review_modal_buttons">
+                                        <OpenModalButton
+                                            buttonText={<i className="fa-solid fa-pen-to-square" />}
+                                            modalComponent={<ReviewModal reviewToUpdate={review} />}
+                                        />
+                                        <OpenModalButton
+                                            buttonText={<i className="fa-solid fa-trash" />}
+                                            modalComponent={<DeleteReviewConfirmationModal review={review} />}
+                                        />
+                                    </ div>
+                                )}
                                 {review.created_at === review.updated_at ? (
                                     <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
                                 ) : (
                                     <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
-                                )}
-                                {sessionUser?.id === review.author.id && (
-                                    <div>
-                                        <OpenModalButton
-                                            buttonText="edit"
-                                            modalComponent={<ReviewModal reviewToUpdate={review} />}
-                                        />
-                                        <OpenModalButton
-                                            buttonText="delete"
-                                            modalComponent={<DeleteReviewConfirmationModal review={review} />}
-                                        />
-                                    </div>
                                 )}
                             </div>
                         </div>

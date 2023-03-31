@@ -84,7 +84,7 @@ function RecipeDetails() {
                             </div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
-                            <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="fa-sharp fa-solid fa-star" /></div>
+                            <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="star_rating fa-sharp fa-solid fa-star" /></div>
                             <div className="recipe_num_reviews">{reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}</div>
                         </div>
                     </div>
