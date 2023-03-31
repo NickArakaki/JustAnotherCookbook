@@ -117,9 +117,14 @@ function RecipeForm({ recipe }) {
             updatedMethodPreviewImageURLs.splice(idx, 1)
             setMethodPreviewImageURLs(updatedMethodPreviewImageURLs)
         } else {
-            // setMethodsList([{ id:"", details:"", image: "" }])
-            // setMethodsListErrors([[]])
-            // setMethodPreviewImageURLs([""])
+            const newMethodsList = [...methodsList]
+            newMethodsList[0]["details"] = ""
+            newMethodsList[0]["image"] = ""
+            // did it this way because of how methods get updated in the backend, there needs to be at least 1
+            // method with an id so that there is always at least one method associated with the recipe
+            setMethodsList(newMethodsList)
+            setMethodsListErrors([[]])
+            setMethodPreviewImageURLs([""])
         }
     }
 

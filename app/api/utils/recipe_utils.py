@@ -80,7 +80,6 @@ def update_ingredients(recipe, ingredients_list):
 
 def update_methods(recipe, methods_list):
     old_methods = [*recipe.methods]
-    # print("old_methods =========================================================", old_methods)
     methods_to_create = []
     methods_to_update = {}
 
@@ -94,25 +93,18 @@ def update_methods(recipe, methods_list):
 
     # create the new methods and append to recipe can use the add_methods helper function
     # if there is an error return the error
-    print("old_methods again  =========================================================", old_methods)
-
-    print("methods to create ============================================", methods_to_create)
-    print("methods to update ====================================================", methods_to_update)
 
     # for each method in old methods compare to the methods to be updated by id
     for old_method in old_methods:
         # type cast to string for consistency
         id = str(old_method.id)
-        print("id ==========================================", id)
 
         if id not in methods_to_update:
             recipe.methods.remove(old_method)
-            print("method to delete =========================================================", old_method)
         else:
             method_to_update = methods_to_update[id]
             # if there is a new image upload to aws
             new_method_image = method_to_update["image"]
-            print("method to update=================================================", method_to_update)
             # return
             if new_method_image:
                 new_method_image.filename = get_unique_filename(new_method_image.filename)
@@ -131,7 +123,6 @@ def update_methods(recipe, methods_list):
     # Need to add after removing and updating to prevent mem ref conflicts
     add_method_error = add_methods(recipe, methods_to_create)
 
-    # print("recipe methods after updating ==================================================", recipe.to_dict_detailed())
     if add_method_error:
         return add_method_error
 
