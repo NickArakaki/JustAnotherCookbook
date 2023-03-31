@@ -62,3 +62,6 @@ tags = {
     "thai",
     "easy recipes"
 }
+
+
+measurement_units = ["", "tsp", "tbsp", "oz", "fl. oz", "C", "qt", 'pt', 'gal', 'lb', 'g', 'kg', 'mL', 'L']
