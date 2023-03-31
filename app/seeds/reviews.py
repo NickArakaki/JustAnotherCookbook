@@ -1,5 +1,7 @@
-from app.models import db, Review, environment, SCHEMA
+from app.models import db, Review, environment, SCHEMA, User
 from sqlalchemy.sql import text
+from faker import Faker
+
 
 def seed_reviews():
     r1 = Review(
@@ -40,6 +42,7 @@ def seed_reviews():
     )
 
     db.session.add_all([r1, r2, r3, r4, r5, r6])
+
     db.session.commit()
 
 
