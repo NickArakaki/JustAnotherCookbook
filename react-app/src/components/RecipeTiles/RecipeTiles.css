@@ -102,16 +102,17 @@
     flex-direction: row;
     align-items: flex-end;
     align-content: flex-end;
+    justify-self: flex-end;
     flex-wrap: wrap;
     padding: 5px;
-    justify-self: flex-end;
     height: 100%;
+    margin-top: 1em;
 }
 
 .recipe_tile_tags > a {
     margin: .25em;
-    padding: .25em;
-    font-size: 100%;
+    padding: .5em;
+    font-size: 75%;
     max-width: 95%;
     height: fit-content;
     width: fit-content;
