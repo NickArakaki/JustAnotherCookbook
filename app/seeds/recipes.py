@@ -18,17 +18,17 @@ def seed_recipes():
         description = "Cereal with milk. Perfect for mornings when you're running late.",
     )
 
-    # for i in range(5):
-    #     for r in range(6):
-    #         recipe = Recipe(
-    #             author_id = i,
-    #             total_time = "", #Random number,
-    #             title = "Faker",
-    #             preview_image_url = "",# Random choice from list,
-    #             description = ""#Faker,
-    #         )
-    #         pass
-    #     pass
+    for i in range(5):
+        for r in range(6):
+            recipe = Recipe(
+                author_id = i,
+                total_time = "", #Random number,
+                title = "Faker",
+                preview_image_url = "",# Random choice from list,
+                description = ""#Faker,
+            )
+            pass
+        pass
     db.session.add(r1)
     db.session.add(r2)
     db.session.commit()
