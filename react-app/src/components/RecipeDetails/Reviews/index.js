@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import ReviewModal from "./PostReviewModal";
 import DeleteReviewConfirmationModal from "./DeleteReviewConfirmationModal";
-import OpenModalButton from "../OpenModalButton"
-import { formatDateMonthDateYear } from "../../utils/dateUtils";
+import OpenModalButton from "../../OpenModalButton";
+import { formatDateMonthDateYear } from "../../../utils/dateUtils";
 import "./Reviews.css"
 
 function RecipeReviews() {

@@ -110,6 +110,53 @@
 .recipe_details_reviews_summary_div {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    font-family: 'Lora', serif;
+}
+
+.recipe_details_title {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.recipe_details_author {
     font-size: 1.5rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.recipe_details_author > a {
+    color: black;
+    text-decoration: none;
+    font-style: italic;
+    font-weight: bold;
+    transition: 250ms ease;
+    font-family: 'Lora', serif;
+}
+
+.recipe_details_author > a:hover {
+    color: coral;
+}
+
+.recipe_details_reviews_summary_div {
+    font-size: 1.5rem;
+    align-items: flex-end;
+}
+
+.recipe_avg_rating {
+    margin: 0;
+}
+
+/***************** Description *******************/
+.single_recipe_description {
+    font-size: 1.25rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+}
+
+
+.recipe_instruction_title,
+.recipe_ingredients_title {
+    font-size: 1.5rem;
+    font-weight: bold;
     font-family: 'Lora', serif;
 }

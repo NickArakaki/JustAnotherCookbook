@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../../../context/Modal";
-import { deleteRecipeReviewThunk } from "../../../store/reviews";
+import { useModal } from "../../../../context/Modal";
+import { deleteRecipeReviewThunk } from "../../../../store/reviews";
 
 function DeleteReviewConfirmationModal({ review }) {
     const dispatch = useDispatch();

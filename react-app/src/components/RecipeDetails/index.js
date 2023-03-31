@@ -5,7 +5,7 @@ import { getSingleRecipeThunk } from "../../store/recipes";
 import { formatDateMonthDateYear } from '../../utils/dateUtils';
 import OpenModalButton from "../OpenModalButton";
 import DeleteRecipeConfirmationModal from "../DeleteRecipeConfirmationModal";
-import RecipeReviews from "../Reviews";
+import RecipeReviews from "./Reviews"
 import FavoriteButton from "../FavoriteButton"
 import LoadingComponent from "../Loading";
 import "./RecipeDetails.css"
