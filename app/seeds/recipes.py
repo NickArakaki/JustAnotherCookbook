@@ -1,6 +1,10 @@
 from app.models import db, Recipe, environment, SCHEMA
 from sqlalchemy.sql import text
-# from faker import Faker
+from .utils import images_and_names
+from random import randint
+from faker import Faker
+
+fake = Faker()
 
 def seed_recipes():
     r1 = Recipe(
@@ -18,17 +22,23 @@ def seed_recipes():
         description = "Cereal with milk. Perfect for mornings when you're running late.",
     )
 
+    count = 0
+
     for i in range(5):
         for r in range(6):
+            # image_and_name = ran
+            print(count ,images_and_names[count])
+            print(i)
             recipe = Recipe(
-                author_id = i,
-                total_time = "", #Random number,
-                title = "Faker",
-                preview_image_url = "",# Random choice from list,
-                description = ""#Faker,
+                author_id = i + 1,
+                total_time = randint(15, 120),
+                preview_image_url = images_and_names[count][0],
+                title = images_and_names[count][1],
+                description = fake.sentence()
             )
-            pass
-        pass
+            count = count + 1
+            db.session.add(recipe)
+
     db.session.add(r1)
     db.session.add(r2)
     db.session.commit()
