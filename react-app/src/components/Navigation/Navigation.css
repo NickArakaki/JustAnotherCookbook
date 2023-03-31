@@ -38,7 +38,8 @@
 
 .navbar_user_container a:hover {
   text-decoration: underline 4px solid coral;
-  text-underline-position: below;
+  text-underline-position: under;
+  text-underline-offset: .1em;
 }
 
 .navbar_logged_out_elements {

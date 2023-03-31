@@ -2,11 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 
 .recipe_tiles_div {
-    margin: 3rem auto;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
     grid-column-gap: .75em;
     grid-row-gap: 3rem;
+    padding: 0 3rem;
 }
 
 .recipe_tile {
@@ -26,6 +27,7 @@
 .recipe_tile_details_link:hover .recipe_tile_title {
     text-decoration: underline 4px coral;
     text-underline-position: under;
+    text-underline-offset: .1em;
 }
 
 
@@ -73,33 +75,37 @@
 
 .recipe_tile_author > a {
     text-decoration: underline coral;
-    font-weight: bold;
+    font-family: 'Lora', serif;;
 }
 
 .recipe_tile_author > a,
 .recipe_tile_author > a:visited {
-    font-family: 'Lora', serif;;
     color: black
 }
 
 
 .recipe_tile_author > a:hover {
     text-decoration-thickness: 4px;
+    font-weight: bold;
 }
 
 .recipe_tile_tags {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
+    align-content: flex-end;
     flex-wrap: wrap;
     padding: 5px;
     justify-self: flex-end;
+    height: 100%;
 }
 
 .recipe_tile_tags > a {
     margin: .25em;
     padding: .25em;
+    height: fit-content;
+    width: fit-content;
     background-color: coral;
-    display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
