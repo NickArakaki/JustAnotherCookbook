@@ -33,6 +33,7 @@ function RecipeForm({ recipe }) {
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
+    console.log(methodsList)
     const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [""])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")
@@ -80,11 +81,14 @@ function RecipeForm({ recipe }) {
     const handleMethodInputChange = (e, idx) => {
         const { name, value, files } = e.target
         const updatedMethodsList = [...methodsList]
+
         if (name === "image") {
+
             updatedMethodsList[idx][name] = files[0]
             const updatedMethodPreviews = [...methodPreviewImageURLs]
             updatedMethodPreviews[idx] = URL.createObjectURL(files[0])
             setMethodPreviewImageURLs(updatedMethodPreviews)
+
         } else {
             updatedMethodsList[idx][name] = value
         }
@@ -100,6 +104,7 @@ function RecipeForm({ recipe }) {
 
     const handleRemoveMethod = (idx) => {
         if (methodsList.length > 1) {
+
             const updatedMethodsList = [...methodsList]
             updatedMethodsList.splice(idx, 1)
             setMethodsList(updatedMethodsList)
@@ -110,9 +115,14 @@ function RecipeForm({ recipe }) {
 
             const updatedMethodPreviewImageURLs = [...methodPreviewImageURLs]
             updatedMethodPreviewImageURLs.splice(idx, 1)
-            setMethodsListErrors(updatedMethodListErrors)
+            setMethodPreviewImageURLs(updatedMethodPreviewImageURLs)
         } else {
-            setMethodsList([{ id:"", details:"", image: null }])
+            const newMethodsList = [...methodsList]
+            newMethodsList[0]["details"] = ""
+            newMethodsList[0]["image"] = ""
+            // did it this way because of how methods get updated in the backend, there needs to be at least 1
+            // method with an id so that there is always at least one method associated with the recipe
+            setMethodsList(newMethodsList)
             setMethodsListErrors([[]])
             setMethodPreviewImageURLs([""])
         }
@@ -299,6 +309,7 @@ function RecipeForm({ recipe }) {
                         </div>
                         {!recipe ? (
                             <input
+                                title=" "
                                 required
                                 className="recipe_form_input recipe_form_preview_image_input"
                                 type="file"
@@ -314,6 +325,7 @@ function RecipeForm({ recipe }) {
                         ) : (
                             // if there is already a recipe there's no need to require this input
                             <input
+                                title=" "
                                 className="recipe_form_input recipe_form_preview_image_input"
                                 type="file"
                                 accept="image/jpg, image/jpeg, image/png, image/gif"
@@ -385,7 +397,7 @@ function RecipeForm({ recipe }) {
                                             value={ingredient.units}
                                             onChange={e => handleIngredientInputChange(e, idx)}
                                         >
-                                            <option className="default_option_ingredient_unit" value="" selected>Select Units (if any)</option>
+                                            <option className="default_option_ingredient_unit" value="" >Select Units (if any)</option>
                                             {measurementUnits.map((unit, idx) => {
                                                 return <option key={idx} value={unit}>{unit}</option>
                                             })}
@@ -430,7 +442,7 @@ function RecipeForm({ recipe }) {
                                                         <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
                                                     ) : (
                                                     // else render an empty div with the same styling
-                                                        <div className="empty_preview recipe_preview">Please Upload a File</div>
+                                                        <div className="empty_preview recipe_preview">Add An Image</div>
                                                 )}
                                             </div>
                                             <input
