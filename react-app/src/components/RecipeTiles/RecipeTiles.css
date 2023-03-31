@@ -30,7 +30,7 @@
 }
 
 .recipe_tile_image {
-    filter: contrast(90%);
+    filter: contrast(85%);
     transition: 250ms ease;
 }
 

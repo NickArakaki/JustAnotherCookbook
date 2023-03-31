@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { getTagRecipesThunk } from "../../store/recipes";
 import { getAllTagsThunk } from "../../store/tags";
 import RecipeTiles from "../RecipeTiles";
@@ -27,15 +27,14 @@ function TagRecipePage() {
                     setIsLoaded(true)
                 }
             })
-    }, [dispatch, tagId])
+    }, [dispatch, tagId, history])
+
 
     return (
         <>
             {isLoaded ? (
                 <>
-                    <div className="tag_recipe_container">
-                        <div className="tag_recipe_header">Recipes for {tag.tag.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")}</div>
-                    </div>
+                    <div className="recipe_page_tile">Recipes for {tag.tag.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")}</div>
                     <RecipeTiles recipes={recipes}/>
                 </>
             ): (

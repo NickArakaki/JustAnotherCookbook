@@ -45,21 +45,23 @@ function RecipeDetails() {
                 <div className="recipe_container">
                     <div className="recipe_title_and_buttons_div">
                         <div className="single_recipe_title">{recipe.title}</div>
-                        <FavoriteButton recipe={recipe} />
-                        {recipe.author.id === sessionUser?.id ? (
-                            <div className="recipe_details_edit_and_delete_button_div">
-                                <Link to={`/recipes/${recipe.id}/edit`}>
-                                    <i className="edit_recipe_icon fa-solid fa-pen-to-square" />
-                                </Link>
-                                <OpenModalButton
-                                    buttonText={<i className="delete_recipe_icon fa-solid fa-trash" />}
-                                    modalComponent={<DeleteRecipeConfirmationModal recipe={recipe} />}
-                                />
-                            </div>
+                        <div className="recipe_details_buttons">
+                            <FavoriteButton recipe={recipe} />
+                            {recipe.author.id === sessionUser?.id ? (
+                                <>
+                                    <Link to={`/recipes/${recipe.id}/edit`}>
+                                        <i className="edit_recipe_icon fa-solid fa-pen-to-square" />
+                                    </Link>
+                                    <OpenModalButton
+                                        buttonText={<i className="delete_recipe_icon fa-solid fa-trash" />}
+                                        modalComponent={<DeleteRecipeConfirmationModal recipe={recipe} />}
+                                        />
+                                </>
                         ) : (
                             null
-                        )
+                            )
                         }
+                        </div>
                     </div>
                     <div className="single_recipe_tags">
                             {recipe.tags.map(tag => {
@@ -77,7 +79,9 @@ function RecipeDetails() {
                     <div className="recipe_details_div">
                         <div className="recipe_details_title_author_div">
                             <div className="recipe_details_title">{recipe.title}</div>
-                            <div className="recipe_details_author">Posted by: {recipe.author.username} on {formatDateMonthDateYear(new Date(recipe.created_at))}</div>
+                            <div className="recipe_details_author">
+                                Posted by: <Link to={`/users/${recipe.author.id}`}>{recipe.author.username}</Link> on {formatDateMonthDateYear(new Date(recipe.created_at))}
+                            </div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
                             <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="fa-sharp fa-solid fa-star" /></div>

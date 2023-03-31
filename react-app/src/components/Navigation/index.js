@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../store/session';
+import { useSelector } from 'react-redux';
 import './Navigation.css';
 import ProfileButton from './ProfileButton';
 
 function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
 	const [searchInput, setSearchInput] = useState("")
-	const dispatch = useDispatch();
-
-
-	const handleLogout = (e) => {
-		e.preventDefault();
-		dispatch(logout());
-	  };
 
 	return (
 		<div className='navbar_div'>
@@ -27,7 +19,7 @@ function Navigation({ isLoaded }){
 				): (
 					<>
 						<ProfileButton user={sessionUser} />
-						<NavLink to='/recipes/submit'>Submit</NavLink>
+						<NavLink to='/recipes/submit'>Submit Recipe</NavLink>
 					</>
 				)
 				}
