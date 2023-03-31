@@ -1,5 +1,9 @@
-from app.models import db, Method, environment, SCHEMA
+from app.models import db, Method, environment, SCHEMA, Recipe
+from random import randint
 from sqlalchemy.sql import text
+from faker import Faker
+
+fake = Faker()
 
 def seed_methods():
     m1 = Method(
@@ -56,6 +60,19 @@ def seed_methods():
 
     db.session.add_all([m1,m2,m3,m4,m5,m6,m7,m8,m9])
     db.session.add(m10)
+
+    recipes = Recipe.query.filter(Recipe.id != 1 and Recipe.id != 2)
+
+    for recipe in recipes:
+        for i in range(randint(3, 8)):
+            recipe.methods.append(
+                Method(
+                    step_number = i + 1,
+                    details = fake.paragraph(5),
+                    image_url = "",
+                )
+            )
+
     db.session.commit()
 
 

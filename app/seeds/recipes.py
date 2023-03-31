@@ -1,6 +1,6 @@
 from app.models import db, Recipe, environment, SCHEMA, Ingredient, User
 from sqlalchemy.sql import text
-from .utils import images_and_names, measurement_units
+from .utils import images_and_names, measurement_units, ingredients_list
 from random import randint, choice
 from faker import Faker
 
@@ -35,12 +35,12 @@ def seed_recipes():
                 total_time = randint(15, 120),
                 preview_image_url = images_and_names[count][0],
                 title = images_and_names[count][1],
-                description = fake.sentence()
+                description = "This is not a real recipe, but I hope that you enjoy all the same." + fake.sentence(),
             )
 
             for i in range(randint(3, 8)):
                 recipe.ingredients.append(Ingredient(
-                    ingredient = fake.word(),
+                    ingredient = choice(ingredients_list),
                     amount = randint(1, 10),
                     units = choice(measurement_units)
                 ))
