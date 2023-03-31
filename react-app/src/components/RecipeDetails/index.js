@@ -16,7 +16,6 @@ function RecipeDetails() {
     const { recipeId } = useParams();
     const [isLoaded, setIsLoaded] = useState(false)
     const recipe = useSelector(state => state.recipes.singleRecipe)
-    console.log("recipe in details page ================================================", recipe)
     const reviews = useSelector(state => Object.values(state.reviews.recipeReviews))
     const sessionUser = useSelector(state => state.session.user)
 

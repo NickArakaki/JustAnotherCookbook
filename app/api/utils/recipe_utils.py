@@ -79,8 +79,8 @@ def update_ingredients(recipe, ingredients_list):
 
 
 def update_methods(recipe, methods_list):
-    old_methods = recipe.methods
-    print("old_methods =========================================================", old_methods)
+    old_methods = [*recipe.methods]
+    # print("old_methods =========================================================", old_methods)
     methods_to_create = []
     methods_to_update = {}
 
@@ -128,9 +128,10 @@ def update_methods(recipe, methods_list):
             old_method.details = method_to_update["details"]
             old_method.step_number = method_to_update["step_number"]
 
+    # Need to add after removing and updating to prevent mem ref conflicts
     add_method_error = add_methods(recipe, methods_to_create)
 
-    print("recipe methods after updating ==================================================", recipe.to_dict_detailed())
+    # print("recipe methods after updating ==================================================", recipe.to_dict_detailed())
     if add_method_error:
         return add_method_error
 
