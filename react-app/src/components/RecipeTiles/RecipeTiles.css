@@ -1,6 +1,4 @@
 /* TODO: Add styling for recipe tiles */
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
-
 .recipe_tiles_div {
     margin: 0 auto;
     display: grid;

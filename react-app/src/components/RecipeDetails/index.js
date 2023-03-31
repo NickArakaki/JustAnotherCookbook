@@ -94,7 +94,10 @@ function RecipeDetails() {
                         <ul>
                             {isLoaded && recipe.ingredients.map((ingredient, idx) => {
                                 return (
-                                    <li key={idx} className="recipe_ingredient">{ingredient.amount} {ingredient.units} {ingredient.ingredient} </li>
+                                    <li key={idx} className="recipe_ingredient">
+                                        <input className="ingredient_checkbox" type="checkbox" />
+                                        {ingredient.amount} {ingredient.units} {ingredient.ingredient}
+                                    </li>
                                     )
                                 })}
                         </ul>
@@ -107,13 +110,12 @@ function RecipeDetails() {
                                     <div className="recipe_method_step_number">Step {method.step_number}</div>
                                     <div className="recipe_method_image_and_details_div">
                                         {!!method.image_url &&
-                                            <div className="recipe_method_image">
                                                 <img
+                                                    className="recipe_method_image"
                                                     src={method.image_url}
                                                     alt={`${recipe.title} ${method.step_number}`}
                                                     onError={(e) => { e.target.src="https://mirasvit.com/media/blog/404_Not_Found_2-179.png" }}
                                                 />
-                                            </div>
                                         }
                                         <div className="recipe_method_details">{method.details}</div>
                                     </div>
