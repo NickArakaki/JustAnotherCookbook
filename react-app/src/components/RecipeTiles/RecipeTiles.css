@@ -22,7 +22,7 @@
 }
 
 .recipe_tile_details_link:hover .recipe_tile_title {
-    text-decoration: underline 4px #e6ec31;
+    text-decoration: underline 4px coral;
     text-underline-position: under;
 }
 
