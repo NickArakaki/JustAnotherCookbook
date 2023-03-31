@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUserRecipesThunk } from "../../store/recipes";
 import { getAllUsersThunk } from "../../store/users";
+import LoadingComponent from "../Loading";
 import RecipeTiles from "../RecipeTiles";
 import "./UserPage.css"
 
@@ -22,15 +23,15 @@ function UserPage() {
     return (
         <>
             {isLoaded ? (
-                <div className="user_page_container">
+                <>
                     <div className="user_page_title_div">
                         <div className="user_page_icon"><i className="fa-solid fa-user" /></div>
                         <div className="user_page_title">{user.username}'s Recipes</div>
                     </div>
-                    <RecipeTiles recipes={userRecipes}/>
-                </div>
+                    {Object.values(userRecipes).length > 0 ? <RecipeTiles recipes={userRecipes}/> : <h2>{user.username} has not posted any recipes yet.</h2>}
+                </>
             ) : (
-                <h1>Loading...</h1>
+                <LoadingComponent />
             )
             }
         </>
