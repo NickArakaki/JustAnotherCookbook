@@ -6,7 +6,7 @@ function FavoriteRecipesPage() {
     return (
         <>
             <h1>Your Favorite Recipes</h1>
-            <RecipeTiles recipes={favoriteRecipes}/>
+            {favoriteRecipes.length > 0 ? <RecipeTiles recipes={favoriteRecipes} /> : <h2>You don't have any favorite recipes</h2>}
         </>
     )
 }

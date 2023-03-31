@@ -43,17 +43,17 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user && (
-          <div className="user_drop_down_div">
-            <div>
+          <>
+            <div className="user_drop_down_div">
               <Link onClick={closeMenu} to={`/users/${user.id}`}>My Recipes</Link>
             </div>
             <div className="user_drop_down_div">
               <Link onClick={closeMenu} to={`/my-favorites`}>Favorite Recipes</Link>
             </div>
             <div className="user_drop_down_div">
-              <button onClick={handleLogout}>Log Out</button>
+              <button className="user_drop_down_button" onClick={handleLogout}>Log Out</button>
             </div>
-          </div>
+          </>
         )}
       </ul>
     </>

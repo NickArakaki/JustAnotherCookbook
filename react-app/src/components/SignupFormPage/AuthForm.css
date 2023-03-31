@@ -108,6 +108,7 @@
 .auth_form_signup_link {
     text-decoration: underline yellow solid;
     text-underline-position: under;
+    text-underline-offset: .1em;
 }
 
 .auth_form_signup_link:hover {

@@ -1,18 +1,13 @@
-import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom"
 import FavoriteButton from "../FavoriteButton";
 import "./RecipeTiles.css"
-import defaultImage from "../../assets/images/wheresthefood.jpg"
 
 function RecipeTiles({ recipes }) {
     const history = useHistory();
-    const sessionUser = useSelector(state => state.session.user)
 
     const goToRecipeDetails = (recipe) => {
         history.push(`/recipes/${recipe.id}`)
     }
-
-
 
     return (
         <div className="recipe_tiles_div">

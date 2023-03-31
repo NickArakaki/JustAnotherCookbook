@@ -1,17 +1,19 @@
 /* TODO: Add styling for recipe tiles */
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
 .recipe_tiles_div {
-    margin: 3rem auto;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
+    grid-template-columns: repeat(auto-fill, minmax(18rem, auto));
     grid-column-gap: .75em;
     grid-row-gap: 3rem;
+    padding: 0 3rem;
 }
 
 .recipe_tile {
     display: flex;
     flex-direction: column;
     margin: 15px;
-    height: 100%;
     max-width: 250px;
     border-radius: 0 0 15px 15px;
     border: 1px solid #ccc;
@@ -22,8 +24,18 @@
 }
 
 .recipe_tile_details_link:hover .recipe_tile_title {
-    text-decoration: underline 4px #e6ec31;
+    text-decoration: underline 4px coral;
     text-underline-position: under;
+    text-underline-offset: .1em;
+}
+
+.recipe_tile_image {
+    filter: contrast(90%);
+    transition: 250ms ease;
+}
+
+.recipe_tile_details_link:hover .recipe_tile_image {
+    filter: contrast(100%);
 }
 
 
@@ -39,7 +51,7 @@
 }
 
 .recipe_tile_image .favorited_icon:hover {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 .recipe_tile_image {
@@ -53,6 +65,7 @@
     font-weight: bold;
     font-size: 1.5rem;
     padding: 1rem;
+    font-family: 'Lora', serif;
 }
 
 .recipe_tile_description,
@@ -60,7 +73,8 @@
     font-size: 1rem;
     min-height: fit-content;
     padding: 0 1rem;
-    margin-top: .5rem;
+    margin-top: 1rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .recipe_tile_author {
@@ -68,26 +82,41 @@
 }
 
 .recipe_tile_author > a {
-    text-decoration: underline #e6ec31;
+    text-decoration: underline coral;
+    font-family: 'Lora', serif;;
 }
+
+.recipe_tile_author > a,
+.recipe_tile_author > a:visited {
+    color: black
+}
+
 
 .recipe_tile_author > a:hover {
     text-decoration-thickness: 4px;
+    font-weight: bold;
 }
 
 .recipe_tile_tags {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-self: flex-end;
     flex-wrap: wrap;
     padding: 5px;
-    justify-self: flex-end;
+    height: 100%;
+    margin-top: 1em;
 }
 
 .recipe_tile_tags > a {
     margin: .25em;
-    padding: .25em;
+    padding: .5em;
+    font-size: 75%;
+    max-width: 95%;
+    height: fit-content;
+    width: fit-content;
     background-color: coral;
-    display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;

@@ -32,10 +32,12 @@ function TagRecipePage() {
     return (
         <>
             {isLoaded ? (
-                <div className="tag_recipe_container">
-                    <div className="tag_recipe_header">Recipes for {tag.tag.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")}</div>
+                <>
+                    <div className="tag_recipe_container">
+                        <div className="tag_recipe_header">Recipes for {tag.tag.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")}</div>
+                    </div>
                     <RecipeTiles recipes={recipes}/>
-                </div>
+                </>
             ): (
                 <h1>Loading...</h1>
             )}

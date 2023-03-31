@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 2rem 3rem;
 }
 
 .navbar_div a,
@@ -11,8 +11,23 @@
   text-decoration: none;
   color: black;
   cursor: pointer;
+  font-size: 1.25em;
+  font-family:'Open Sans', 'Helvetica Neue', sans-serif;
+
 }
 
+.profile_menu_button {
+  color: coral;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 2em;;
+  transition: 250ms ease;
+}
+
+.profile_menu_button:hover {
+  color: black;
+}
 
 .navbar_user_container {
   display: flex;
@@ -21,8 +36,10 @@
   width: 15%;
 }
 
-.navbar_user_container > a:hover {
-  border-bottom: 4px solid #e6ec31;
+.navbar_user_container a:hover {
+  text-decoration: underline 4px solid coral;
+  text-underline-position: under;
+  text-underline-offset: .1em;
 }
 
 .navbar_logged_out_elements {
@@ -32,7 +49,7 @@
 }
 
 .navbar_logo {
-  font-size: 32px;
+  font-size: 3rem;
   font-family: 'Great Vibes', cursive;
 }
 
@@ -45,6 +62,8 @@
 
 .search_form_input {
   margin-right: 5px;
+  height: 1.5em;
+  padding: 1em;
 }
 
 .navbar_section {
@@ -56,17 +75,40 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 50px;
-  left: 15px;
-  min-width: 3em;
-  min-height: 7em;
-  background-color: rgba(245, 245, 220, 0.967);
+  align-items: center;
+  justify-content: space-between;
+  top: 65px;
+  left: 1em;
+  min-width: 200px;
+  min-height: fit-content;
+  border: 1px solid #aaa;
+  background-color: #fef9f8;
   border-radius: .5em;
   padding: 1em;
+  z-index: 1;
 }
 
 .user_drop_down_div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 1em 0;
+  align-items: center;
+}
+
+.user_drop_down_button {
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  background-color: coral;
+  padding: .75rem;
+  color: white;
+  cursor: pointer;
+  transition: 250ms ease;
+}
+
+.user_drop_down_button:hover {
+  background-color: black;
 }
 
 .hidden {
