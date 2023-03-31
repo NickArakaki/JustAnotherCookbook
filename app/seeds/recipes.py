@@ -35,7 +35,7 @@ def seed_recipes():
                 total_time = randint(15, 120),
                 preview_image_url = images_and_names[count][0],
                 title = images_and_names[count][1],
-                description = fake.sentence()
+                description = "This is not a real recipe, but I hope that you enjoy all the same." + fake.sentence(),
             )
 
             for i in range(randint(3, 8)):
