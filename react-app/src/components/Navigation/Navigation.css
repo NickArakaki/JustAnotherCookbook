@@ -77,10 +77,10 @@
   align-items: center;
   justify-content: space-between;
   top: 65px;
-  left: 15px;
+  left: 1em;
   min-width: 200px;
   min-height: fit-content;
-  border: 1px solid black;
+  border: 1px solid #aaa;
   background-color: #fef9f8;
   border-radius: .5em;
   padding: 1em;
@@ -100,7 +100,7 @@
   border: none;
   border-radius: 5px;
   background-color: coral;
-  padding: 1rem;
+  padding: .75rem;
   color: white;
   cursor: pointer;
   transition: 250ms ease;

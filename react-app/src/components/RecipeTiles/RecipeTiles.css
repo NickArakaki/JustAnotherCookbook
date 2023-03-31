@@ -1,4 +1,6 @@
 /* TODO: Add styling for recipe tiles */
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
 .recipe_tiles_div {
     margin: 3rem auto;
     display: grid;
@@ -39,7 +41,7 @@
 }
 
 .recipe_tile_image .favorited_icon:hover {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 .recipe_tile_image {
@@ -53,6 +55,7 @@
     font-weight: bold;
     font-size: 1.5rem;
     padding: 1rem;
+    font-family: 'Lora', serif;
 }
 
 .recipe_tile_description,
@@ -61,6 +64,7 @@
     min-height: fit-content;
     padding: 0 1rem;
     margin-top: .5rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .recipe_tile_author {
@@ -68,8 +72,16 @@
 }
 
 .recipe_tile_author > a {
-    text-decoration: underline #e6ec31;
+    text-decoration: underline coral;
+    font-weight: bold;
 }
+
+.recipe_tile_author > a,
+.recipe_tile_author > a:visited {
+    font-family: 'Lora', serif;;
+    color: black
+}
+
 
 .recipe_tile_author > a:hover {
     text-decoration-thickness: 4px;
