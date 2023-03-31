@@ -133,7 +133,9 @@ def update_a_recipe(id):
         method_ids = [{"id": id} for id in request.form.getlist("id")]
 
         method_list = [{**image, **details, **id} for image, details, id in zip(method_images, method_details, method_ids)]
+        print("method list ====================================================", method_list)
         update_method_errors = update_methods(recipe, method_list)
+
         if update_method_errors:
             return update_method_errors
 
@@ -163,8 +165,6 @@ def update_a_recipe(id):
 
         update_ingredients(recipe, ingredients_list)
         update_tags(recipe, tags_list)
-
-        update_methods(recipe, method_list)
 
         db.session.commit()
         return recipe.to_dict_detailed()
