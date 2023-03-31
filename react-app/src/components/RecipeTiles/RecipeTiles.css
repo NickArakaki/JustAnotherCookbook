@@ -30,6 +30,15 @@
     text-underline-offset: .1em;
 }
 
+.recipe_tile_image {
+    filter: contrast(80%);
+    transition: 250ms ease;
+}
+
+.recipe_tile_details_link:hover .recipe_tile_image {
+    filter: contrast(100%);
+}
+
 
 .recipe_tile_image .favorited_icon {
     color: coral;
@@ -65,7 +74,7 @@
     font-size: 1rem;
     min-height: fit-content;
     padding: 0 1rem;
-    margin-top: .5rem;
+    margin-top: 1rem;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
