@@ -17,7 +17,6 @@ import LoadingComponent from "../Loading"
 import "./RecipeForm.css"
 
 function RecipeForm({ recipe }) {
-    console.log("recipe in update form", recipe)
     // react hooks
     const history = useHistory();
     const dispatch = useDispatch();
@@ -33,7 +32,6 @@ function RecipeForm({ recipe }) {
     const [previewImage, setPreviewImage] = useState(null)
     const [ingredientsList, setIngredientsList] = useState(recipe ? recipe.ingredients : [{ingredient:"", amount:"", units:""}])
     const [methodsList, setMethodsList] = useState(recipe ? recipe.methods : [{id: "", details:"", image: ""}])
-    console.log(methodsList)
     const [methodPreviewImageURLs, setMethodPreviewImageURLs] = useState(recipe ? recipe.methods.map(method => method.image_url) : [""])
     const [tags, setTags] = useState(recipe ? recipe.tags.map(tag => tag.tag) : [])
     const [tagInput, setTagInput] = useState("")

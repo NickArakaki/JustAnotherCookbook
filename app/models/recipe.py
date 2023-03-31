@@ -50,7 +50,7 @@ class Recipe(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "ingredients": [ingredient.to_dict() for ingredient in self.ingredients],
-            "methods": [method.to_dict() for method in self.methods],
+            "methods": sorted([method.to_dict() for method in self.methods], key=lambda method: method["step_number"]),
             "reviews": [review.to_dict_summary() for review in self.reviews],
             "tags": [tag.to_dict() for tag in self.tags],
             "liked_users_ids": [user.id for user in self.liked_users]
