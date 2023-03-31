@@ -252,7 +252,7 @@
     flex-direction: column;
     border: 1px solid #999;
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: .5rem 1.5rem;
     background-color: #fef9f8;
 }
 
@@ -260,6 +260,27 @@
 .review_user_and_rating_div {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.review_timestamp,
+.review_details {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.review_timestamp {
+    font-size: 1rem;
+}
+
+.review_details {
+    line-height: 1.5rem;
+}
+
+.review_username {
+    margin-right: 5px;
+    font-family: 'Lora', serif;
+    font-weight: bold
 }
 
 .review_section {
@@ -268,7 +289,8 @@
 }
 
 .review_section * {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
     padding: 0;
 }
 
@@ -283,15 +305,24 @@
     font-size: 1.25rem;
     cursor: pointer;
     transition: 200ms ease;
+    margin: 0 .15rem;
 }
 
 .review_modal_buttons_div *:hover {
     color: coral;
 }
 
-.review_timestamp {
+.review_section.review_top_div {
+    margin-bottom: 0;
+}
+
+.review_section.review_modal_buttons_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     margin-top: 0;
 }
-.review_top_div {
+
+.review_section.review_details {
     margin-bottom: 0;
 }

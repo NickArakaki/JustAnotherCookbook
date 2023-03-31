@@ -58,7 +58,16 @@ function RecipeReviews() {
                                     })}
                                 </div>
                             </div>
-                            <div className="review_modal_buttons_div">
+                            <div className="review_timestamp_div">
+                                {review.created_at === review.updated_at ? (
+                                        <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
+                                    ) : (
+                                        <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="review_section review_details">{review.review}</div>
+                        <div className="review_section review_modal_buttons_div">
                                 {sessionUser?.id === review.author.id && (
                                     <>
                                         <OpenModalButton
@@ -72,15 +81,6 @@ function RecipeReviews() {
                                     </>
                                 )}
                             </div>
-                        </div>
-                        <div className="review_section review_timestamp">
-                            {review.created_at === review.updated_at ? (
-                                    <div className="review_timestamp">Posted on: {formatDateMonthDateYear(new Date(review.created_at))}</div>
-                                ) : (
-                                    <div className="review_timestamp">Last updated: {formatDateMonthDateYear(new Date(review.updated_at))}</div>
-                            )}
-                        </div>
-                        <div className="review_section">{review.review}</div>
                     </div>
                 )
             })}
