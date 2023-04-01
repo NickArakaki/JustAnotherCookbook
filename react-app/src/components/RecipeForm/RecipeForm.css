@@ -4,46 +4,65 @@
     background-image: url("../../assets/images/bread.jpg");
     background-attachment: fixed;
     height: 100%;
+    min-height: 100vh;
     width: 100%;
+    padding: 3rem 0;
 }
 
 .recipe_form {
     display: flex;
     flex-direction: column;
     width: 25%;
-    min-width: 600px;
+    min-width: 700px;
     min-height: fit-content;
     margin: 0 auto;
-    background-color: #ffffffd9;
-    padding: 1.5rem;
+    background-color: #fef9f8db;
+    padding: 1.75rem;
     border-radius: 1.5rem;
-    position: relative;
-    top: 2em;
 }
 
 .recipe_form_input_constraints {
     font-size: 14px;
     font-weight: bold;
+    margin: .5rem 0;
+    font-family: "Lora", serif;
+}
+
+.recipe_form_input_recommendations {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5rem;
+    margin-top: 0;
 }
 
 .recipe_form textarea {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 300px;
 }
 
-.recipe_form_container {
-    height: 1500px;
-    min-height: 100vh;
+.recipe_form_textarea_num_chars {
+    font-family: "Lora", serif;
+    margin: .5rem;
+}
+
+.num_chars_remaining {
+    font-weight: bold;
 }
 
 .recipe_form_label {
-    font-size: 1rem;
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 1.25rem;
+    font-family: "Lora", serif;
     margin-bottom: .75rem;
     font-weight: bold;
 }
 
+.recipe_form_sublabel {
+    font-size: 1rem;
+    font-family: "Lora", serif;
+    font-weight: bold;
+}
+
 .recipe_form_input {
-    padding: .25rem;
+    padding: .5rem;
 }
 
 .recipe_form_input::placeholder,
@@ -68,6 +87,7 @@
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
+    font-family: "Lora", serif;
 }
 
 .recipe_form_description_input {
@@ -82,12 +102,35 @@
     border: 1px solid #666;
     border-radius: 1em;
     background-color: rgba(245, 245, 220, 0.428);
+    font-family: "Lora", serif;
 }
 
 .empty_preview {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.recipe_form_preview_image_input {
+    max-width: fit-content;
+}
+
+.select_image_button {
+    border: none;
+    font-size: .75rem;
+    cursor: pointer;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: coral;
+    color: white;
+    padding: .5rem;
+    margin: .5rem 0;
+    border-radius: .25rem;
+    width: fit-content;
+    transition: 250ms ease;
 }
 
 /************************************************************************************ Ingredients **************************************************************************/
@@ -117,22 +160,31 @@
     border-radius: .25em;
     color: white;
     cursor: pointer;
-    padding: .5em;
+    padding: .5rem;
     transition: 300ms ease;
+    font-size: .75rem;
 }
 
 .add_ingredient_button:hover,
-.add_method_button:hover {
+.add_method_button:hover,
+.select_image_button:hover {
     background-color: black;
 }
 
-/************************************************************************************ Methods **************************************************************************/
+/************************************************************************************ Method/Ingredient Buttons **************************************************************************/
 .remove_method_button,
 .remove_ingredient_button {
     background-color: transparent;
     border: none;
-    color: maroon;
+    color: black;
     cursor: pointer;
+    transition: 250ms ease;
+    font-size: 1rem;
+}
+
+.remove_method_button:hover,
+.remove_ingredient_button:hover {
+    color: coral;
 }
 
 /************************************************************************************ Tags **************************************************************************/
@@ -179,7 +231,7 @@
 .recipe_form_submit_button {
     width: 50%;
     padding: 10px 0px;
-    margin-bottom: 15px;
+    margin: 1.5rem;
     align-self: center;
     background-color: coral;
     color: #fff;
@@ -187,6 +239,7 @@
     border-radius: 15px;
     cursor: pointer;
     transition: 250ms ease;
+    font-size: 1.25rem;
 }
 
 .recipe_form_submit_button:hover {
@@ -195,6 +248,8 @@
 
 .recipe_form_legend {
     text-align: right;
+    font-family: "Lora", serif;
+    font-weight: bold;
 }
 
 .required_input {

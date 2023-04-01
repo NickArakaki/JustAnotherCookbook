@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
@@ -238,7 +238,6 @@ function RecipeForm({ recipe }) {
         <>
         {isLoaded ? (
             <div className="recipe_form_background_image">
-                <div className="recipe_form_container">
                 <form onSubmit={handleSubmit} className="recipe_form" encType="multipart/form-data">
                     <div className="recipe_form_title">{!recipe ? "Submit a Recipe" : "Update your Recipe"}</div>
                     {errors.map((error, idx) => {
@@ -249,19 +248,21 @@ function RecipeForm({ recipe }) {
 
                     {/*********************************************************************** Title ***********************************************************/}
                     <div className="recipe_form_input_div">
-                        <label className="recipe_form_label">Recipe Title<span className="required_input">*</span></label>
+                        <label className="recipe_form_label">
+                            Recipe Title<span className="required_input">*</span>
+                        </label>
                         {titleErrors.map((error, idx) => {
                             return (
                                 <div className="form_error" key={idx}>{error}</div>
-                            )
-                        })}
-                        <input
-                            required
-                            className="recipe_form_input recipe_form_title_input"
-                            type="text"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
+                                )
+                            })}
+                            <input
+                                required
+                                className="recipe_form_input recipe_form_title_input"
+                                type="text"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                            />
                     </div>
 
                     {/*********************************************************************** Description ***********************************************************/}
@@ -279,12 +280,15 @@ function RecipeForm({ recipe }) {
                             onChange={e => setDescription(e.target.value)}
                             maxLength="200"
                         />
-                        <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
+                        <div className="recipe_form_textarea_num_chars">
+                            <span className="num_chars_remaining">{200 - description.length}</span> characters remaining
+                        </div>
                     </div>
 
                     {/*********************************************************************** Recipe Image ***********************************************************/}
                     <div className="recipe_form_input_div">
-                        <label className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></label>
+                        <div className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></div>
+                        <div className="recipe_form_input_constraints">Allowed image types: .jpg, .jpeg, .png, .gif</div>
                         {previewImageErrors.map((error, idx) => {
                             return (
                                 <div className="form_error" key={idx}>{error}</div>
@@ -301,37 +305,44 @@ function RecipeForm({ recipe }) {
                             )}
                         </div>
                         {!recipe ? (
-                            <input
-                                title=" "
-                                required
-                                className="recipe_form_input recipe_form_preview_image_input"
-                                type="file"
-                                accept="image/jpg, image/jpeg, image/png, image/gif"
-                                onChange={(e) => {
-                                    const file = e.target.files[0]
-                                    if (file) {
-                                        setPreviewImage(file)
-                                        setPreviewImageURL(URL.createObjectURL(file))
-                                    }
-                                }}
-                            />
+                            <label className="recipe_form_preview_image_input">
+                                <div className="select_image_button">
+                                    Upload Image
+                                </div>
+                                <input
+                                    required
+                                    className="recipe_form_input recipe_form_preview_image_input"
+                                    type="file"
+                                    accept="image/jpg, image/jpeg, image/png, image/gif"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0]
+                                        if (file) {
+                                            setPreviewImage(file)
+                                            setPreviewImageURL(URL.createObjectURL(file))
+                                        }
+                                    }}
+                                />
+                            </label>
                         ) : (
                             // if there is already a recipe there's no need to require this input
-                            <input
-                                title=" "
-                                className="recipe_form_input recipe_form_preview_image_input"
-                                type="file"
-                                accept="image/jpg, image/jpeg, image/png, image/gif"
-                                onChange={(e) => {
-                                    const file = e.target.files[0]
-                                    if (file) {
-                                        setPreviewImage(file)
-                                        setPreviewImageURL(URL.createObjectURL(file))
-                                    }
-                                }}
-                            />
+                            <label className="recipe_form_preview_image_input">
+                                <div className="select_image_button">
+                                    Upload Image
+                                </div>
+                                <input
+                                    className="recipe_form_input recipe_form_preview_image_input"
+                                    type="file"
+                                    accept="image/jpg, image/jpeg, image/png, image/gif"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0]
+                                        if (file) {
+                                            setPreviewImage(file)
+                                            setPreviewImageURL(URL.createObjectURL(file))
+                                        }
+                                    }}
+                                />
+                            </label>
                         )}
-                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                     </div>
 
                     {/*********************************************************************** Estimated Time to Make ***********************************************************/}
@@ -357,7 +368,7 @@ function RecipeForm({ recipe }) {
                         <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                         {ingredientsList.map((ingredient, idx) => {
                             return (
-                                <div key={idx}>
+                                <React.Fragment key={idx}>
                                     {ingredientListErrors[idx].map((error, errorIdx) => {
                                         return (
                                             <div className="form_error" key={errorIdx}>{error}</div>
@@ -390,8 +401,8 @@ function RecipeForm({ recipe }) {
                                             value={ingredient.units}
                                             onChange={e => handleIngredientInputChange(e, idx)}
                                         >
-                                            <option className="default_option_ingredient_unit" value="" >Select Units (if any)</option>
                                             {measurementUnits.map((unit, idx) => {
+                                                if (!unit) return <option key={idx} value={unit}>Select Units (if any)</option>
                                                 return <option key={idx} value={unit}>{unit}</option>
                                             })}
                                         </select>
@@ -403,7 +414,7 @@ function RecipeForm({ recipe }) {
                                             <i className="fa-solid fa-trash" />
                                         </button>
                                     </div>
-                                </div>
+                                </React.Fragment>
                             )
                         })}
                         <button
@@ -427,7 +438,8 @@ function RecipeForm({ recipe }) {
                                     })}
                                     <div className="method_div">
                                         <div className="recipe_form_input_div">
-                                            <label>Optional Image</label>
+                                            <div className="recipe_form_sublabel">Optional Image</div>
+                                            <div className="recipe_form_input_constraints">Allowed image types: .jpg, .jpeg, .png, .gif</div>
                                             <div className="preview_recipe_image_div">
                                                 {!!methodPreviewImageURLs[idx] ? (
                                                     // if there is a preview image url, either from the recipe, or from the user's input
@@ -435,20 +447,29 @@ function RecipeForm({ recipe }) {
                                                         <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
                                                     ) : (
                                                     // else render an empty div with the same styling
-                                                        <div className="empty_preview recipe_preview">Add An Image</div>
+                                                        <div className="empty_preview recipe_preview">Please Upload a File</div>
                                                 )}
                                             </div>
-                                            <input
-                                                className="recipe_form_input recipe_form_method_image_input"
-                                                type="file"
-                                                accept="image/jpg, image/jpeg, image/png, image/gif"
-                                                name="image"
-                                                onChange={e => handleMethodInputChange(e, idx)}
-                                            />
-                                            <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                                            <label className="recipe_form_preview_image_input">
+                                                <div className="select_image_button">
+                                                    Upload Image
+                                                </div>
+                                                <input
+                                                    className="recipe_form_input recipe_form_method_image_input"
+                                                    type="file"
+                                                    accept="image/jpg, image/jpeg, image/png, image/gif"
+                                                    name="image"
+                                                    onChange={e => {
+                                                        const file = e.target.files[0]
+                                                        if (file) {
+                                                            handleMethodInputChange(e, idx)
+                                                        }
+                                                    }}
+                                                />
+                                            </label>
                                         <div className="recipe_form_input_div">
-                                            <label>Description<span className="required_input">*</span></label>
-                                            <div className="recipe_form_input_recommendations">(10 character minimum)</div>
+                                            <div className="recipe_form_sublabel">Description<span className="required_input">*</span></div>
+                                            <div className="recipe_form_input_constraints">(10 character minimum)</div>
                                             <textarea
                                                 required
                                                 className="recipe_form_input recipe_form_description_input"
@@ -457,7 +478,9 @@ function RecipeForm({ recipe }) {
                                                 onChange={e => handleMethodInputChange(e, idx)}
                                                 maxLength="1000"
                                             />
-                                            <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
+                                            <div className="recipe_form_textarea_num_chars">
+                                                <span className="num_chars_remaining">{1000 - methodsList[idx].details.length}</span> characters remaining
+                                            </div>
                                         </div>
                                         </div>
                                         <button
@@ -482,7 +505,11 @@ function RecipeForm({ recipe }) {
                     {/*********************************************************************** Tags ***********************************************************/}
                     <div className="recipe_form_input_div">
                         <label className="recipe_form_label">Tags<span className="required_input">*</span></label>
-                        <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
+                        <p className="recipe_form_input_recommendations">
+                            To give your recipe the best opportunity to be found please use at least 5 tags,
+                            making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
+                            Other relevant tags could be seasons or holidays, event types, or cooking techniques.
+                        </p>
                         {tagsErrors.map((error, idx) => {
                             return (
                                 <div className="form_error" key={idx}>{error}</div>
@@ -505,11 +532,7 @@ function RecipeForm({ recipe }) {
                                 )
                             })}
                         </div>
-                        <p className="recipe_form_input_constraints">
-                            To give your recipe the best opportunity to be found please use at least 5 tags,
-                            making sure to include the meal type, any relevant dietary tags, and primary ingredient types.
-                            Other relevant tags could be seasons or holidays, event types, or cooking techniques.
-                        </p>
+                        <div className="recipe_form_input_constraints">Press [Enter] after every tag, or separate with comma and hit [Enter] (minimumn 5)</div>
                     </div>
 
                     {/*********************************************************************** Submit Button ***********************************************************/}
@@ -520,7 +543,6 @@ function RecipeForm({ recipe }) {
                         <span className="required_input">*</span> = Required Field
                     </div>
                 </form>
-                </div>
             </div>
             ) : (
                 <LoadingComponent />
