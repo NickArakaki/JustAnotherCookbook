@@ -30,11 +30,10 @@ Check [JustAnotherCookbook](https://justanothercookbook.onrender.com) (hosted on
     * Github
 
 ## Splash Page
-
-    ![SplashPage](dev_docs/readme_images/splashpage.png)
+![splash page](./dev_docs/readme_images/splashpage.png)
 
 ## Recipe Details
-
+![recipe details](./dev_docs/readme_images/recipedetails.png)
 
 
 ## Getting Started
