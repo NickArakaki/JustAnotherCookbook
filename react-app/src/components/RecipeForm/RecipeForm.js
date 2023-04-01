@@ -280,13 +280,15 @@ function RecipeForm({ recipe }) {
                             onChange={e => setDescription(e.target.value)}
                             maxLength="200"
                         />
-                        <div className="recipe_form_description_num_chars_remaining">{200 - description.length} characters remaining</div>
+                        <div className="recipe_form_textarea_num_chars">
+                            <span className="num_chars_remaining">{200 - description.length}</span> characters remaining
+                        </div>
                     </div>
 
                     {/*********************************************************************** Recipe Image ***********************************************************/}
                     <div className="recipe_form_input_div">
                         <div className="recipe_form_label">Recipe Preview Image<span className="required_input">*</span></div>
-                        <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                        <div className="recipe_form_input_constraints">Allowed image types: .jpg, .jpeg, .png, .gif</div>
                         {previewImageErrors.map((error, idx) => {
                             return (
                                 <div className="form_error" key={idx}>{error}</div>
@@ -437,7 +439,7 @@ function RecipeForm({ recipe }) {
                                     <div className="method_div">
                                         <div className="recipe_form_input_div">
                                             <div className="recipe_form_sublabel">Optional Image</div>
-                                            <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
+                                            <div className="recipe_form_input_constraints">Allowed image types: .jpg, .jpeg, .png, .gif</div>
                                             <div className="preview_recipe_image_div">
                                                 {!!methodPreviewImageURLs[idx] ? (
                                                     // if there is a preview image url, either from the recipe, or from the user's input
@@ -476,7 +478,9 @@ function RecipeForm({ recipe }) {
                                                 onChange={e => handleMethodInputChange(e, idx)}
                                                 maxLength="1000"
                                             />
-                                            <div className="recipe_form_description_num_chars_remaining">{1000 - methodsList[idx].details.length} characters remaining</div>
+                                            <div className="recipe_form_textarea_num_chars">
+                                                <span className="num_chars_remaining">{1000 - methodsList[idx].details.length}</span> characters remaining
+                                            </div>
                                         </div>
                                         </div>
                                         <button
