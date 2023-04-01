@@ -4,6 +4,7 @@ import { getAllRecipesThunk } from "../../store/recipes";
 import { getAllUsersThunk } from '../../store/users'
 import LoadingComponent from "../Loading";
 import RecipeTiles from "../RecipeTiles";
+import Footer from "../Footer"
 
 function LandingPage() {
     const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function LandingPage() {
     return (
         <>
             {isLoaded ? <RecipeTiles recipes={recipes} /> : <LoadingComponent />}
+            { isLoaded && <Footer />}
         </>
     )
 }

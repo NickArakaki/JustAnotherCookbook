@@ -13,7 +13,6 @@ import UpdateRecipe from "./components/RecipeForm/UpdateRecipe";
 import UserPage from "./components/UserPage";
 import TagRecipePage from "./components/TagRecipePage";
 import FavoriteRecipesPage from "./components/FavoriteRecipesPage";
-import Footer from "./components/Footer"
 
 function App() {
   const dispatch = useDispatch();
@@ -56,7 +55,6 @@ function App() {
           </ProtectedRoute>
         </Switch>
       )}
-      <Footer />
     </>
   );
 }
