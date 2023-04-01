@@ -31,8 +31,11 @@ Check [JustAnotherCookbook](https://justanothercookbook.onrender.com) (hosted on
 
 ## Splash Page
 
+    ![SplashPage](dev_docs/readme_images/splashpage.png)
 
 ## Recipe Details
+
+
 
 ## Getting Started
 1. Clone this repositiory
@@ -40,12 +43,12 @@ Check [JustAnotherCookbook](https://justanothercookbook.onrender.com) (hosted on
     https://github.com/NickArakaki/JustAnotherCookbook
     ```
 
-2. Install Backend Dependencies
+2. Run the following command in the root directory to insall the backend dependencies
     ```
     pipenv install -r requirements.txt
     ```
 
-3. Create a .env file using the .env.example provided
+3. Create a .env file in the root directory based on the .env.example provided
 
 4. Set up your database with information from your .env and then run the following commands to initialize and seed your database:
     ```
