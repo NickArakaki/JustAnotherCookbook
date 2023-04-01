@@ -30,6 +30,7 @@
 
 .recipe_form textarea {
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 300px;
 }
 
 
@@ -37,6 +38,12 @@
     font-size: 1.25rem;
     font-family: "Lora", serif;
     margin-bottom: .75rem;
+    font-weight: bold;
+}
+
+.recipe_form_sublabel {
+    font-size: 1rem;
+    font-family: "Lora", serif;
     font-weight: bold;
 }
 
@@ -91,6 +98,10 @@
 
 input[type="file"] {
     display: none;
+}
+
+.recipe_form_preview_image_input {
+    max-width: fit-content;
 }
 
 .select_image_button {
