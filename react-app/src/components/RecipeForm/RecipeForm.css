@@ -5,6 +5,7 @@
     background-attachment: fixed;
     height: 100%;
     width: 100%;
+    padding: 3rem 0;
 }
 
 .recipe_form {
@@ -17,8 +18,8 @@
     background-color: #ffffffd9;
     padding: 1.5rem;
     border-radius: 1.5rem;
-    position: relative;
-    top: 2em;
+    /* position: relative;
+    top: 2em; */
 }
 
 .recipe_form_input_constraints {
@@ -30,14 +31,10 @@
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.recipe_form_container {
-    height: 1500px;
-    min-height: 100vh;
-}
 
 .recipe_form_label {
     font-size: 1rem;
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Lora", serif;
     margin-bottom: .75rem;
     font-weight: bold;
 }
