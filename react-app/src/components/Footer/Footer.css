@@ -1,0 +1,37 @@
+.footer_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 1rem;
+    padding: 1rem;
+    font-family: "Lora", serif;
+}
+
+.footer_wrapper a {
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.footer_wrapper a:visited {
+    color: black;
+}
+
+.footer_upper_content {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.footer_lower_content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    justify-content: space-around;
+}
+
+.section_header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    font-family: "Lora", serif;
+}
