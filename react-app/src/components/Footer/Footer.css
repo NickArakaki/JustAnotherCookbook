@@ -9,11 +9,16 @@
 
 .footer_wrapper a {
     text-decoration: none;
-    font-size: 1.25rem;
+    color: black;
+    transition: 150ms ease;
 }
 
 .footer_wrapper a:visited {
     color: black;
+}
+
+.footer_wrapper a:hover {
+    color: coral;
 }
 
 .footer_upper_content {
