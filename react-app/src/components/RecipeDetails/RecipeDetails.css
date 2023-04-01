@@ -16,13 +16,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .single_recipe_title {
     font-size: 3rem;
     font-weight: bold;
-    max-width: 100%;
+    max-width: 75%;
     font-family: 'Lora', serif;
 }
 
@@ -102,7 +102,7 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .recipe_details_title_author_div,
@@ -111,6 +111,7 @@
     flex-direction: column;
     justify-content: center;
     font-family: 'Lora', serif;
+    max-width: 75%;
 }
 
 .recipe_num_reviews {
