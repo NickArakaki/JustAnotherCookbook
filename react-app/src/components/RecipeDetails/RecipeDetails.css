@@ -46,12 +46,15 @@
     transition: 250ms ease;
 }
 
-
-.recipe_details_buttons > *:hover {
-    cursor: pointer;
+.recipe_details_buttons #favorite_icon_empty,
+.recipe_details_buttons #favorite_icon_solid {
     color: coral;
 }
 
+.recipe_details_buttons > *:hover {
+    color: coral;
+    font-size: 2.25rem;
+}
 
 
 .single_recipe_tags {
@@ -72,12 +75,12 @@
     text-decoration: none;
     color: #fff;
     transition: 350ms ease;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .single_recipe_tags > a:hover {
     background-color: black;
 }
-
 
 
 /* Recipe Image */

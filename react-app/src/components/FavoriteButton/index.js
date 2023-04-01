@@ -26,15 +26,23 @@ function FavoriteButton({ recipe }) {
     return (
         <>
             {(recipe.liked_users_ids.includes(sessionUser?.id)) ? (
-                <i onClick={(e) => {
-                    e.stopPropagation();
-                    handleUnFavorite(recipe.id)
-                }} className="favorited_icon fa-solid fa-heart" />
+                <i
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleUnFavorite(recipe.id)
+                    }}
+                    className="favorited_icon fa-solid fa-heart"
+                    id="favorite_icon_solid"
+                />
                 ) : (
-                <i onClick={(e) => {
-                    e.stopPropagation();
-                    handleFavorite(recipe.id)
-                }} className="favorited_icon fa-sharp fa-regular fa-heart" />
+                <i
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleFavorite(recipe.id)
+                    }}
+                    className="favorited_icon fa-sharp fa-regular fa-heart"
+                    id="favorite_icon_empty"
+                />
             )}
         </>
     )
