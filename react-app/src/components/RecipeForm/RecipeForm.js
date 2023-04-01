@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { postARecipeThunk, updateRecipeThunk } from "../../store/recipes"
@@ -368,7 +368,7 @@ function RecipeForm({ recipe }) {
                         <label className="recipe_form_label">Ingredients<span className="required_input">*</span></label>
                         {ingredientsList.map((ingredient, idx) => {
                             return (
-                                <div key={idx}>
+                                <React.Fragment key={idx}>
                                     {ingredientListErrors[idx].map((error, errorIdx) => {
                                         return (
                                             <div className="form_error" key={errorIdx}>{error}</div>
@@ -414,7 +414,7 @@ function RecipeForm({ recipe }) {
                                             <i className="fa-solid fa-trash" />
                                         </button>
                                     </div>
-                                </div>
+                                </React.Fragment>
                             )
                         })}
                         <button
