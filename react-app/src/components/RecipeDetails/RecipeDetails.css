@@ -26,8 +26,6 @@
     font-family: 'Lora', serif;
 }
 
-
-
 .recipe_details_buttons {
     display: flex;
     justify-content: flex-end;
@@ -46,12 +44,15 @@
     transition: 250ms ease;
 }
 
-
-.recipe_details_buttons > *:hover {
-    cursor: pointer;
+.recipe_details_buttons #favorite_icon_empty,
+.recipe_details_buttons #favorite_icon_solid {
     color: coral;
 }
 
+.recipe_details_buttons > *:hover {
+    color: coral;
+    font-size: 2.25rem;
+}
 
 
 .single_recipe_tags {
@@ -63,7 +64,7 @@
 
 .single_recipe_tags > a {
     margin: .25em;
-    padding: .25em;
+    padding: .5em;
     background-color: coral;
     border-radius: .25em;
     display: inline-flex;
@@ -72,12 +73,12 @@
     text-decoration: none;
     color: #fff;
     transition: 350ms ease;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .single_recipe_tags > a:hover {
     background-color: black;
 }
-
 
 
 /* Recipe Image */
@@ -112,6 +113,11 @@
     font-family: 'Lora', serif;
 }
 
+.recipe_num_reviews {
+    margin-top: 0;
+    font-size: 1.25rem;
+}
+
 .recipe_details_title {
     font-size: 1.75rem;
     font-weight: bold;
@@ -119,7 +125,8 @@
 
 .recipe_details_author {
     font-size: 1.5rem;
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+
 }
 
 .recipe_details_author > a {
@@ -180,7 +187,9 @@
 .ingredient_checkbox {
     margin-right: 1rem;
     cursor: pointer;
+    accent-color: coral;
 }
+
 
 
 /************************** Steps ***************************/
@@ -218,6 +227,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+    margin-bottom: 0;
 }
 
 .review_average_rating,
@@ -243,6 +253,29 @@
     align-items: center;
     justify-content: space-between;
     min-width: fit-content;
+}
+
+.add_review_button_div {
+    height: fit-content;
+    margin: 0;
+}
+
+.add_review_button_div *{
+    background-color: coral;
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    width: fit-content;
+    font-family: 'Lora', serif;
+    padding: .75rem;
+    cursor: pointer;
+    transition: 250ms ease;
+    margin-top: 0;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.add_review_button_div *:hover {
+    background-color: black;
 }
 
 /* Individual Review */

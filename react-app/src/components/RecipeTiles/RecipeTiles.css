@@ -81,7 +81,9 @@
 
 .recipe_tile_author > a {
     text-decoration: underline coral;
+    text-underline-offset: .25rem;
     font-family: 'Lora', serif;;
+    font-weight: bold;
 }
 
 .recipe_tile_author > a,
@@ -112,6 +114,7 @@
     padding: .5em;
     font-size: 75%;
     max-width: 95%;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     height: fit-content;
     width: fit-content;
     background-color: coral;

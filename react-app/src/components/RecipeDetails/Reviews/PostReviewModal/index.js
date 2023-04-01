@@ -88,7 +88,7 @@ function ReviewModal({ recipeId, reviewToUpdate }) {
                                     onClick={() => setStarRating(inputValue)}
                                     />
                                 <i
-                                    className={`fa-solid fa-star star_icon ${starFilled}`}
+                                    className={`review_star_input fa-solid fa-star star_icon ${starFilled}`}
                                     onMouseEnter={() => setHover(inputValue)}
                                     onMouseLeave={() => setHover(0)}
                                 />

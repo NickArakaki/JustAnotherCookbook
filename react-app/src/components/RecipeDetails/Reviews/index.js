@@ -38,10 +38,12 @@ function RecipeReviews() {
                 </div>
             </div>
             {renderReviewButton &&
-                        <OpenModalButton
-                            buttonText="Leave a Review"
-                            modalComponent={<ReviewModal recipeId={recipe.id}/>}
-                        />
+                <div className="add_review_button_div">
+                    <OpenModalButton
+                    buttonText="Leave a Review"
+                    modalComponent={<ReviewModal recipeId={recipe.id}/>}
+                    />
+                </div>
             }
             {reviews.map(review => {
                 return (
