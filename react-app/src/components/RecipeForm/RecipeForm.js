@@ -447,7 +447,7 @@ function RecipeForm({ recipe }) {
                                                         <img className="recipe_preview" src={methodPreviewImageURLs[idx]} alt={`preview of final product`} />
                                                     ) : (
                                                     // else render an empty div with the same styling
-                                                        <div className="empty_preview recipe_preview">Add An Image</div>
+                                                        <div className="empty_preview recipe_preview">Please Upload a File</div>
                                                 )}
                                             </div>
                                             <label className="recipe_form_preview_image_input">
