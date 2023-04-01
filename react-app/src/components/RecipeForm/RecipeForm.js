@@ -323,18 +323,23 @@ function RecipeForm({ recipe }) {
                             </label>
                         ) : (
                             // if there is already a recipe there's no need to require this input
-                            <input
-                                className="recipe_form_input recipe_form_preview_image_input"
-                                type="file"
-                                accept="image/jpg, image/jpeg, image/png, image/gif"
-                                onChange={(e) => {
-                                    const file = e.target.files[0]
-                                    if (file) {
-                                        setPreviewImage(file)
-                                        setPreviewImageURL(URL.createObjectURL(file))
-                                    }
-                                }}
-                            />
+                            <label className="recipe_form_preview_image_input">
+                                <div className="select_image_button">
+                                    Upload Image
+                                </div>
+                                <input
+                                    className="recipe_form_input recipe_form_preview_image_input"
+                                    type="file"
+                                    accept="image/jpg, image/jpeg, image/png, image/gif"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0]
+                                        if (file) {
+                                            setPreviewImage(file)
+                                            setPreviewImageURL(URL.createObjectURL(file))
+                                        }
+                                    }}
+                                />
+                            </label>
                         )}
                     </div>
 
@@ -442,13 +447,18 @@ function RecipeForm({ recipe }) {
                                                         <div className="empty_preview recipe_preview">Add An Image</div>
                                                 )}
                                             </div>
-                                            <input
-                                                className="recipe_form_input recipe_form_method_image_input"
-                                                type="file"
-                                                accept="image/jpg, image/jpeg, image/png, image/gif"
-                                                name="image"
-                                                onChange={e => handleMethodInputChange(e, idx)}
-                                            />
+                                            <label className="recipe_form_preview_image_input">
+                                                <div className="select_image_button">
+                                                    Upload Image
+                                                </div>
+                                                <input
+                                                    className="recipe_form_input recipe_form_method_image_input"
+                                                    type="file"
+                                                    accept="image/jpg, image/jpeg, image/png, image/gif"
+                                                    name="image"
+                                                    onChange={e => handleMethodInputChange(e, idx)}
+                                                />
+                                            </label>
                                             <div className="recipe_form_input_constraints">Allowed file types: ".jpg", ".jpeg", ".png", ".gif"</div>
                                         <div className="recipe_form_input_div">
                                             <label>Description<span className="required_input">*</span></label>

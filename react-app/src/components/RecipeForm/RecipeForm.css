@@ -16,8 +16,8 @@
     min-width: 600px;
     min-height: fit-content;
     margin: 0 auto;
-    background-color: #ffffffd9;
-    padding: 1.5rem;
+    background-color: #fef9f8d3;
+    padding: 1.75rem;
     border-radius: 1.5rem;
 }
 
@@ -95,13 +95,12 @@ input[type="file"] {
 
 .select_image_button {
     border: none;
-    font-size: 1rem;
+    font-size: .75rem;
     cursor: pointer;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: coral;
     color: white;
     padding: .5rem;
-    /* margin-top: .25rem; */
     margin: .5rem 0;
     border-radius: .25rem;
     width: fit-content;
@@ -135,9 +134,9 @@ input[type="file"] {
     border-radius: .25em;
     color: white;
     cursor: pointer;
-    padding: .5em;
+    padding: .5rem;
     transition: 300ms ease;
-    font-size: 1rem;
+    font-size: .75rem;
 }
 
 .add_ingredient_button:hover,
