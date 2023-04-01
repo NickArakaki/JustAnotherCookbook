@@ -113,6 +113,11 @@
     font-family: 'Lora', serif;
 }
 
+.recipe_num_reviews {
+    margin-top: 0;
+    font-size: 1.25rem;
+}
+
 .recipe_details_title {
     font-size: 1.75rem;
     font-weight: bold;
