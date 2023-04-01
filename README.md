@@ -51,6 +51,9 @@ Check [JustAnotherCookbook](https://justanothercookbook.onrender.com) (hosted on
 
 4. Set up your database with information from your .env and then run the following commands to initialize and seed your database:
     ```
+    pipenv shell
+    ```
+    ```
     flask db upgrade
     ```
     ```
