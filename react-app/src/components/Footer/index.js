@@ -24,11 +24,11 @@ function Footer() {
                 <section className="footer_section">
                     <div className="section_header">Other Projects</div>
                     <div className="section_content other_project">
-                        <Link to={{pathname:"https://couchcrashers.onrender.com"}} target="_blank" rel="noreferrer">CouchCrashers</Link>
+                        <Link className="other_project_link" to={{pathname:"https://couchcrashers.onrender.com"}} target="_blank" rel="noreferrer">CouchCrashers</Link>
                         <Link to={{pathname:"https://github.com/NickArakaki/Couch-Crashers"}} target="_blank" rel="noreferrer"> <i className="fa-brands fa-square-github" /></Link>
                     </div>
                     <div className="section_content other_project">
-                        <Link to={{pathname:"https://divvyup.onrender.com/"}} target="_blank" rel="noreferrer">DivvyUp</Link>
+                        <Link className="other_project_link" to={{pathname:"https://divvyup.onrender.com/"}} target="_blank" rel="noreferrer">DivvyUp</Link>
                         <Link to={{pathname:"https://github.com/Yue-Hao14/DivvyUp-Group-Project"}} target="_blank" rel="noreferrer"> <i className="fa-brands fa-square-github" /></Link>
                     </div>
                 </section>

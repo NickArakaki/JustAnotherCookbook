@@ -66,6 +66,12 @@
     justify-content: space-around;
 }
 
+.other_project_link {
+    font-size: 1rem;
+    align-self: center;
+    font-weight: bold;
+}
+
 .section_content.other_project {
     justify-content: space-between;
 }
