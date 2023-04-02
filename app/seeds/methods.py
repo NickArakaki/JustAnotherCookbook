@@ -1,6 +1,7 @@
 from app.models import db, Method, environment, SCHEMA, Recipe
-from random import randint
+from random import randint, choice
 from sqlalchemy.sql import text
+from .utils import method_images
 from faker import Faker
 
 fake = Faker()
@@ -65,11 +66,12 @@ def seed_methods():
 
     for recipe in recipes:
         for i in range(randint(3, 8)):
+            is_image = bool(randint(0, 1))
             recipe.methods.append(
                 Method(
                     step_number = i + 1,
                     details = fake.paragraph(5),
-                    image_url = "",
+                    image_url = choice(method_images) if is_image else "",
                 )
             )
 
