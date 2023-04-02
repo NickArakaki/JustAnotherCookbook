@@ -1,7 +1,9 @@
-from app.models import db, Review, environment, SCHEMA, User
+from app.models import db, Review, environment, SCHEMA, User, Recipe
 from sqlalchemy.sql import text
+from random import randint
 from faker import Faker
 
+fake = Faker()
 
 def seed_reviews():
     r1 = Review(
@@ -42,6 +44,19 @@ def seed_reviews():
     )
 
     db.session.add_all([r1, r2, r3, r4, r5, r6])
+
+    recipes = Recipe.query.filter(Recipe.id > 2)
+
+    for recipe in recipes:
+        other_users = User.query.filter(User.id != recipe.author.id)
+
+        for other_user in other_users:
+            recipe.reviews.append(Review(
+                user_id = other_user.id,
+                rating = randint(1, 5),
+                review = fake.paragraph(randint(1, 3))
+            ))
+
 
     db.session.commit()
 

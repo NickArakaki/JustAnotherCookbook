@@ -28,6 +28,7 @@ def seed_recipes():
     count = 0
 
     users = User.query.all()
+
     for user in users:
         for r in range(3):
             recipe = Recipe(
