@@ -124,13 +124,15 @@
     font-weight: bold;
 }
 
-.recipe_details_author {
+.recipe_details_author,
+.recipe_details_estimated_time {
     font-size: 1.25rem;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 
 }
 
-.recipe_details_author > a {
+.recipe_details_author > a,
+.recipe_details_time {
     color: black;
     text-decoration: none;
     font-style: italic;

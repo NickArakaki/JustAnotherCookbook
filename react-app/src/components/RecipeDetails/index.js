@@ -82,6 +82,7 @@ function RecipeDetails() {
                             <div className="recipe_details_author">
                                 Posted by: <Link to={`/users/${recipe.author.id}`}>{recipe.author.username}</Link> on {formatDateMonthDateYear(new Date(recipe.created_at))}
                             </div>
+                            <div className="recipe_details_estimated_time">Total Time: <span className="recipe_details_time">{recipe.total_time}</span> min</div>
                         </div>
                         <div className="recipe_details_reviews_summary_div">
                             <div className="recipe_avg_rating">{averageRating > 0 ? averageRating.toFixed(1): "new"} <i className="star_rating fa-sharp fa-solid fa-star" /></div>
