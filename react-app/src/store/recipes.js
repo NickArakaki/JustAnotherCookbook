@@ -342,6 +342,9 @@ export default function reducer(state = initialState, action) {
                 newState.singleRecipe = {}
             }
 
+            newState.userFavoriteRecipes = { ...state.userFavoriteRecipes }
+            delete newState.userFavoriteRecipes[action.payload]
+
             return newState
         }
         case REMOVE_USER_FAVORITE_RECIPE: {
@@ -358,6 +361,7 @@ export default function reducer(state = initialState, action) {
             }
 
             delete newState.userFavoriteRecipes[action.payload.id]
+
             return newState
         }
         default:
