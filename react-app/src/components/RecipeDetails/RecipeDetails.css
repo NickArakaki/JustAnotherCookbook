@@ -282,6 +282,9 @@
 }
 
 /* Individual Review */
+.review_wrapper * {
+    word-break: break-all;
+}
 
 .review_wrapper {
     display: flex;
