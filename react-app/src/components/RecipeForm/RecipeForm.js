@@ -215,8 +215,8 @@ function RecipeForm({ recipe }) {
             if (!recipe) { // POST Recipe
                 const data = await dispatch(postARecipeThunk(formData))
                 if (Array.isArray(data)) {
-                    setIsLoaded(true)
                     setErrors(data)
+                    setIsLoaded(true)
                 } else {
                     setIsLoaded(true)
                     history.push(`/recipes/${data.id}`)
@@ -224,8 +224,8 @@ function RecipeForm({ recipe }) {
             } else { // PUT Recipe
                 const data = await dispatch(updateRecipeThunk(recipe.id, formData))
                 if (Array.isArray(data)) {
-                    setIsLoaded(true)
                     setErrors(data)
+                    setIsLoaded(true)
                 } else {
                     setIsLoaded(true)
                     history.push(`/recipes/${recipe.id}`)
