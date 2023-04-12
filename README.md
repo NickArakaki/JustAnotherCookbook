@@ -8,26 +8,31 @@ Check [JustAnotherCookbook](https://justanothercookbook.onrender.com) (hosted on
 [MVP Features](https://github.com/NickArakaki/JustAnotherCookbook/wiki/Features) | [Database Schema](https://github.com/NickArakaki/JustAnotherCookbook/wiki/Database-Schema) | [User Stories](https://github.com/NickArakaki/JustAnotherCookbook/wiki/User-Stories) | [Wire Frames](https://github.com/NickArakaki/JustAnotherCookbook/wiki/Wireframes)
 
 ## Technologies Used
-* Backend
-    * Python
-    * Flask
-    * SQLAlchemy
-    * Amazon Web Services (S3)
-    * Postgress (production)
-    * SQLite (development)
+Backend:
 
-* Frontend
-    * Javascript
-    * HTML
-    * CSS
-    * React
-    * Redux
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/-SQLAlchemy-red)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 
-* Hosting
-    * Render
+Frontend:
 
-* Version Control
-    * Github
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+
+Hosting:
+
+![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)
+
+Version Control:
+
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
 
 ## Splash Page
 ![splash page](./dev_docs/readme_images/splashpage.png)
