@@ -260,7 +260,7 @@ Return a list of a User's Recipes
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/users/friends
+  * URL: /api/users/:userId/recipes
   * Body: none
 
 * Successful Response
@@ -289,9 +289,9 @@ Return a list of a User's Recipes
   ```
 
 
-### Add a Friend
+### Get Current User's Favorite Recipes
 
-Return user to be added to user's friends list
+Return a list of the Current User's Favorite Recipes
 
 * Require Authentication: true
 * Request
