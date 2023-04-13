@@ -500,11 +500,38 @@ Creates and returns a new Recipe
   * Body:
   ```json
   {
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
+    "title": "Recipe Title",
+    "preview_image": "preview image file (must be .jpg, .png, .jpeg, or .gif)",
+    "total_time": 15,
+    "description": "Recipe description",
+    "ingredients": "[{'ingredient': 'ingredient name', amount: 'ingredient amount', 'units': ''}]", // must be a JSONified array with each element as an ingredient object, done this way to use WTForms backend form validations
+    "tags": "['tag1', 'tag2', 'tag3', 'tag4', 'tag5']", // same as ingredients, must be sent as a JSONified array
+    "methods": [{"id": "if new method leave as empty", "detail": "Method details", "image": "either pass the image file or an empty blob with the mime type 'dummy/jpeg'"}], // this is a complicated bit of data to be sent from the front end
+    // This was the solution that I came up with to keep each method and their respected details and ids in the same order
+    /*
+      This was my implementation on the frontend to pass a list of files to the backend:
+
+      Object.entries(method).forEach(([key, value]) => {
+          if (key === "image" && value === "") {
+              const dummyImage = new Blob([], {
+                  type: "dummy/jpeg",
+                });
+              value = dummyImage
+              formData.append(key, value, "dummy_image.jpeg")
+          } else {
+              formData.append(key, value)
+          }
+      })
+
+      This is how I am re-construcing the data on the backend:
+
+       method_images = [{"image": "" if image.mimetype == "dummy/jpeg" else image} for image in request.files.getlist("image")]
+        method_details = [{"details": details, "step_number": (index + 1)} for index, details in enumerate(request.form.getlist("details"))]
+        method_list = [{**image, **details} for image, details in zip(method_images, method_details)]
+
+        If you have a better solution please reach out as I would love to learn of a better method, but for now this is my working solution
+    */
+
   }
   ```
 
@@ -556,13 +583,27 @@ Creates and returns a new Recipe
   ```json
     {
       "errors": [
-                  "Must be at least one other person for an Expense",
+                  "Title Required",
+                  "Preview Image Required",
+                  "Total Time Required",
                   "Description Required",
-                  "Amount Required",
-                  "Expense Date Required",
-                  "Current User cannot be in ower's list"
+                  "Ingredient Name Required",
+                  "Invalid Ingredient Amount",
+                  "Must have at least 5 tags",
+                  "Tags Cannot Be Empty Strings",
+                  "Tags Cannot Be Longer Than 60 Characters",
+                  "Invalid methods"
                 ]
     }
+  ```
+
+* Error Response: Error Uploading Image to AWS
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  { "errors": ["AWS Error Message"] }
   ```
 
 ### Update Expense

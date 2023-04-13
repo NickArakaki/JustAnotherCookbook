@@ -30,7 +30,7 @@ def ingredient_validation(form, field):
 
 class PostRecipeForm(FlaskForm):
     title = StringField("title", validators=[DataRequired(message="Title Required")])
-    preview_image = FileField("recipe preview image", validators=[FileRequired(), FileAllowed(list(ALLOWED_EXTENSIONS))])
+    preview_image = FileField("recipe preview image", validators=[FileRequired("Preview Image Required"), FileAllowed(list(ALLOWED_EXTENSIONS))])
     total_time = IntegerField("time", validators=[DataRequired(message="Total Time Required")])
     description = StringField("description", validators=[DataRequired(message="Description Required")])
     ingredients = StringField("ingredients", validators=[ingredient_validation])
