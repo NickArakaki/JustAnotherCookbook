@@ -207,7 +207,7 @@ user's information.
 ### Get all users
 Returns a list of all users
 
-* Require Authentication: true
+* Require Authentication: false
 * Request:
   * Method: GET
   * URL: /api/users/
@@ -223,10 +223,7 @@ Returns a list of all users
       "users": [
                   {
                     "id": 1,
-                    "username": "DemoUser",
-                    "firstName": "Demo",
-                    "lastName": "User",
-                    "email": "demo@user.com"
+                    "username": "Demo",
                   }
                ]
     }
@@ -235,7 +232,7 @@ Returns a list of all users
 ### Get single user
 Returns details about a single user
 
-* Require Authentication: true
+* Require Authentication: false
 * Request:
   * Method: GET
   * URL: /api/users/:userId
@@ -250,8 +247,6 @@ Returns details about a single user
         {
             "id": 1,
             "username": "DemoUser",
-            "firstName": "Demo",
-            "lastName": "User",
             "email": "demo@user.com"
         }
   ```
