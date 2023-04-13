@@ -606,23 +606,27 @@ Creates and returns a new Recipe
   { "errors": ["AWS Error Message"] }
   ```
 
-### Update Expense
-Updates and returns an existing expense
+### Update Recipe
+Updates and returns an existing recipe using recipeId
 
 * Require Authentication: true
-* Require proper authorization: Current user is the payer and there are no settled users yet
+* Require proper authorization: Current user is the Recipe author
 * Request
   * Method: PUT
-  * URL: /api/expenses/:expenseId
+  * URL: /api/recipes/:recipeId
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
+  // please see Post a new Recipe API Details for further information
   {
-    "owerIds": [2, 3],
-    "description": "Updated Expense Description",
-    "amount": 45,
-    "expenseDate": "2022-12-25"
+    "title": "Updated Recipe Title",
+    "preview_image": "new preview image file (must be .jpg, .png, .jpeg, or .gif)",
+    "total_time": 30,
+    "description": "Updated Recipe description",
+    "ingredients": "[{'ingredient': 'ingredient name', amount: 'ingredient amount', 'units': ''}]",
+    "tags": "['tag1', 'tag2', 'tag3', 'tag4', 'tag5']",
+    "methods": [{"id": "if new method leave as empty", "detail": "Method details", "image": "either pass the image file or an empty blob with the mime type 'dummy/jpeg'"}]
   }
   ```
 
@@ -633,36 +637,36 @@ Updates and returns an existing expense
   * Body:
   ```json
       {
+        "id": 2,
+        "author": {
           "id": 1,
-          "description": "Updated Expense Description",
-          "payer": {
-              "id": 1,
-              "firstName": "Demo",
-              "lastName": "User",
-          },
-          "owers": [
-              {
-                  "id": 2,
-                  "firstName": "John",
-                  "lastName": "Smith",
-              },
-              {
-                  "id": 3,
-                  "firstName": "Jane",
-                  "lastName": "Doe"
-              }
-          ],
-          "settledOwers": [
-              {
-                  "id": 2,
-                  "firstName": "John",
-                  "lastName": "Smith",
-              }
-          ],
-          "amount": 45,
-          "expenseDate": "2022-25-12",
-          "createdAt": "2022-25-12",
-          "updatedAt": "2022-31-12"
+          "username": "Demo",
+        },
+        "title": "Updated Recipe Title",
+        "total_time": 30,
+        "description": "Updated Recipe description",
+        "preview_image_url": "new.url",
+        "created_at": "2021-12-25",
+        "updated_at": "2022-01-01",
+        "ingredients": [
+          {
+            "ingredient": "ingredient name",
+            "amount": "ingredient amount",
+            "units": "", // optional units, if there are no units will be stored as an empty string
+          }
+        ],
+        "methods": [
+          {
+            "id": 1,
+            "step_number": 1,
+            "details": "This is the first step information",
+            "iamge_url": "some.url",
+            "image": "", // will be sent to frontend as an empty string, necessary for updating recipe form method images with current implementation on frontend
+          }
+        ],
+        "reviews": [],
+        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+        "liked_users_ids": [],
       }
   ```
 
@@ -674,34 +678,38 @@ Updates and returns an existing expense
   ```json
   {
     "errors": [
-                "Must be at least one other person for an Expense",
-                "Description Required",
-                "Amount Required",
-                "Expense Date Required"
-              ]
+                  "Title Required",
+                  "Total Time Required",
+                  "Description Required",
+                  "Ingredient Name Required",
+                  "Invalid Ingredient Amount",
+                  "Must have at least 5 tags",
+                  "Tags Cannot Be Empty Strings",
+                  "Tags Cannot Be Longer Than 60 Characters",
+                  "Invalid methods"
+                ]
   }
   ```
 
-* Error Response: User is not the payer of the expense, or the expese already has at least one settled ower
-  * Status Code: 401
+* Error Response: User is not the Recipe author
+  * Status Code: 403
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
     { "errors": [
-                  "Unauthorized to update this expense",
-                  "Cannot update an expense when one or more user has settled their expenses"
+                  "User is not authorized to edit this Recipe"
                 ]
     }
   ```
 
-* Error response: Couldn't find a Spot with the specified id
+* Error response: Couldn't find a Recipe with the specified id
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
-  { "errors": ["Expense could not be found"] }
+  { "errors": ["Recipe could not be found"] }
   ```
 
 ### Delete an Expense
