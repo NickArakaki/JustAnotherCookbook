@@ -88,19 +88,21 @@ Logs in a current user with valid credentials and returns the current user's inf
       "lastName": "User",
       "email": "demo@user.com"
     },
-    "userFavoriteRecipes": {
-      "id": 1,
-      "author": {
-        "id": 2,
-        "username": "Peeb"
+    "userFavoriteRecipes": [
+      {
+        "id": 1,
+        "author": {
+          "id": 2,
+          "username": "Peeb"
+        },
+        "title":"Hong Kong Egg Tarts",
+        "total_time": 120,
+        "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+        "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+        "tags": ["tag1", "tag2"],
+        "liked_users_ids": [1]
       },
-      "title":"Hong Kong Egg Tarts",
-      "total_time": 120,
-      "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
-      "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-      "tags": ["tag1", "tag2"],
-      "liked_users_ids": [1]
-    }
+    ]
   }
     ```
 * Error Response: Invalid credentials
@@ -251,11 +253,11 @@ Returns details about a single user
         }
   ```
 
-### Get current user Friends
+### Get user Recipes
 
-Return a list of all current user's friends
+Return a list of a User's Recipes
 
-* Require Authentication: true
+* Require Authentication: false
 * Request
   * Method: GET
   * URL: /api/users/friends
@@ -267,13 +269,23 @@ Return a list of all current user's friends
     * Content-Type: application/json
   * Body:
   ```json
-  [
-    {
+  {
+    "recipes": [
+     {
+      "id": 1,
+      "author": {
         "id": 2,
-        "firstName": "John",
-        "lastName": "Smith",
-    }
-  ]
+        "username": "Peeb"
+      },
+      "title":"Hong Kong Egg Tarts",
+      "total_time": 120,
+      "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+      "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+      "tags": ["tag1", "tag2"],
+      "liked_users_ids": [1]
+      },
+    ]
+  }
   ```
 
 
