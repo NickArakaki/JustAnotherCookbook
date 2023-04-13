@@ -31,28 +31,28 @@ Returns the information about the current user that is logged in.
         * Content-Type: application/json
     * Body:
     ```json
-              {
-                "user": {
-                  "id": 1,
-                  "username": "DemoUser",
-                  "firstName": "Demo",
-                  "lastName": "User",
-                  "email": "demo@user.com"
-                },
-                "userFavoriteRecipes": {
-                  "id": 1,
-                  "author": {
-                    "id": 2,
-                    "username": "Peeb"
-                  },
-                  "title":"Hong Kong Egg Tarts",
-                  "total_time": 120,
-                  "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
-                  "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-                  "tags": ["tag1", "tag2"],
-                  "liked_users_ids": [1]
-                }
-              }
+    {
+      "user": {
+        "id": 1,
+        "username": "DemoUser",
+        "firstName": "Demo",
+        "lastName": "User",
+        "email": "demo@user.com"
+      },
+      "userFavoriteRecipes": {
+        "id": 1,
+        "author": {
+          "id": 2,
+          "username": "Peeb"
+        },
+        "title":"Hong Kong Egg Tarts",
+        "total_time": 120,
+        "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+        "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+        "tags": ["tag1", "tag2"],
+        "liked_users_ids": [1]
+      }
+    }
     ```
 
 ### Log In a User
@@ -80,28 +80,28 @@ Logs in a current user with valid credentials and returns the current user's inf
     * Content-Type: application/json
   * Body:
   ```json
-                {
-                "user": {
-                  "id": 1,
-                  "username": "DemoUser",
-                  "firstName": "Demo",
-                  "lastName": "User",
-                  "email": "demo@user.com"
-                },
-                "userFavoriteRecipes": {
-                  "id": 1,
-                  "author": {
-                    "id": 2,
-                    "username": "Peeb"
-                  },
-                  "title":"Hong Kong Egg Tarts",
-                  "total_time": 120,
-                  "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
-                  "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-                  "tags": ["tag1", "tag2"],
-                  "liked_users_ids": [1]
-                }
-              }
+    {
+    "user": {
+      "id": 1,
+      "username": "DemoUser",
+      "firstName": "Demo",
+      "lastName": "User",
+      "email": "demo@user.com"
+    },
+    "userFavoriteRecipes": {
+      "id": 1,
+      "author": {
+        "id": 2,
+        "username": "Peeb"
+      },
+      "title":"Hong Kong Egg Tarts",
+      "total_time": 120,
+      "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+      "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+      "tags": ["tag1", "tag2"],
+      "liked_users_ids": [1]
+    }
+  }
     ```
 * Error Response: Invalid credentials
   * Status Code: 401
@@ -109,6 +109,13 @@ Logs in a current user with valid credentials and returns the current user's inf
     * Content-Type: application/json
   * Body:
   ```json
+  {
+    "errors": [
+                "Email provided not found.",
+                "No such user exists.",
+                "Password was incorrect."
+              ]
+  }
   ```
 
 * Error response: Body validation errors
@@ -117,6 +124,12 @@ Logs in a current user with valid credentials and returns the current user's inf
     * Content-Type: application/json
   * Body:
   ```json
+  {
+    "errors": [
+                "Email is required.",
+                "Password is required.",
+              ]
+  }
   ```
 
 ### Sign Up a User
