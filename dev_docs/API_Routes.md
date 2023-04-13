@@ -376,33 +376,6 @@ Returns list of all current user's recipes
     * Content-Type: application/json
   * Body:
   ```json
-        {
-            "id": 1,
-            "description": "Expense Description",
-            "payer": {
-                "id": 1,
-                "firstName": "Demo",
-                "lastName": "User",
-            },
-            "owers": [
-                {
-                    "id": 2,
-                    "firstName": "John",
-                    "lastName": "Smith",
-                }
-            ],
-            "settledOwers": [
-                {
-                    "id": 2,
-                    "firstName": "John",
-                    "lastName": "Smith",
-                }
-            ],
-            "amount": 45,
-            "expenseDate": "2022-25-12",
-            "createdAt": "2022-12-25",
-            "updatedAt": "2022-12-25"
-        }
   ```
 
 * Error response: Couldn't find a Expense with the specified id
@@ -944,4 +917,101 @@ Delete Review using ReviewId if user is logged in and authorized
   * Body:
   ```json
     { "errors": ["User is not authorized to edit this Review"]}
+  ```
+
+## Favorites
+### Add Recipe to User Favorite Recipes
+Add current logged in user to recipes liked_users, and return the recipe object
+
+* Require Authentication: true
+* Request
+  * Method: POST
+  * URL: /api/recipes/:recipeId/likes
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "id": 1,
+    "author": {
+      "id": 2,
+      "username": "Peeb"
+    },
+    "title":"Hong Kong Egg Tarts",
+    "total_time": 120,
+    "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+    "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+    "liked_users_ids": [1]
+  }
+  ```
+
+* Error response: Could not find a Recipe with the id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["Recipe could not be found."]}
+  ```
+
+* Error response: User has already favorited the Recipe
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["User already liked Recipe"]}
+  ```
+
+### Remove Recipe to User Favorite Recipes
+Remove current user from Recipe liked_users and return Recipe as dictionary
+
+* Require Authentication: true
+* Request
+  * Method: DELETE
+  * URL: /api/recipes/:recipeId/likes
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "id": 1,
+    "author": {
+      "id": 2,
+      "username": "Peeb"
+    },
+    "title":"Hong Kong Egg Tarts",
+    "total_time": 120,
+    "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+    "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+    "liked_users_ids": []
+  }
+  ```
+
+* Error response: Could not find a Recipe with the id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["Recipe could not be found."]}
+  ```
+
+* Error response: User has not favorited the Recipe
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["User has not liked this Recipe"]}
   ```
