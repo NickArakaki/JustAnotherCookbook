@@ -49,7 +49,7 @@ Returns the information about the current user that is logged in.
         "total_time": 120,
         "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
         "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-        "tags": ["tag1", "tag2"],
+        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
         "liked_users_ids": [1]
       }
     }
@@ -99,7 +99,7 @@ Logs in a current user with valid credentials and returns the current user's inf
         "total_time": 120,
         "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
         "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-        "tags": ["tag1", "tag2"],
+        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
         "liked_users_ids": [1]
       },
     ]
@@ -281,7 +281,7 @@ Return a list of a User's Recipes
       "total_time": 120,
       "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
       "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-      "tags": ["tag1", "tag2"],
+      "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
       "liked_users_ids": [1]
       },
     ]
@@ -317,7 +317,7 @@ Return a list of the Current User's Favorite Recipes
       "total_time": 120,
       "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
       "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
-      "tags": ["tag1", "tag2"],
+      "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
       "liked_users_ids": [1]
       },
     ]
@@ -325,15 +325,15 @@ Return a list of the Current User's Favorite Recipes
   ```
 
 
-## Expenses
+## Recipes
 
-### Get all expenses
-Returns all Current User expenses
+### Get all Recipes
+Returns list of all Recipes
 
-* Require Authentication: true
+* Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/expenses/
+  * URL: /api/recipes/
   * Body: none
 
 * Successful Response
@@ -342,44 +342,32 @@ Returns all Current User expenses
     * Content-Type: application/json
   * Body:
   ```json
-  [
-      {
-          "id": 1,
-          "description": "Expense Description",
-          "payer": {
-              "id": 1,
-              "firstName": "Demo",
-              "lastName": "User",
-          },
-          "owers": [
-              {
-                  "id": 2,
-                  "firstName": "John",
-                  "lastName": "Smith",
-              }
-          ],
-          "settledOwers": [
-              {
-                  "id": 2,
-                  "firstName": "John",
-                  "lastName": "Smith",
-              }
-          ],
-          "amount": 45,
-          "expenseDate": "2022-25-12",
-          "createdAt": "2022-25-12",
-          "updatedAt": "2022-25-12"
-      }
-  ]
+  {
+    "recipes": [
+     {
+      "id": 1,
+      "author": {
+        "id": 2,
+        "username": "Peeb"
+      },
+      "title":"Hong Kong Egg Tarts",
+      "total_time": 120,
+      "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+      "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+      "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+      "liked_users_ids": [1]
+      },
+    ]
+  }
   ```
 
-### Get Single Expense
-Returns details of a single expense by expense id
+### Get Current User's Recipes
+Returns list of all current user's recipes
 
-* Require Authentication: false
+* Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/expenses/:expenseId
+  * URL: /api/recipes/current
   * Body: none
 
 * Successful Response
@@ -418,128 +406,105 @@ Returns details of a single expense by expense id
   ```
 
 * Error response: Couldn't find a Expense with the specified id
+  * Status Code:
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+    ```json
+
+    ```
+
+
+### Get Single Recipe Details
+
+Return details of single recipe as JSON object
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/recipes/:recipeId
+  * Headers:
+    * Content-Type: application/json
+  * Body: none
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+      {
+        "id": 1,
+        "author": {
+          "id": 2,
+          "username": "Peeb",
+        },
+        "title": "Hong Kong Egg Tarts",
+        "total_time": 120,
+        "description": "Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+        "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+        "created_at": "2021-12-25",
+        "updated_at": "2021-12-25",
+        "ingredients": [
+          {
+            "ingredient": "Eggs",
+            "amount": "3",
+            "units": "", // optional units, if there are no units will be stored as an empty string
+          }
+        ],
+        "methods": [
+          {
+            "id": 1,
+            "step_number": 1,
+            "details": "This is the first step information",
+            "iamge_url": "some.url",
+            "image": "", // will be sent to frontend as an empty string, necessary for updating recipe form method images with current implementation on frontend
+          }
+        ],
+        "reviews": [
+          {
+            "id": 1,
+            "author": {
+              "id": 1,
+              "username": "Demo",
+              "rating": 5,
+              "review": "These are the best tarts ever!",
+              "created_at": "2022-01-01",
+              "updated_at": "2022-01-01",
+            },
+          }
+        ],
+        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+        "liked_users_ids": [1],
+      }
+  ```
+
+* Error response: Couldn't find a Recipe with the specified id
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
   * Body:
     ```json
-    { "errors": "Expense not found" }
+    { "errors": ["Recipe could not be found"] }
     ```
 
-
-### Get friend Expenses
-
-Return list of expenses between current user and friend
-
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /api/users/friends/:friendId/expenses
-  * Headers:
-    * Content-Type: application/json
-  * Body: none
-
-* Successful Response:
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-  ```json
-      [
-        {
-          "id": 1,
-          "description": "Expense Description",
-          "payer": {
-                      "id": 1,
-                      "firstName": "Demo",
-                      "lastName": "User",
-                   },
-          "owers": [
-                      {
-                        "id": 2,
-                        "firstName": "John",
-                        "lastName": "Smith",
-                      },
-                   ],
-          "settledOwers": [
-                            {
-                              "expenseId": 1,
-                              "settledDate": "2023-01-01",
-                              "settledUserId": 2
-                            },
-                          ],
-          "amount": 45,
-          "expenseDate": "2022-12-25",
-          "createdAt": "2022-12-25",
-          "updatedAt": "2022-12-25"
-        }
-      ]
-  ```
-
-### Get Current User Settled Expenses (Full and Partial Settled)
-Return all of the current user's expenses where at least on ower has settled their debt
-
-* Require Authentication: true
-* Request:
-  * Method: GET
-  * URL: /api/expenses/settled
-  * Headers:
-    * Content-Type: application/json
-  * Body: none
-
-* Successful Response:
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-  ```json
-      [
-        {
-          "id": 1,
-          "description": "Expense Description",
-          "payer": {
-                      "id": 1,
-                      "firstName": "Demo",
-                      "lastName": "User",
-                   },
-          "owers": [
-                      {
-                        "id": 2,
-                        "firstName": "John",
-                        "lastName": "Smith",
-                      },
-                   ],
-          "settledOwers": [
-                            {
-                              "expenseId": 1,
-                              "settledDate": "2023-01-01",
-                              "settledUserId": 2
-                            },
-                          ],
-          "amount": 45,
-          "expenseDate": "2022-12-25",
-          "createdAt": "2022-12-25",
-          "updatedAt": "2022-12-25"
-        }
-      ]
-  ```
-
-### Post a new Expense
-Creates and returns a new Expense
+### Post a new Recipe
+Creates and returns a new Recipe
 
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /api/expenses/
+  * URL: /api/recipes/
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
   {
-    "owerIds": [2],
-    "description": "Expense Description",
-    "amount": 45,
-    "expenseDate": "2022-12-25"
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
   }
   ```
 
@@ -550,25 +515,36 @@ Creates and returns a new Expense
   * Body:
   ```json
       {
+        "id": 2,
+        "author": {
           "id": 1,
-          "description": "Expense Description",
-          "payer": {
-              "id": 1,
-              "firstName": "Demo",
-              "lastName": "User",
-          },
-          "owers": [
-              {
-                  "id": 2,
-                  "firstName": "John",
-                  "lastName": "Smith",
-              }
-          ],
-          "settledOwers": [],
-          "amount": 45,
-          "expenseDate": "2022-25-12",
-          "createdAt": "2022-25-12",
-          "updatedAt": "2022-25-12"
+          "username": "Demo",
+        },
+        "title": "Recipe Title",
+        "total_time": 15,
+        "description": "Recipe description",
+        "preview_image_url": "some.url",
+        "created_at": "2021-12-25",
+        "updated_at": "2021-12-25",
+        "ingredients": [
+          {
+            "ingredient": "ingredient name",
+            "amount": "ingredient amount",
+            "units": "", // optional units, if there are no units will be stored as an empty string
+          }
+        ],
+        "methods": [
+          {
+            "id": 1,
+            "step_number": 1,
+            "details": "This is the first step information",
+            "iamge_url": "some.url",
+            "image": "", // will be sent to frontend as an empty string, necessary for updating recipe form method images with current implementation on frontend
+          }
+        ],
+        "reviews": [],
+        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+        "liked_users_ids": [],
       }
   ```
 
