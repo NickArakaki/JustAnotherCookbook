@@ -712,14 +712,14 @@ Updates and returns an existing recipe using recipeId
   { "errors": ["Recipe could not be found"] }
   ```
 
-### Delete an Expense
-Deletes an existing expense
+### Delete an Recipe
+Deletes an existing Recipe
 
 * Require Authentication: true
-* Require proper authorization: User must be the expense payer and there cannot be any settled owers yet
+* Require proper authorization: User must be the Recipe author
 * Request
   * Method: DELETE
-  * URL: /api/expenses/:expenseId
+  * URL: /api/recipes/:recipeId
   * Body: none
 
 * Successful Response
@@ -733,27 +733,26 @@ Deletes an existing expense
   }
   ```
 
-* Error response: Couldn't find an Expense with the specified id
+* Error response: Couldn't find a Recipe with the specified id
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
   {
-    "message": "Expense could not be found",
+    "message": "Recipe could not be found",
     "statusCode": 404
   }
   ```
 
-* Error response: User is not the payer of the expense, or the expese already has at least one settled ower
-  * Status Code: 401
+* Error response: User is not the Recipe author
+  * Status Code: 403
   * Headers:
     * Content-Type: application/json
   * Body:
   ```json
     { "errors": [
-                  "Unauthorized to delete this expense",
-                  "Cannot delete an expense when one or more user has settled their expenses"
+                  "User is unauthorized to delete this recipe"
                 ]
     }
   ```
