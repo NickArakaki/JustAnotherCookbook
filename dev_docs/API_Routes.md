@@ -756,3 +756,192 @@ Deletes an existing Recipe
                 ]
     }
   ```
+
+## Reviews
+### Post a Review
+Create and return a Review for a recipe using Recipe id
+
+* Require Authentication: true
+* Require proper authorization: User must not be the Recipe author, and must not already have an existing Review for the Recipe
+* Request
+  * Method: POST
+  * URL: /api/recipes/reviews
+  * Body:
+  ```json
+  {
+    "rating": 5,
+    "review": "These are the best tarts ever!",
+  }
+  ```
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "id": "",
+    "author": {
+      "id": 1,
+      "username": "Demo",
+    },
+    "rating": 5,
+    "review": "These are the best tarts ever!",
+    "created_at": "2022-01-01",
+    "updated_at": "2022-01-01",
+  }
+  ```
+
+* Error response: Couldn't find a Recipe with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "message": "Recipe could not be found",
+    "statusCode": 404
+  }
+  ```
+
+* Error response: User is the Recipe author
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": [
+                  "User not authorized to leave comment on own Recipe"
+                ]
+    }
+  ```
+
+* Error response: User already has Review for Recipe
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    {
+      "errors": ["User cannot leave more than 1 Review per Recipe"]
+    }
+  ```
+
+* Error Response: Body Validation Error
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": [
+                  "Rating Required",
+                  "Review Required"
+                ]
+    }
+  ```
+
+### Update Review
+Update and return a Review for a recipe using Review id
+
+* Require Authentication: true
+* Require proper authorization: User must be the Review author
+* Request
+  * Method: PUT
+  * URL: /api/reviews/:reviewId
+  * Body:
+  ```json
+    {
+      "rating": 3,
+      "review": "Nevermind, they're only okay",
+    }
+  ```
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "id": "",
+    "author": {
+      "id": 1,
+      "username": "Demo",
+    },
+    "rating": 3,
+    "review": "Nevermind, they're only okay",
+    "created_at": "2022-01-01",
+    "updated_at": "2022-01-03",
+  }
+  ```
+
+* Error response: Could not find a Review with the id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["Review could not be found."]}
+  ```
+
+* Error response: User is not the author of the review
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["User is not authorized to edit this Review"]}
+  ```
+
+* Error Response: Body Validation Error
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": [
+                  "Rating Required",
+                  "Review Required"
+                ]
+    }
+  ```
+
+### Delete Review
+Delete Review using ReviewId if user is logged in and authorized
+
+* Require Authentication: true
+* Require proper authorization: User must be the Review author
+* Request
+  * Method: DELETE
+  * URL: /api/reviews/:reviewId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+  {
+    "message": "Successfully Removed"
+  }
+  ```
+
+* Error response: Could not find a Review with the id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["Review could not be found."]}
+  ```
+
+* Error response: User is not the author of the review
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```json
+    { "errors": ["User is not authorized to edit this Review"]}
+  ```
