@@ -23,7 +23,7 @@ Returns the information about the current user that is logged in.
 * Requires Authentication: True
 * Request
     * Method: GET
-    * URL: /api/users/
+    * URL: /api/auth/
     * Body: none
 * Successful Response
     * Status Code: 200
@@ -42,7 +42,8 @@ Returns the information about the current user that is logged in.
                 "userFavoriteRecipes": {
                   "id": 1,
                   "author": {
-
+                    "id": 2,
+                    "username": "Peeb"
                   },
                   "title":"Hong Kong Egg Tarts",
                   "total_time": 120,
@@ -79,6 +80,28 @@ Logs in a current user with valid credentials and returns the current user's inf
     * Content-Type: application/json
   * Body:
   ```json
+                {
+                "user": {
+                  "id": 1,
+                  "username": "DemoUser",
+                  "firstName": "Demo",
+                  "lastName": "User",
+                  "email": "demo@user.com"
+                },
+                "userFavoriteRecipes": {
+                  "id": 1,
+                  "author": {
+                    "id": 2,
+                    "username": "Peeb"
+                  },
+                  "title":"Hong Kong Egg Tarts",
+                  "total_time": 120,
+                  "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+                  "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+                  "tags": ["tag1", "tag2"],
+                  "liked_users_ids": [1]
+                }
+              }
     ```
 * Error Response: Invalid credentials
   * Status Code: 401
