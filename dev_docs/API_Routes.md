@@ -295,60 +295,32 @@ Return a list of the Current User's Favorite Recipes
 
 * Require Authentication: true
 * Request
-  * Method: POST
-  * URL: /api/users/friends
-  * Body:
-  ```json
-  {
-    "email": "johnsmith@user.com"
-  }
-  ```
+  * Method: GET
+  * URL: /api/users/current/favorites
+  * Body: none
 
 * Successful Response
-  * Status Code: 201
+  * Status Code: 200
   * Headers:
       * Content-Type: application/json
   * Body:
   ```json
   {
-      "id": 2,
-      "firstName": "John",
-      "lastName": "Smith",
-  }
-  ```
-
-* Error Response: Validation Errors
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-  ```json
-  {
-    "errors": [
-                "Cannot add yourself to friends list",
-                "Email Required",
-                "User does not exist."
-              ]
-  }
-  ```
-
-
-### Remove Friend
-Remove a friend from current user's friends list
-
-* Require Authentication: true
-* Request:
-  * Method: DELETE
-  * URL: /api/users/friends/:friendId
-  * Body: none
-
-* Successful Response:
-  * Status Code: 200
-  * Content-Type: application/json
-  * Body:
-  ```json
-  {
-    "messasge": "Successfully removed"
+    "recipes": [
+     {
+      "id": 1,
+      "author": {
+        "id": 2,
+        "username": "Peeb"
+      },
+      "title":"Hong Kong Egg Tarts",
+      "total_time": 120,
+      "description":"Hong Kong egg tarts are small (usually about 3 inches in diameter) circular tarts of flaky pastry, filled with a smooth, lightly sweetened egg custard.",
+      "preview_image_url": "https://omnivorescookbook.com/wp-content/uploads/2021/04/200918_Hong-Kong-Egg-Tart_2.jpg",
+      "tags": ["tag1", "tag2"],
+      "liked_users_ids": [1]
+      },
+    ]
   }
   ```
 
