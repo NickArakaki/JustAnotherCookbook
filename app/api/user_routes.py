@@ -32,7 +32,7 @@ def get_user_recipes(id):
     return { "recipes": [recipe.to_dict() for recipe in user.recipes] }
 
 
-@user_routes.route('/<int:id>/favorites')
+@user_routes.route('/current/favorites')
 @login_required
 def get_users_favorite_recipes():
     """
