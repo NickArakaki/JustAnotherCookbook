@@ -1,5 +1,5 @@
 images_and_names = [
-    ["hhttps://just-another-cookbook.s3.amazonaws.com/dd394f9186974310a3972b161228dc99.jpg", "Thumbprint Cookies with Jam"],
+    ["https://just-another-cookbook.s3.amazonaws.com/dd394f9186974310a3972b161228dc99.jpg", "Thumbprint Cookies with Jam"],
     ["https://just-another-cookbook.s3.amazonaws.com/173e63d4bacf404882b64b391e31f712.jpeg","Boneless Beef Short Ribs"],
     ["https://just-another-cookbook.s3.amazonaws.com/93dd9032617c498797838bff88792783.jpg", "Salty Ginger Date Scones"],
     ["https://just-another-cookbook.s3.amazonaws.com/94d5443d890544b0a2d7c62bc23774b7.jpg", "Healthy Peanut Butter Balls"],
